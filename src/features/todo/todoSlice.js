@@ -3,11 +3,15 @@ import { addTodo, getTodos } from '../../services/database/todos'
 
 export const todoSlice = createSlice({
   name: 'todo',
-  initialState: [],
+  initialState: {
+    loading: false,
+    todos: []
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(saveTodo.fulfilled, (state, action) => {
         console.log('saveTodo fulfilled called, action.payload = ', action.payload);
+        state.todos.push(action.payload)
         
         
     });
@@ -18,7 +22,8 @@ export const todoSlice = createSlice({
     });
 
     builder.addCase(fetchTodos.fulfilled, (state, action) => {
-        console.log('fetch called. action = ', action.payload);
+        state.todos = action.payload;
+       
         
     });
   }
@@ -35,6 +40,9 @@ export const saveTodo = createAsyncThunk(
         
         try {
             const response = await addTodo(newTodo);
+            const serializedData = {id: response.id, ...newTodo};
+
+            return serializedData;
             console.log('response.data = ', response);
             
                         
@@ -51,23 +59,15 @@ export const fetchTodos = createAsyncThunk(
     async (undefined, {rejectWithValue}) => {
         console.log('fetch todos called');
         
+        const response = await getTodos();
+
+        const serializedData = [];
+
+        response.forEach((item) => {
+            serializedData.push(item.data());
+        });
         
-        try {
-            const response = await getTodos();
-            response.forEach((item) => {
-                console.log('response.item = ', item.data());
-                console.log('response.item = ', item.id);
-                
-            })
-            // might have to ormat the data then return it........ TODO
-            return response;
-            
-                        
-        } catch (error) {
-            console.log('Error adding todo. Error = ', error);
-            return rejectWithValue();
-            
-        }        
+        return serializedData;        
     }
 );
 
