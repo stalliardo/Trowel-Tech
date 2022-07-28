@@ -1,0 +1,5 @@
+TODOs
+
+1 - install redux
+2 - create log in forms ripped from indeed hehehehe
+3 - Move onAuthStateChanged listener to the app comp
