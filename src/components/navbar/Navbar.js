@@ -28,7 +28,7 @@ const Navbar = () => {
                     <Grid container justifyContent="space-between">
                         <Grid item>
                             <Typography variant="h6" component="div" sx={{}}>
-                                Stalliardo Todo App
+                                Only Trades - Price Gangs
                             </Typography>
                         </Grid>
                         <Grid item>

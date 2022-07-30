@@ -1,18 +1,23 @@
-import logo from './logo.svg';
 import './App.css';
-import Navbar from './components/navbar/Navbar';
-import Todo from './components/todo/Todo';
+
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import Home from './components/home/Home';
+import LandingPage from './components/landingPage/LandingPage';
+import { useSelector } from 'react-redux'
+
 
 function App() {
+
+  const { currentUser } = useSelector((state) => state.user);
 
   const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
     if(user){
         console.log('User called from authStateChanged function');
+        // TODO - dispatch setUser();
     } else {
       console.log('no user found');
-      
+        
         // user is signed out
     }
 })
@@ -20,9 +25,12 @@ function App() {
 
   return (
     <div className="App">
-     <Navbar />
-     <Todo />
+      {
+        currentUser ? <Home /> : <LandingPage />
+        
+      }
     </div>
+
   );
 }
 
