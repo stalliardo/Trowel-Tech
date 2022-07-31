@@ -13,6 +13,7 @@ import Auth from './components/auth/Auth';
 import { theme } from './theme/Theme';
 import { ThemeProvider } from '@mui/material';
 
+  
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>

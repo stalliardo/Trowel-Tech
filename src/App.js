@@ -2,8 +2,11 @@ import './App.css';
 
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Home from './components/home/Home';
-import LandingPage from './components/landingPage/LandingPage';
+// import LandingPage from './components/landingPage/LandingPage';
 import { useSelector } from 'react-redux'
+import Auth from './components/auth/Auth'
+
+
 
 
 function App() {
@@ -26,7 +29,7 @@ function App() {
   return (
     <div className="App">
       {
-        currentUser ? <Home /> : <LandingPage />
+        currentUser ? <Home /> : <Auth />
         
       }
     </div>

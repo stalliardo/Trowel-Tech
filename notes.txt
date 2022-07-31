@@ -8,3 +8,14 @@ TODOs
 Mui related
 
 inline breakpoints  =  sx={(theme) => ({[theme.breakpoints.down('sm')]: {mt: "10px"}})}
+
+
+Auth flow:
+
+    User enters app 
+        App checks for CurrentUser
+            No CurrentUser then navigate to auth screen
+        CurrentUser but no isMember flag
+            Landing page
+        Has flag
+            Home Page 

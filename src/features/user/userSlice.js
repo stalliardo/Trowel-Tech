@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { signUpUserWithEmailAndPassword } from '../../services/database/auth';
 
 export const userSlice = createSlice({
     name: 'user',
@@ -37,21 +38,13 @@ export const { logUserOut } = userSlice.actions;
 
 
 
-// export const fetchTodos = createAsyncThunk(
-//     "todo/fetchTodos",
-//     async (undefined, { rejectWithValue }) => {
-//         console.log('fetch todos called');
-
-//         const response = await getTodos();
-
-//         const serializedData = [];
-
-//         response.forEach((item) => {
-//             serializedData.push(item.data());
-//         });
-
-//         return serializedData;
-//     }
-// );
+export const signUpUser = createAsyncThunk(
+    "user/signUpUser",
+    async (formData, { rejectWithValue }) => {
+        const {email, password} = formData;
+       
+        // await signInUserWithEmailAndPassword(email, password);
+    }
+);
 
 export default userSlice.reducer
