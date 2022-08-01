@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import { Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getUserData } from '../../features/user/userSlice'
+import { getUserData, logOut, noUserFound } from '../../features/user/userSlice'
 
 
 
@@ -30,12 +30,20 @@ const Navbar = () => {
                 })
             }  
       } else {
-        console.log('no user found');
-          
-          // user is signed out
+            dispatch(noUserFound())
       }
 
     })
+
+
+    const onLogOutClicked = () => {
+      // TODO -> dispatch the authSlice LogOutFunction
+      // What do i need to do when the user has been logged out?
+      // Or will the authSate change run then set the state.user to null?
+      dispatch(logOut()).then(() => {
+        console.log("User logged out but is there still a state object? ", userDoc.currentUser);
+      })
+    }
 
 
 
@@ -63,8 +71,9 @@ const Navbar = () => {
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Button color="inherit">{userDoc.currentUser ? "Log Out" : "Log In"}</Button>
-
+                            {
+                                userDoc.currentUser && <Button color="inherit" onClick={onLogOutClicked}>Log Out</Button>                       
+                            }
                         </Grid>
                     </Grid>
                 </Toolbar>

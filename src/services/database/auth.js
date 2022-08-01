@@ -1,6 +1,6 @@
 import { db } from '../../firebase';
 import { doc, setDoc, getDoc } from 'firebase/firestore'
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
 const auth = getAuth();
 
@@ -15,8 +15,13 @@ export const signUpUserWithEmailAndPassword = async (formData) => {
     return credential;
 }
 
-export const signInUserWithEmailAndPassword = (email, password) => {
+export const signInUserWithEmailAndPassword = async (formData) => {
     // TODO
+    console.log("signInUserWithEmailAndPassword called");
+    const { email, password } = formData;
+    const credential = await signInWithEmailAndPassword(auth, email, password);
+    console.log("crednetioal from sifn in = ", credential);
+    return credential;
 }
 
 export const getUserDoc = async (userId) => {
@@ -29,4 +34,8 @@ export const getUserDoc = async (userId) => {
     } else {
         console.log("Could not find doc");
     }
+}
+
+export const logUserOut = () => {
+    return signOut(auth);
 }

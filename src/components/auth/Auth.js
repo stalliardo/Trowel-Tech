@@ -3,7 +3,7 @@ import { Container } from '@mui/system';
 import LockOutLinedIcon from '@mui/icons-material/LockOutlined';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { signUpUser } from '../../features/user/userSlice'
+import { signUpUser, signIn } from '../../features/user/userSlice'
 import { useNavigate } from 'react-router-dom';
 
 const Auth = () => {
@@ -23,19 +23,33 @@ const Auth = () => {
     const [buttonDisabled, setButtonDisabled] = useState(true);
 
     useEffect(() => {
-        if (
-            formData.firstName.length > 0 &&
-            formData.lastName.length > 0 &&
-            formData.email.length > 0 &&
-            formData.password.length > 0 &&
-            formData.confirmPassword.length > 0 && 
-            formData.password == formData.confirmPassword && 
-            formData.password.length > 5
-
-        ) {
-            setButtonDisabled(false);
+        if(isSignUp){
+            if (
+                formData.firstName.length > 0 &&
+                formData.lastName.length > 0 &&
+                formData.email.length > 0 &&
+                formData.password.length > 0 &&
+                formData.confirmPassword.length > 0 && 
+                formData.password == formData.confirmPassword && 
+                formData.password.length > 5
+    
+            ) {
+                setButtonDisabled(false);
+            } else {
+                setButtonDisabled(true);
+            }
         } else {
-            setButtonDisabled(true);
+            if (
+                
+                formData.email.length > 0 &&
+                
+                formData.password.length > 5
+    
+            ) {
+                setButtonDisabled(false);
+            } else {
+                setButtonDisabled(true);
+            }
         }
 
     }, [formData])
@@ -50,21 +64,21 @@ const Auth = () => {
         if (isSignUp) {
             dispatch(signUpUser(formData)).unwrap().then((response) => {
                 navigate("/");
-
-                
-                
-            }).catch((error) => {
+              }).catch((error) => {
                 setErrorText("An error occured. Please try again.")
-                console.log('Error registering user. Error: ', error);
-                
+                console.log('Error registering user. Error: ', error); 
             })
             // dispatch(signUp(formData)).then(() => {
             //     navigate("/");
             // });
         } else {
-            // dispatch(signIn(formData)).then(() => {
-            //     navigate("/");
-            // })
+            console.log("signing in....");
+            dispatch(signIn(formData)).then(() => {
+                console.log("succesful sign in");
+                navigate("/");
+            }).catch((error) => {
+                console.log("Error signing in. Error: ", error);
+            })
         }
     }
 
