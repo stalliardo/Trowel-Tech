@@ -15,11 +15,8 @@ const Auth = () => {
     const initialState = { firstName: "", lastName: "", email: "", password: "", confirmPassword: "" };
 
     const [formData, setFormData] = useState(initialState);
-
-
     const [errorText, setErrorText] = useState("");
     const [isError, setIsError] = useState(true);
-
     const [buttonDisabled, setButtonDisabled] = useState(true);
 
     useEffect(() => {
@@ -32,19 +29,15 @@ const Auth = () => {
                 formData.confirmPassword.length > 0 && 
                 formData.password == formData.confirmPassword && 
                 formData.password.length > 5
-    
             ) {
                 setButtonDisabled(false);
             } else {
                 setButtonDisabled(true);
             }
         } else {
-            if (
-                
+            if ( 
                 formData.email.length > 0 &&
-                
                 formData.password.length > 5
-    
             ) {
                 setButtonDisabled(false);
             } else {
@@ -52,14 +45,10 @@ const Auth = () => {
             }
         }
 
-    }, [formData])
-
-
+    }, [formData]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-
         
         if (isSignUp) {
             dispatch(signUpUser(formData)).unwrap().then((response) => {
@@ -68,9 +57,6 @@ const Auth = () => {
                 setErrorText("An error occured. Please try again.")
                 console.log('Error registering user. Error: ', error); 
             })
-            // dispatch(signUp(formData)).then(() => {
-            //     navigate("/");
-            // });
         } else {
             console.log("signing in....");
             dispatch(signIn(formData)).then(() => {
@@ -82,10 +68,6 @@ const Auth = () => {
         }
     }
 
-
-
-
-
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     }
@@ -94,7 +76,6 @@ const Auth = () => {
         setFormData(initialState);
         setIsSignUp((prevState) => !prevState);
     }
-
 
     return (
         <Container maxWidth="xs" component="main" sx={{ mt: "60px" }}>

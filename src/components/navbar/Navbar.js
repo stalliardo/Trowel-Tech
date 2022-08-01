@@ -10,8 +10,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getUserData, logOut, noUserFound } from '../../features/user/userSlice'
 
-
-
 const Navbar = () => {
    
     const dispatch = useDispatch();    
@@ -22,32 +20,19 @@ const Navbar = () => {
       
       if(user){
           console.log('User: ', user);
-      
-
             if(!userDoc.currentUser){
                 dispatch(getUserData(user.uid)).unwrap().then((response) => {
                     console.log("response from getUserData = ", response);
-                })
+                });
             }  
       } else {
             dispatch(noUserFound())
       }
-
     })
 
-
     const onLogOutClicked = () => {
-      // TODO -> dispatch the authSlice LogOutFunction
-      // What do i need to do when the user has been logged out?
-      // Or will the authSate change run then set the state.user to null?
-      dispatch(logOut()).then(() => {
-        console.log("User logged out but is there still a state object? ", userDoc.currentUser);
-      })
+      dispatch(logOut());
     }
-
-
-
-
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -83,7 +68,3 @@ const Navbar = () => {
 }
 
 export default Navbar;
-
-
-
-
