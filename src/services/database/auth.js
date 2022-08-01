@@ -16,11 +16,8 @@ export const signUpUserWithEmailAndPassword = async (formData) => {
 }
 
 export const signInUserWithEmailAndPassword = async (formData) => {
-    // TODO
-    console.log("signInUserWithEmailAndPassword called");
     const { email, password } = formData;
     const credential = await signInWithEmailAndPassword(auth, email, password);
-    console.log("crednetioal from sifn in = ", credential);
     return credential;
 }
 

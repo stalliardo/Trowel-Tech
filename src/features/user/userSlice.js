@@ -9,8 +9,6 @@ export const userSlice = createSlice({
         isLoadingUserData: true,
     },
     reducers: {
-
-
         setUser: (state, action) => {
             state.currentUser = action.payload;
         },
@@ -22,8 +20,6 @@ export const userSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(signUpUser.pending, (state, action) => {
             state.isLoading = true;
-
-
         });
 
         builder.addCase(signUpUser.fulfilled, (state, action) => {
@@ -57,10 +53,7 @@ export const userSlice = createSlice({
     }
 })
 
-// Action creators are generated for each case reducer function
 export const { setUser, noUserFound } = userSlice.actions;
-
-
 
 export const signUpUser = createAsyncThunk(
     "user/signUpUser",
