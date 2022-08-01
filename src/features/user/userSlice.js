@@ -18,7 +18,7 @@ export const userSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(signUpUser.pending, (state, action) => {
+        builder.addCase(signUpUser.pending, (state) => {
             state.isLoading = true;
         });
 
@@ -27,12 +27,12 @@ export const userSlice = createSlice({
             state.currentUser = action.payload;
         });
 
-        builder.addCase(signUpUser.rejected, (state, action) => {
+        builder.addCase(signUpUser.rejected, (state) => {
             state.isLoading = false;
         });
 
         // getUserData....
-        builder.addCase(getUserData.pending, (state, action) => {
+        builder.addCase(getUserData.pending, (state) => {
             state.isLoadingUserData = true;
         });
 
@@ -42,7 +42,7 @@ export const userSlice = createSlice({
             state.currentUser = action.payload;
         });
 
-        builder.addCase(getUserData.rejected, (state, action) => {
+        builder.addCase(getUserData.rejected, (state) => {
             state.isLoadingUserData = false;
         });
 
