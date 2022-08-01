@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux'
 
 const Home = () => {
     // TODO...
-    const { currentUser } = useSelector((state) => state.user);
-    console.log('user from state = ', currentUser);
+    // const { currentUser } = useSelector((state) => state.user);
+    // console.log('user from state = ', currentUser);
     
 
     return (

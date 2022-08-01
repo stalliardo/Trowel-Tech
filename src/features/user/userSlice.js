@@ -1,17 +1,19 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { signUpUserWithEmailAndPassword } from '../../services/database/auth';
+import { signUpUserWithEmailAndPassword, getUserDoc } from '../../services/database/auth';
 
 export const userSlice = createSlice({
     name: 'user',
     initialState: {
         currentUser: null,
-        isLoading: false
-
+        isLoading: false,
+        isLoadingUserData: true,
     },
     reducers: {
         logUserOut: (state, action) => {
-            console.log('log out called');
+        },
 
+        setUser: (state, action) => {
+            state.currentUser = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -24,23 +26,32 @@ export const userSlice = createSlice({
         builder.addCase(signUpUser.fulfilled, (state, action) => {
             state.isLoading = false;
             state.currentUser = action.payload;
-            console.log('action payload = ', action.payload);
-
-
-
         });
 
         builder.addCase(signUpUser.rejected, (state, action) => {
             state.isLoading = false;
+        });
 
+        // getUserData....
+        builder.addCase(getUserData.pending, (state, action) => {
+            state.isLoadingUserData = true;
+        });
 
+        builder.addCase(getUserData.fulfilled, (state, action) => {
+            
+            state.isLoadingUserData = false;
+            state.currentUser = action.payload;
+        });
+
+        builder.addCase(getUserData.rejected, (state, action) => {
+            state.isLoadingUserData = false;
         });
 
     }
 })
 
 // Action creators are generated for each case reducer function
-export const { logUserOut } = userSlice.actions;
+export const { logUserOut, setUser } = userSlice.actions;
 
 
 
@@ -50,10 +61,7 @@ export const signUpUser = createAsyncThunk(
 
         try {
             const credential = await signUpUserWithEmailAndPassword(formData);
-
-            console.log('credential = ', credential);
-            
-
+            // TEST -> is this still required?
             const serializedUser = {
                 name: formData.firstName + " " + formData.lastName,
                 email: formData.email,
@@ -66,5 +74,17 @@ export const signUpUser = createAsyncThunk(
         }
     }
 );
+
+export const getUserData = createAsyncThunk(
+    "user/getUserData",
+    async(userId) => {
+        try {
+            const userData = await getUserDoc(userId);
+            return userData;
+        } catch (error) {
+            throw(error);
+        }
+    }
+)
 
 export default userSlice.reducer

@@ -22,8 +22,6 @@ const Auth = () => {
 
     const [buttonDisabled, setButtonDisabled] = useState(true);
 
-
-
     useEffect(() => {
         if (
             formData.firstName.length > 0 &&
@@ -82,6 +80,7 @@ const Auth = () => {
         setFormData(initialState);
         setIsSignUp((prevState) => !prevState);
     }
+
 
     return (
         <Container maxWidth="xs" component="main" sx={{ mt: "60px" }}>

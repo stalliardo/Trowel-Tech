@@ -1,55 +1,25 @@
 import './App.css';
 
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import Home from './components/home/Home';
 // import LandingPage from './components/landingPage/LandingPage';
 import { useSelector } from 'react-redux'
 import Auth from './components/auth/Auth'
-import { useState } from 'react';
-
-
-
+import { CircularProgress, Container } from '@mui/material';
 
 function App() {
 
-  const [currentUser, setCurrentUser] = useState(useSelector((state) => state.currentUser));
-
-  const auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    
-    if(user){
-        console.log('User: ', user);
-        const serializedUser = {
-          // name: 
-        }
-        setCurrentUser(user)
-        
-        // TODO - dispatch setUser();
-
-    } else {
-      console.log('no user found');
-        
-        // user is signed out
-    }
-})
-
+  const user = useSelector((state) => state.user);
+  console.log("current user from app = ", user.currentUser);
 
   return (
     <div className="App">
-      {/* Needs loading indicator */}
       {
-        currentUser ? <Home /> : <Auth />
-        
+        user.isLoadingUserData ? <Container sx={{mt: "100px"}}><CircularProgress style={{ color: "blue" }} /></Container> :
+          user.currentUser ? <Home /> : <Auth />
       }
-    </div>
 
+    </div>
   );
 }
 
 export default App;
-
-
-// check if there is a user in locl storgae
-// if user
-    // then get the user doc from the database and setState the user
-// else show auth forms

@@ -19,3 +19,10 @@ Auth flow:
             Landing page
         Has flag
             Home Page 
+
+
+
+User flow:
+    Get user from onAuthStateChanged
+        Get user doc from database and set is loading
+            Then set the currentUser in the store to the serialized data

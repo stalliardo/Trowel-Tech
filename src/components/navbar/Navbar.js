@@ -1,26 +1,45 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+
 import { Grid } from '@mui/material';
-import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getUserData } from '../../features/user/userSlice'
+
 
 
 const Navbar = () => {
-    const [currentUser, setCurrentUser] = useState(useSelector((state) => state.currentUser));
+   
+    const dispatch = useDispatch();    
+   const userDoc = useSelector((state) => state.user)
 
-    console.log('currentUser from nav = ', currentUser);
-    
-    
-    useEffect(() => {
-        setCurrentUser()
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      
+      if(user){
+          console.log('User: ', user);
+      
+
+            if(!userDoc.currentUser){
+                dispatch(getUserData(user.uid)).unwrap().then((response) => {
+                    console.log("response from getUserData = ", response);
+                })
+            }  
+      } else {
+        console.log('no user found');
+          
+          // user is signed out
+      }
 
     })
+
+
+
+
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -44,7 +63,7 @@ const Navbar = () => {
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Button color="inherit">{currentUser ? "Log Out" : "Log In"}</Button>
+                            <Button color="inherit">{userDoc.currentUser ? "Log Out" : "Log In"}</Button>
 
                         </Grid>
                     </Grid>
