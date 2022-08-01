@@ -1,7 +1,7 @@
 import { Avatar, Button, CircularProgress, Grid, Paper, TextField, Typography } from '@mui/material';
 import { Container } from '@mui/system';
 import LockOutLinedIcon from '@mui/icons-material/LockOutlined';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { signUpUser } from '../../features/user/userSlice'
 import { useNavigate } from 'react-router-dom';
@@ -9,35 +9,69 @@ import { useNavigate } from 'react-router-dom';
 const Auth = () => {
     const [isSignUp, setIsSignUp] = useState(true);
     const dispatch = useDispatch();
-    // const { loading } = useSelector((state) => state.auth);
+    const { isLoading } = useSelector((state) => state.user);
     const navigate = useNavigate();
 
     const initialState = { firstName: "", lastName: "", email: "", password: "", confirmPassword: "" };
 
     const [formData, setFormData] = useState(initialState);
 
+
+    const [errorText, setErrorText] = useState("");
+    const [isError, setIsError] = useState(true);
+
+    const [buttonDisabled, setButtonDisabled] = useState(true);
+
+
+
+    useEffect(() => {
+        if (
+            formData.firstName.length > 0 &&
+            formData.lastName.length > 0 &&
+            formData.email.length > 0 &&
+            formData.password.length > 0 &&
+            formData.confirmPassword.length > 0 && 
+            formData.password == formData.confirmPassword && 
+            formData.password.length > 5
+
+        ) {
+            setButtonDisabled(false);
+        } else {
+            setButtonDisabled(true);
+        }
+
+    }, [formData])
+
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // TODO handle validations first if success run below code
 
+        
+        if (isSignUp) {
+            dispatch(signUpUser(formData)).unwrap().then((response) => {
+                navigate("/");
 
-
-        dispatch(signUpUser({email: "testEmail", password: "testPassword"}));
-
-        // if (isSignUp) {
-        //     dispatch(signUp(formData)).then(() => {
-        //         navigate("/");
-        //     });
-        // } else {
-        //     dispatch(signIn(formData)).then(() => {
-        //         navigate("/");
-        //     })
-        // }
+                
+                
+            }).catch((error) => {
+                setErrorText("An error occured. Please try again.")
+                console.log('Error registering user. Error: ', error);
+                
+            })
+            // dispatch(signUp(formData)).then(() => {
+            //     navigate("/");
+            // });
+        } else {
+            // dispatch(signIn(formData)).then(() => {
+            //     navigate("/");
+            // })
+        }
     }
 
 
-    
+
 
 
     const handleChange = (e) => {
@@ -84,16 +118,20 @@ const Auth = () => {
                         }
                     </Grid>
 
-                    <Button type='submit' variant='contained' fullWidth sx={{ mt: "20px" }}>
-                        {isSignUp ? "Sign Up" : "Sign In"}
+                    <Button type='submit' variant='contained' fullWidth sx={{ mt: "20px" }} disabled={buttonDisabled}>
+                    {isLoading ? <CircularProgress style={{color: "white"}}/> : isSignUp ? "Sign Up" : "Sign In"}
+                        
                     </Button>
                     <Container>
                         <Button onClick={switchMode}>
                             {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign up"}
                         </Button>
                     </Container>
+                    {
+                        isError ? <Typography color="error.main">{errorText}</Typography> : null
+                    }
                     <Container>
-                        {/* {loading ? <CircularProgress /> : null} */}
+                       
                     </Container>
                 </form>
             </Paper>

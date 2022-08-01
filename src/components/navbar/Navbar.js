@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -7,9 +7,21 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Grid } from '@mui/material';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
 
 const Navbar = () => {
+    const [currentUser, setCurrentUser] = useState(useSelector((state) => state.currentUser));
+
+    console.log('currentUser from nav = ', currentUser);
+    
+    
+    useEffect(() => {
+        setCurrentUser()
+
+    })
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -32,7 +44,7 @@ const Navbar = () => {
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Button color="inherit">Login</Button>
+                            <Button color="inherit">{currentUser ? "Log Out" : "Log In"}</Button>
 
                         </Grid>
                     </Grid>

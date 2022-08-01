@@ -1,3 +1,5 @@
+import { db } from '../../firebase';
+import { doc, setDoc } from 'firebase/firestore'
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 
 const auth = getAuth();
@@ -10,16 +12,20 @@ const auth = getAuth();
 //     }
 // })
 
-export const signUpUserWithEmailAndPassword = (email, password) => {
+export const signUpUserWithEmailAndPassword = async (formData) => {
     // TODO - validations in the form component
+    const { firstName, lastName, email, password } = formData;
 
-    createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
-        // Signed in...
-        const user = userCredential.user;
-    }).catch((error) => {
-        return 
-    })
-    
+
+
+    const credential = await createUserWithEmailAndPassword(auth, email, password);
+
+    await setDoc(doc(db, "users", credential.user.uid), {
+        name: firstName + " " + lastName,
+    });
+
+    return credential;
+
 }
 
 export const signInUserWithEmailAndPassword = (email, password) => {

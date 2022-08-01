@@ -5,19 +5,27 @@ import Home from './components/home/Home';
 // import LandingPage from './components/landingPage/LandingPage';
 import { useSelector } from 'react-redux'
 import Auth from './components/auth/Auth'
+import { useState } from 'react';
 
 
 
 
 function App() {
 
-  const { currentUser } = useSelector((state) => state.user);
+  const [currentUser, setCurrentUser] = useState(useSelector((state) => state.currentUser));
 
   const auth = getAuth();
   onAuthStateChanged(auth, (user) => {
+    
     if(user){
-        console.log('User called from authStateChanged function');
+        console.log('User: ', user);
+        const serializedUser = {
+          // name: 
+        }
+        setCurrentUser(user)
+        
         // TODO - dispatch setUser();
+
     } else {
       console.log('no user found');
         
@@ -28,6 +36,7 @@ function App() {
 
   return (
     <div className="App">
+      {/* Needs loading indicator */}
       {
         currentUser ? <Home /> : <Auth />
         
@@ -38,3 +47,9 @@ function App() {
 }
 
 export default App;
+
+
+// check if there is a user in locl storgae
+// if user
+    // then get the user doc from the database and setState the user
+// else show auth forms
