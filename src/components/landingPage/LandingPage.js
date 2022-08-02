@@ -13,6 +13,7 @@ import PromptCard from './PromptCard';
 const LandingPage = () => {
   const navigate = useNavigate();
 
+
   const onCreateGang = () => {
     navigate("/auth");
   }
@@ -40,7 +41,7 @@ const LandingPage = () => {
   return (
     <div>
       <Container maxWidth="lg">
-        <Grid container paddingX="4rem">
+        <Grid container sx={{ paddingX: { sm: "20px", md: "40px"}}}>
           <Grid item container md={8}>
             <Typography variant='h3' fontWeight="500" textAlign="left" sx={{ paddingTop: "5rem" }}>Only Trades Price Gang helps modernize the way you work!</Typography>
             <Typography textAlign="left" variant="subtitle1" fontSize="22px" mt="20px">Collaborate, manage, and save precious time. Just because you work on site doesn't mean you can't utilize the power of todays technology.</Typography>
@@ -75,7 +76,7 @@ const LandingPage = () => {
           />
         </Grid>
         <hr style={{ margin: "40px 0" }} />
-        <Grid container paddingX="4rem" justifyContent="space-between">
+        <Grid container sx={{ paddingX: { sm: "20px", md: "40px"}}} justifyContent="space-between">
           <Typography variant='h4' fontWeight="500" textAlign="center" sx={{ paddingTop: "5rem" }}>It's more than work. It's a way of working quicker, smarter and ultimately, more economically.</Typography>
           <Typography variant="subtitle1" fontSize="20px" mt="20px">Start by creating your gang, add members either day work or price work. Record hours, lift prices, performance charts and more. Let's move building into the 21st century.</Typography>
           <Container>
@@ -110,7 +111,7 @@ const LandingPage = () => {
 
           <hr style={{ margin: "20px 0" }} />
 
-          <Grid container justifyContent="space-around">
+          <Grid container justifyContent="space-around" sx={{backgroundColor: {xs: "red", xl: "green", md: "yellow"}}}>
             <Typography color="white">Privacy Policy</Typography>
             <Typography color="white">Terms</Typography>
             <Typography color="white">Cookies Settings</Typography>
