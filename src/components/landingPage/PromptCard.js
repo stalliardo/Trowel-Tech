@@ -1,9 +1,7 @@
 import React from 'react'
 import { Grid, Icon, Typography } from '@mui/material'
 import Button from '@mui/material/Button';
-import { Box, Container } from '@mui/system';
-
-
+import { Container } from '@mui/system';
 
 const PromptCard = (props) => {
     return (
@@ -15,11 +13,11 @@ const PromptCard = (props) => {
             flexDirection: "column",
 
         }}>
-                <Container><Icon fontSize='large' sx={{ color: "white" }}>{props.icon}</Icon></Container>
-                <Typography variant='h6' fontWeight="500" textAlign="center" sx={{ paddingTop: "1rem" }}>{props.title}</Typography>
-                <Typography textAlign="left" variant="subtitle1" fontSize="16px" mt="20px" mb="20px">{props.text}</Typography>
-                <Button variant='contained' sx={{ marginTop: "auto" }} onClick={props.clickHandler}>{props.buttonText}</Button>
-            
+            <Container><Icon fontSize='large' sx={{ color: "white" }}>{props.icon}</Icon></Container>
+            <Typography variant='h6' fontWeight="500" textAlign="center" sx={{ paddingTop: "1rem" }}>{props.title}</Typography>
+            <Typography textAlign="left" variant="subtitle1" fontSize="16px" mt="20px" mb="20px">{props.text}</Typography>
+            <Button variant='contained' sx={{ marginTop: "auto" }} onClick={props.clickHandler}>{props.buttonText}</Button>
+
         </Grid>
     )
 }
