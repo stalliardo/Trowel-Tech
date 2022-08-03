@@ -10,6 +10,8 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import PromptCard from './PromptCard';
 
+import { CurrencyPoundIcon } from '@mui/icons-material';
+
 const LandingPage = () => {
   const navigate = useNavigate();
 
@@ -56,22 +58,25 @@ const LandingPage = () => {
           <PromptCard
             backgroundColor="#abb5d1"
             buttonText="Learn more"
-            text="todo"
+            text="Some text some text some text Some text some text some text"
             title="What is OTPG"
+            icon="help_outlined"
             clickHandler={onLearnMoreClicked}
           />
           <PromptCard
             backgroundColor="#7690db"
             buttonText="Compare Pricing"
-            text="todo"
+            text="Some text some text some text"
             title="View our pricing plans"
+            icon="sell_outlined"
             clickHandler={onPricingPlansClicked}
           />
           <PromptCard
             backgroundColor="#3d65d9"
             buttonText="Take a tour"
-            text="todo"
+            text="Some text some text some text Some text some text some text Some text some text some text Some text some text some text"
             title="Take a tour"
+            icon="explore_outlined"
             clickHandler={onTakeATourClicked}
           />
         </Grid>
@@ -87,26 +92,18 @@ const LandingPage = () => {
       <Box component="div" sx={{ background: "darkblue", height: "12rem", width: "100%", mt: "60px" }}>
         <Container maxWidth="lg" sx={{ height: "inherit", pt: "30px" }}>
           <Grid container>
-
             <Grid item container sx={{ mr: "40px" }} xs={12} md={2} flexDirection="column">
               <Typography color="white" variant='h6'>Site Logo Here</Typography>
               <Button sx={{color: "whitesmoke", width: "105px"}}>Log in</Button>
-              
             </Grid>
-
             <Grid item container sx={{ mr: "40px" }} xs={12} md={2}>
               <Typography color="white" variant='h6'>Contact us</Typography>
               <Typography color="white" variant='subtitle2' fontWeight="100">Feel free to get in touch</Typography>
             </Grid>
-
             <Grid item container sx={{ mr: "40px" }} xs={12} md={2}>
               <Typography color="white" variant='h6'>About</Typography>
               <Typography color="white" variant='subtitle2' fontWeight="100">Find out why we're here</Typography>
             </Grid>
-
-            
-
-
           </Grid>
 
           <hr style={{ margin: "20px 0" }} />
