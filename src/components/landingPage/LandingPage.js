@@ -43,7 +43,6 @@ const LandingPage = () => {
     <div>
       <Container maxWidth="lg" sx={{mt: "20px"}}>
       <img src={trowelTechLogoCover} width="100%" alt="meeting.jpg" style={{ marginTop: "0px" }}/>
-
         <Grid container sx={{ paddingX: { xs: "20px", md: "40px" }, flexDirection: { xs: "column-reverse", md: "row" } }}>
           <Grid item container md={8}>
             <Typography variant='h3' fontWeight="500" sx={{ paddingTop: { md: "5rem", xs: "0" }, textAlign: { sm: "center", md: "left" } }}>Trowel Tech helps modernize the way you work!</Typography>
@@ -108,10 +107,6 @@ const LandingPage = () => {
           </Grid>
         </Grid>
         <hr style={{ margin: "60px 0 40px" }} />
-
-          {/* <Paper sx={{backgroundImage: `url(${trowelTechLogo})`, height: "800px", backgroundRepeat: "no-repeat", backgroundSize: "cover", maxHeight: "100%", maxWidth: "100%" }}>
-          {/*  */}
-          {/* </Paper> */}
           <Container sx={{ background: "linear-gradient(131deg, rgba(1,179,217,1) 0%, rgba(3,2,74,1) 100%)", height: "fit-content", paddingY: "30px" }}>
             <Typography variant="h1" fontFamily="Russo One" sx={{ color: "white" }}>Trowel Tech</Typography>
             <Typography variant="subtitle1" sx={{ color: "white", fontSize: "20px", letterSpacing: "4px", mt: "20px" }}>Sign up and modernize your work flow</Typography>
@@ -123,7 +118,6 @@ const LandingPage = () => {
 }
 
 export default LandingPage
-
 
 // TODOs
 
