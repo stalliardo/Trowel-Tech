@@ -1,10 +1,12 @@
-import { Grid, Typography } from '@mui/material'
+import { Box, Grid, Paper, Typography } from '@mui/material'
 import { Container } from '@mui/system'
 
 import Button from '@mui/material/Button';
 import buildersImage from '../../images/builders-edited.png'
 import gangImage from '../../images/gang.jpg'
 import individualImage from '../../images/individual.jpg'
+import trowelTechLogo from '../../images/trowel-tech-default.png'
+import trowelTechLogoCover from '../../images/cover.png'
 
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
@@ -39,15 +41,17 @@ const LandingPage = () => {
 
   return (
     <div>
-      <Container maxWidth="lg">
-        <Grid container sx={{ paddingX: { sm: "20px", md: "40px" }, flexDirection: {xs: "column-reverse", md: "row"} }}>
+      <Container maxWidth="lg" sx={{mt: "20px"}}>
+      <img src={trowelTechLogoCover} width="100%" alt="meeting.jpg" style={{ marginTop: "0px" }}/>
+
+        <Grid container sx={{ paddingX: { xs: "20px", md: "40px" }, flexDirection: { xs: "column-reverse", md: "row" } }}>
           <Grid item container md={8}>
-            <Typography variant='h3' fontWeight="500" sx={{ paddingTop: {md: "5rem", xs: "0"}, textAlign: {sm: "center", md: "left"} }}>Only Trades Bricklayers helps modernize the way you work!</Typography>
-            <Typography textAlign="left" variant="subtitle1" fontSize="22px" mt="20px">Collaborate, manage, and save precious time. Just because you work on site doesn't mean you can't utilize the power of todays technology.</Typography>
+            <Typography variant='h3' fontWeight="500" sx={{ paddingTop: { md: "5rem", xs: "0" }, textAlign: { sm: "center", md: "left" } }}>Trowel Tech helps modernize the way you work!</Typography>
+            <Typography fontFamily="'Linden Hill'" textAlign="left" variant="subtitle1" fontSize="22px" mt="20px">Collaborate, manage, and save precious time. Just because you work on site doesn't mean you can't utilize the power of todays technology.</Typography>
             <Button variant='contained' sx={{ mt: "20px" }} onClick={onGoToSignUp}>Sign up for free</Button>
           </Grid>
           <Grid item md={4}>
-            <img src={buildersImage} height={200} alt="meeting.jpg" style={{ marginTop: "20px" }} />
+            <img src={buildersImage} height={200} alt="meeting.jpg" style={{ marginTop: "40px" }} />
           </Grid>
         </Grid>
         <hr style={{ margin: "60px 0 35px" }} />
@@ -55,8 +59,8 @@ const LandingPage = () => {
           <PromptCard
             backgroundColor="#abb5d1"
             buttonText="Learn more"
-            text="OTB is an online tool for bricklayers. Record hours, lift prices, calculate wages and so much more."
-            title="What is OTPG"
+            text="Trowel Tech is an online tool for bricklayers. Record hours, lift prices, calculate wages and so much more."
+            title="What is Trowel Tech"
             icon="help_outlined"
             clickHandler={onLearnMoreClicked}
           />
@@ -78,7 +82,7 @@ const LandingPage = () => {
           />
         </Grid>
         <hr style={{ margin: "70px 0 40px" }} />
-        <Grid container sx={{ paddingX: { sm: "20px", md: "40px" }, flexDirection: {xs: "column", md: "row"} }} justifyContent="space-between" alignItems="center">
+        <Grid container sx={{ paddingX: { sm: "20px", md: "40px" }, flexDirection: { xs: "column", md: "row" } }} justifyContent="space-between" alignItems="center">
           <Grid item md={4}>
             <img src={gangImage} height={200} alt="meeting.jpg" style={{ marginTop: "-40px" }} />
           </Grid>
@@ -91,9 +95,9 @@ const LandingPage = () => {
           </Grid>
         </Grid>
         <hr style={{ margin: "60px 0 40px" }} />
-        <Grid container sx={{ paddingX: { sm: "20px", md: "40px" }, flexDirection: { xs: "column-reverse", md: "row"} }} justifyContent="space-between">
+        <Grid container sx={{ paddingX: { sm: "20px", md: "40px" }, flexDirection: { xs: "column-reverse", md: "row" } }} justifyContent="space-between">
           <Grid item md={8}>
-            <Typography variant='h4' fontWeight="500" textAlign="center" sx={{ paddingTop: "1rem" }}>Individuals. Log your hours and make sure you're getting the correct pay </Typography>
+            <Typography variant='h4' fontWeight="500" textAlign="center" sx={{ paddingTop: "1rem" }}>Individuals. Log your hours and make sure you're getting the correct pay. </Typography>
             <Typography variant="subtitle1" fontSize="20px" mt="20px">Register for your free account, enter some salary information and calculate your earnings as you go. No more guessing what you're going to be paid.</Typography>
             <Container>
               <Button variant='contained' sx={{ mt: "20px" }} onClick={onGoToSignUp}>Sign me up</Button>
@@ -103,9 +107,27 @@ const LandingPage = () => {
             <img src={individualImage} height={200} width={200} alt="meeting.jpg" style={{ marginTop: "0px" }} />
           </Grid>
         </Grid>
+        <hr style={{ margin: "60px 0 40px" }} />
+
+          {/* <Paper sx={{backgroundImage: `url(${trowelTechLogo})`, height: "800px", backgroundRepeat: "no-repeat", backgroundSize: "cover", maxHeight: "100%", maxWidth: "100%" }}>
+          {/*  */}
+          {/* </Paper> */}
+          <Container sx={{ background: "linear-gradient(131deg, rgba(1,179,217,1) 0%, rgba(3,2,74,1) 100%)", height: "fit-content", paddingY: "30px" }}>
+            <Typography variant="h1" fontFamily="Russo One" sx={{ color: "white" }}>Trowel Tech</Typography>
+            <Typography variant="subtitle1" sx={{ color: "white", fontSize: "20px", letterSpacing: "4px", mt: "20px" }}>Sign up and modernize your work flow</Typography>
+            <Button variant='outlined' sx={{color: "white", mt: "20px"}}>Join us</Button>
+          </Container>
       </Container>
     </div>
   )
 }
 
 export default LandingPage
+
+
+// TODOs
+
+// Fix nav color
+// Fix nav gap on small screens
+// Change promt card background Color
+// Change footer backgroundColor

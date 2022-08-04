@@ -14,7 +14,7 @@ const PromptCard = (props) => {
 
         }}>
             <Container><Icon fontSize='large' sx={{ color: "white" }}>{props.icon}</Icon></Container>
-            <Typography variant='h6' fontWeight="500" textAlign="center" sx={{ paddingTop: "1rem" }}>{props.title}</Typography>
+            <Typography variant='h6' fontWeight="600" textAlign="center" sx={{ paddingTop: "1rem" }}>{props.title}</Typography>
             <Typography textAlign="left" variant="subtitle1" fontSize="16px" mt="20px" mb="20px">{props.text}</Typography>
             <Button variant='contained' sx={{ marginTop: "auto" }} onClick={props.clickHandler}>{props.buttonText}</Button>
 

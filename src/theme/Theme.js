@@ -12,5 +12,16 @@ export const theme = createTheme({
             // disabled: red[900],
             subText: "#c4c4c4"
         }
-    }
+    },
+    typography: {
+        fontFamily: [
+            "Russo One",
+            "Roboto",
+            "Linden Hill"
+        ],
+        button: {
+           letterSpacing: "2px"
+        }
+    },
+    
 })

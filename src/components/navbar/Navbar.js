@@ -51,8 +51,8 @@ const Navbar = () => {
 
                     <Grid container justifyContent="space-between">
                         <Grid item>
-                            <Typography variant="h6" component="div" sx={{}}>
-                                Only Trades - Price Gangs
+                            <Typography variant="h6" component="div" fontFamily="Russo One" letterSpacing="2px">
+                                Trowel Tech
                             </Typography>
                         </Grid>
                         <Grid item>
