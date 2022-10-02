@@ -45,6 +45,7 @@ h2 {
 }
 
 .footer{
+  margin-top: auto;
   position: fixed;
   bottom: 0;
   left: 0;

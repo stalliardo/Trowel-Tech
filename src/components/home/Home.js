@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+import JoinOrCreatePrompt from './JoinOrCreatePrompt';
 
 
 const Home = () => {
@@ -9,7 +10,7 @@ const Home = () => {
 
     if(!currentUser.priceGangId){
         //then display the prompt comp
-        return <div>No gang data</div>
+        return <JoinOrCreatePrompt/>
     } else {
         return (
             <div>Home</div>
