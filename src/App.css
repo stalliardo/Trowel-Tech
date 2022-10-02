@@ -36,3 +36,17 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* TODO - override global font */
+
+h2 {
+  font-family: 'Cairo', sans-serif;
+}
+
+.footer{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}

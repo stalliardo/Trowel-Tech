@@ -1,27 +1,38 @@
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { db } from '../../firebase';
+import { doc, setDoc, getDoc } from 'firebase/firestore'
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
 const auth = getAuth();
 
-// onAuthStateChanged(auth, (user) => {
-//     if(user){
-//         console.log('User called from authStateChanged function');
-//     } else {
-//         // user is signed out
-//     }
-// })
+export const signUpUserWithEmailAndPassword = async (formData) => {
+    const { firstName, lastName, email, password } = formData;
+    const credential = await createUserWithEmailAndPassword(auth, email, password);
 
-export const signUpUserWithEmailAndPassword = (email, password) => {
-    // TODO - validations in the form component
+    await setDoc(doc(db, "users", credential.user.uid), {
+        name: firstName + " " + lastName,
+    });
 
-    createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
-        // Signed in...
-        const user = userCredential.user;
-    }).catch((error) => {
-        return 
-    })
-    
+    return credential;
 }
 
-export const signInUserWithEmailAndPassword = (email, password) => {
+export const signInUserWithEmailAndPassword = async (formData) => {
+    const { email, password } = formData;
+    const credential = await signInWithEmailAndPassword(auth, email, password);
+    return credential;
+}
 
+export const getUserDoc = async (userId) => {
+    const docRef = doc(db, "users", userId);
+    const docSnap = await getDoc(docRef);
+
+    if(docSnap.exists()) {
+        console.log("documnet data = ", docSnap.data());
+        return docSnap.data();
+    } else {
+        console.log("Could not find doc");
+    }
+}
+
+export const logUserOut = () => {
+    return signOut(auth);
 }

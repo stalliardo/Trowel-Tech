@@ -1,27 +1,26 @@
-import logo from './logo.svg';
 import './App.css';
-import Navbar from './components/navbar/Navbar';
-import Todo from './components/todo/Todo';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+
+import Home from './components/home/Home';
+import LandingPage from './components/landingPage/LandingPage';
+import { useSelector } from 'react-redux'
+import Auth from './components/auth/Auth'
+import { CircularProgress, Container } from '@mui/material';
+import Footer from './components/footer/Footer';
 
 function App() {
 
-  const auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    if(user){
-        console.log('User called from authStateChanged function');
-    } else {
-      console.log('no user found');
-      
-        // user is signed out
-    }
-})
-
+  const user = useSelector((state) => state.user);
+  console.log("current user from app = ", user.currentUser);
 
   return (
     <div className="App">
-     <Navbar />
-     <Todo />
+      {
+        user.isLoadingUserData ? <Container sx={{ mt: "100px" }}><CircularProgress style={{ color: "blue" }} /></Container> :
+          user.currentUser ? <Home /> : <LandingPage />
+      }
+      <div className='footer'>
+        <Footer />
+      </div>
     </div>
   );
 }
