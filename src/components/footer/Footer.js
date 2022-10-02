@@ -2,8 +2,6 @@ import React from 'react'
 import { Box, Grid, Typography, Button } from '@mui/material'
 import { Container } from '@mui/system'
 
-
-
 const Footer = () => {
 
     const handleFooterLinkClicked = () => {
@@ -33,7 +31,6 @@ const Footer = () => {
                 </Grid>
 
             </Container>
-            
 
             <Container maxWidth="lg" sx={{display: "flex", flexDirection: "row", justifyContent: "flex-start"}}>
                 <FooterLink text="Privacy Policy" />

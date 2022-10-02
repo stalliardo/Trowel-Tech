@@ -25,6 +25,7 @@ const LandingPage = () => {
 
   const onGoToSignUp = () => {
     // TODO navigate tot he auth page
+    navigate("/auth");
   }
 
   const onLearnMoreClicked = () => {

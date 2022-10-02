@@ -15,10 +15,12 @@ function App() {
   return (
     <div className="App">
       {
-        user.isLoadingUserData ? <Container sx={{mt: "100px"}}><CircularProgress style={{ color: "blue" }} /></Container> :
+        user.isLoadingUserData ? <Container sx={{ mt: "100px" }}><CircularProgress style={{ color: "blue" }} /></Container> :
           user.currentUser ? <Home /> : <LandingPage />
       }
-      <Footer />
+      <div className='footer'>
+        <Footer />
+      </div>
     </div>
   );
 }
