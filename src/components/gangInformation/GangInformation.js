@@ -2,11 +2,28 @@ import { Avatar, Button, CircularProgress, Grid, Paper, TextField, Typography } 
 import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
 import { Container } from '@mui/system'
 import React, { useState } from 'react'
+import SelectMenu from '../selectMenu/SelectMenu';
 
 const GangInformation = () => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [buttonDisabled, setButtonDisabled] = useState(false);
+
+    const [skill, setSkill] = useState("");
+    const skillMenuItems = ["Bricklayer", "Hod Carrier"];
+
+    const [memberType, setMemberType] = useState("");
+    const memberTypeOptions = ["Split", "Day Rate"];
+
+    const handleSkillChange = (event) => {
+        console.log("skill changed to: ", event.target.value);
+        setSkill(event.target.value);
+    }
+
+    const handleMemberTypeChange = (event) => {
+        setMemberType(event.target.value);
+    }
+
 
     const handleChange = () => {
 
@@ -17,24 +34,20 @@ const GangInformation = () => {
     }
 
     return (
-        <Container maxWidth="lg" sx={{ mt: "30px", border: "1px solid red" }}>
-            <Typography textAlign="center" variant="h4">Gang Information</Typography>
-            {/* <Typography textAlign="center" variant="subtitle1"></Typography> */}
-
+        <Container maxWidth="lg" sx={{ mt: "30px", pt: "30px", pb: "100px"}}>
+            <Typography fontFamily="'Russo one'" textAlign="center" variant="h4">Gang Information</Typography>
             <Container sx={{ mt: "20px" }}>
-                {/* <Typography variant='subtitle2' fontSize="20px">Gang Name:</Typography> */}
-                <Container disableGutters sx={{ display: "flex", justifyContent: "space-between" }}>
-                    <TextField variant='outlined' label="Gang Name (Optional)" sx={{ width: "60%" }} />
-                    <Button variant='contained' sx={{ width: "15%" }}>Save</Button>
+                <Container disableGutters sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end" }}>
+                    <TextField variant='outlined' label="Gang Name (Optional)" sx={{ width: "80%"}} />
+                    <Button variant='contained' sx={{ width: "15%", height: "40px" }}>Save</Button>
                 </Container>
             </Container>
 
+            <Container sx={{ mt: "20px" }}>
+                <Typography variant='h4' >Members:</Typography>
+                <Typography variant='h6'>No members have been added yet. Please use the form below to add memebers to the gang.</Typography>
 
-            <Container sx={{ border: "1px solid green", mt: "20px" }}>
-                <Typography variant='subtitle2' fontSize="20px">Members:</Typography>
-                <Typography>No members have been added yet. Please use the form below to add memebers to the gang.</Typography>
-
-                <Container disableGutters maxWidth="sm" sx={{ml: "0", mr: "auto"}}>
+                <Container disableGutters maxWidth="sm" sx={{ ml: "0", mr: "auto" }}>
                     <Paper elevation={6} sx={{ padding: "30px", display: "flex", flexDirection: "column", alignItems: "center" }}>
                         <Avatar sx={{ backgroundColor: "red", }}>
                             <GroupAddOutlinedIcon />
@@ -51,15 +64,29 @@ const GangInformation = () => {
                                     <TextField name='lastName' label="Last Name" onChange={handleChange} fullWidth />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <TextField name='memberType' label="Member Type" onChange={handleChange} fullWidth />
+                                <SelectMenu 
+                                    value={memberType} 
+                                    label="Member Type" 
+                                    menuItems={memberTypeOptions} 
+                                    handleChange={handleMemberTypeChange}
+                                />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <TextField name='dayRate' label="Day Rate" onChange={handleChange}  fullWidth />
+                                    <TextField name='dayRate' label="Day Rate" onChange={handleChange} fullWidth type="number"/>
+                                </Grid>
+                                
+                                <Grid item xs={12}>
+                                <SelectMenu 
+                                    value={skill} 
+                                    label="Skill" 
+                                    menuItems={skillMenuItems} 
+                                    handleChange={handleSkillChange}
+                                />
                                 </Grid>
                             </Grid>
 
                             <Button type='submit' variant='contained' fullWidth sx={{ mt: "20px" }} disabled={buttonDisabled}>
-                                {isLoading ? <CircularProgress style={{ color: "white" }} /> : "Save"}
+                                {isLoading ? <CircularProgress style={{ color: "white" }} /> : "Add Member"}
                             </Button>
                         </form>
                     </Paper>
@@ -70,3 +97,10 @@ const GangInformation = () => {
 }
 
 export default GangInformation
+
+
+// TODO
+// Disable states for buttons
+// Conditional logic for showing no members text
+// Import the user data from the store
+// Add firebase logic for when a user adds members or enters a gang name

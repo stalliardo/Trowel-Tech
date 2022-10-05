@@ -21,7 +21,7 @@ export const theme = createTheme({
         ],
         button: {
            letterSpacing: "2px"
-        }
+        },
     },
     
 })
