@@ -1,10 +1,11 @@
-import { Avatar, Button, CircularProgress, Grid, Paper, TextField, Typography } from '@mui/material'
+import { Avatar, Box, Button, CircularProgress, Grid, Paper, TextField, Typography } from '@mui/material'
 import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
 import { Container } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import SelectMenu from '../selectMenu/SelectMenu';
 import { useDispatch } from 'react-redux';
 import { createGang } from '../../features/gangInfo/gangInformationSlice';
+import MembersTable from '../membersTable/MembersTable';
 
 const GangInformation = () => {
 
@@ -60,6 +61,9 @@ const GangInformation = () => {
 
             <Container sx={{ mt: "20px" }}>
                 <Typography variant='h4' >Members:</Typography>
+                <Box sx={{width: "100%", height: "200px", border: "1px solid red"}}>
+                    <MembersTable/>
+                </Box>
                 <Typography variant='h6'>No members have been added yet. Please use the form below to add memebers to the gang.</Typography>
 
                 <Container disableGutters maxWidth="sm" sx={{ ml: "0", mr: "auto" }}>
