@@ -11,27 +11,25 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getUserData, logOut, noUserFound } from '../../features/user/userSlice'
 
 const Navbar = () => {
-   
-    const dispatch = useDispatch();    
-   const userDoc = useSelector((state) => state.user)
+
+    const dispatch = useDispatch();
+    const userDoc = useSelector((state) => state.user)
 
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
-      
-      if(user){
-          console.log('User: ', user);
-            if(!userDoc.currentUser){
+
+        if (user) {
+            if (!userDoc.currentUser) {
                 dispatch(getUserData(user.uid)).unwrap().then((response) => {
-                    console.log("response from getUserData = ", response);
                 });
-            }  
-      } else {
+            }
+        } else {
             dispatch(noUserFound())
-      }
+        }
     })
 
     const onLogOutClicked = () => {
-      dispatch(logOut());
+        dispatch(logOut());
     }
 
     return (
@@ -57,7 +55,7 @@ const Navbar = () => {
                         </Grid>
                         <Grid item>
                             {
-                                userDoc.currentUser && <Button color="inherit" onClick={onLogOutClicked}>Log Out</Button>                       
+                                userDoc.currentUser && <Button color="inherit" onClick={onLogOutClicked}>Log Out</Button>
                             }
                         </Grid>
                         {/* TODO add the users name to the nav bar */}

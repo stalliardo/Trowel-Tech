@@ -51,7 +51,7 @@ const Auth = () => {
         e.preventDefault();
         
         if (isSignUp) {
-            dispatch(signUpUser(formData)).unwrap().then((response) => {
+            dispatch(signUpUser(formData)).unwrap().then(() => {
                 navigate("/");
               }).catch((error) => {
                 setErrorText("An error occured. Please try again.")
