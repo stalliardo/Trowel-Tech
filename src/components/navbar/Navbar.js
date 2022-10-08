@@ -60,6 +60,12 @@ const Navbar = () => {
                                 userDoc.currentUser && <Button color="inherit" onClick={onLogOutClicked}>Log Out</Button>                       
                             }
                         </Grid>
+                        {/* TODO add the users name to the nav bar */}
+                        {/* <Grid item>
+                            {
+                                userDoc.currentUser && <Typography>{userDoc.currentUser.name}</Typography>                       
+                            }
+                        </Grid> */}
                     </Grid>
                 </Toolbar>
             </AppBar>

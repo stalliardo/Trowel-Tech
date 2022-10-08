@@ -3,7 +3,7 @@ import React from 'react'
 import { InputLabel, MenuItem, FormControl, Select } from '@mui/material'
 import { Box } from '@mui/system'
 
-const SelectMenu = ({value, label, handleChange, menuItems = []} ) => {
+const SelectMenu = ({value, label, name, handleChange, menuItems = []} ) => {
     return (
         <Box sx={{ minWidth: 120 }}>
             <FormControl fullWidth>
@@ -11,6 +11,7 @@ const SelectMenu = ({value, label, handleChange, menuItems = []} ) => {
                 <Select
                     value={value}
                     label={label}
+                    name={name}
                     onChange={handleChange}
                 >
                     {menuItems.map((item, index) => (

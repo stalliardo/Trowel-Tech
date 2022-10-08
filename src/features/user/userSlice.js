@@ -25,10 +25,16 @@ export const userSlice = createSlice({
         builder.addCase(signUpUser.fulfilled, (state, action) => {
             state.isLoading = false;
             state.currentUser = action.payload;
+            console.log("fulfilled called");
         });
 
         builder.addCase(signUpUser.rejected, (state) => {
             state.isLoading = false;
+        });
+
+        builder.addCase(signIn.rejected, (state) => {
+            state.isLoading = false;
+            console.log("sign in failed");
         });
 
         // getUserData....
