@@ -95,7 +95,7 @@ const GangInformation = () => {
             { !gangData.members && <Typography variant='h6'>No members have been added yet. Please use the form below to add memebers to the gang.</Typography>}
             
             <Box sx={{width: "100%", border: "1px solid red"}}>
-                <MembersTable/>
+                <MembersTable data={gangData}/>
             </Box>
             {console.log("gangMembers in line - ", gangData.members)}
 
