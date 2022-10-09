@@ -9,6 +9,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { Button } from '@mui/material';
 
 function createData(name, calories, fat, carbs, protein) {
     return { name, calories, fat, carbs, protein };
@@ -36,7 +37,7 @@ const MembersTable = (props) => {
             <TableCell align="center">Member Type</TableCell>
             <TableCell align="center">Day Rate</TableCell>
             <TableCell align="center">Skill</TableCell>
-            <TableCell align="right"></TableCell>
+            <TableCell align="center">Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -52,7 +53,11 @@ const MembersTable = (props) => {
               <TableCell align="center">{row.memberType}</TableCell>
               <TableCell align="center">{row.dayRate}</TableCell>
               <TableCell align="center">{row.skill}</TableCell>
-              {/* <TableCell align="right">{row.protein}</TableCell> */}
+              <TableCell align="center">
+                {/* Display the edit and delete buttons here */}
+                <Button variant='contained' sx={{mr: "20px"}}>Edit</Button>
+                <Button variant='contained' color='warning' onClick={() => props.onDeleteClicked(row) }>Delete</Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -1,50 +1,64 @@
 import { db } from '../../firebase';
-import { doc, getDoc, setDoc, addDoc, collection, updateDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc, addDoc, collection, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 
-export const createNewGang = async(formData) => {
-    const {firstName, lastName, memberType, dayRate, skill, creatorId, gangId} = formData;
-    if(!gangId) {
+export const createGangDoc = async (formData) => {
+    const { firstName, lastName, memberType, dayRate, skill, creatorId } = formData;
 
-        const docRef = await addDoc(collection(db, "gangInformation"), {
-            creatorId,
-            members: [
-                {
-                    firstName,
-                    lastName,
-                    memberType,
-                    dayRate,
-                    skill
-                }
-            ]
-        });
-        
-        const userRef = doc(db, "users", creatorId);
-    
-        await updateDoc(userRef, {
-            gangId: docRef.id
-        });
+    console.log("Form Data from create doc = ", formData);
 
-        return docRef.id;
-    } else {
-        const gangInformationRef = doc(db, "gangInformation", gangId);
-        // update the exisiting ganginformation doc
-        // await updateDoc(gangInformationRef, {
-        //     members:
-        // })
-    }
+    const docRef = await addDoc(collection(db, "gangInformation"), {
+        creatorId,
+        members: [
+            {
+                firstName,
+                lastName,
+                memberType,
+                dayRate,
+                skill
+            }
+        ]
+    });
+
+    const userRef = doc(db, "users", creatorId);
+
+    await updateDoc(userRef, {
+        gangId: docRef.id
+    });
+
+    return docRef.id;
 }
 
-export const getGangData = async(id) => {
+export const updateGangDoc = async (data) => {
+    console.log("UPDATE SERVICE CALLED. Data = ", data);
+    const gangInformationRef = doc(db, "gangInformation", data.gangId);
+
+    await updateDoc(gangInformationRef, {
+        members: arrayUnion(data.formData)
+    })
+   
+
+    // https://firebase.google.com/docs/firestore/manage-data/add-data#update_elements_in_an_array <- for updating arrays
+}
+
+export const deleteUser = async (data) => {
+    const docRef = doc(db, "gangInformation", data.id);
+
+    await updateDoc(docRef, {
+        members: arrayRemove(data.row)
+    })
+}
+
+export const getGangData = async (id) => {
     const docRef = doc(db, "gangInformation", id);
     const docSnap = await getDoc(docRef);
 
-    if(docSnap.exists()) {
-        console.log("doc exists. data = ", docSnap.data());
+    if (docSnap.exists()) {
+        // console.log("doc exists. data = ", docSnap.data());
         return docSnap.data();
     }
 }
 
-
-// Calling add member should not create a new doc each time.
-// Need to first check if a gang id has been provided
-// if not create new gang, add the formData to the members array
+// Need seperate functions for
+    // Create
+    // Update
+    // Delete
