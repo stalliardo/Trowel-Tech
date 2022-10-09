@@ -21,9 +21,11 @@ const GangInformation = () => {
             });
         } else {
             console.log("ELSE CALLED !!!!!!!!");
-            // dispatch(setIsLoading(false));
+            dispatch(setIsLoading(false));
         }
-    }, [userDoc, dispatch])
+
+     
+    }, [])
 
     const gangData = useSelector((state) => state.gangInformation);
     const isLoading = useSelector((state) => state.gangInformation.isLoading)
@@ -133,3 +135,12 @@ const GangInformation = () => {
 }
 
 export default GangInformation
+
+
+// TODOS
+
+// make sure all form fields are entered
+
+// Implement the edit functionality
+
+// 

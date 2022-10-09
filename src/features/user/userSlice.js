@@ -43,7 +43,7 @@ export const userSlice = createSlice({
         });
 
         builder.addCase(getUserData.fulfilled, (state, action) => {
-
+            console.log("getUserData.payload = ", action.payload);
             state.isLoadingUserData = false;
             state.currentUser = action.payload;
         });
@@ -98,7 +98,7 @@ export const getUserData = createAsyncThunk(
     async (userId) => {
         try {
             const userData = await getUserDoc(userId);
-            console.log("getting userdata...");
+            console.log("getting userdata... and data is: ", userData);
             return userData;
         } catch (error) {
             console.log("get user data failed");

@@ -2,7 +2,7 @@ import { db } from '../../firebase';
 import { doc, getDoc, setDoc, addDoc, collection, updateDoc, arrayUnion, arrayRemove, serverTimestamp } from 'firebase/firestore';
 
 export const createGangDoc = async (formData) => {
-    const { firstName, lastName, memberType, dayRate, skill, creatorId } = formData;
+    const { firstName, lastName, memberType, dayRate, skill, creatorId, id } = formData;
 
     console.log("Form Data from create doc = ", formData);
 
@@ -10,7 +10,7 @@ export const createGangDoc = async (formData) => {
         creatorId,
         members: [
             {
-                id: Date.now(),
+                id,
                 firstName,
                 lastName,
                 memberType,
@@ -33,20 +33,15 @@ export const updateGangDoc = async (data) => {
     console.log("UPDATE SERVICE CALLED. Data = ", data);
     const gangInformationRef = doc(db, "gangInformation", data.gangId);
 
-    const dataWithId = {...data.formData, id: Date.now()};
-
-    // New problem because they have ids the union function thinks they are unique
-
-
     await updateDoc(gangInformationRef, {
-        members: arrayUnion(dataWithId)
+        members: arrayUnion({...data.formData, id: data.id})
     })
-   
-
 }
 
 export const deleteUser = async (data) => {
     const docRef = doc(db, "gangInformation", data.id);
+
+    console.log("daata from deleteUser database funck", data);
 
     await updateDoc(docRef, {
         members: arrayRemove(data.row)

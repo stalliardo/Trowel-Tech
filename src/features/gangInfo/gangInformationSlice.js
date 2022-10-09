@@ -25,6 +25,7 @@ export const gangInformationSlice = createSlice({
                 memberType: action.payload.memberType,
                 dayRate: action.payload.dayRate,
                 skill: action.payload.skill,
+                id: action.payload.id
             })
         },
 
@@ -41,7 +42,8 @@ export const gangInformationSlice = createSlice({
         }),
 
         builder.addCase(updateGangInformationDocument.fulfilled, (state, action) => {
-            state.members.push(action.payload.formData);
+            const objectWithId = {...action.payload.formData, id: action.payload.id};
+            state.members.push(objectWithId);
         }),
 
         builder.addCase(deleteMember.fulfilled, (state, action) => {
@@ -57,7 +59,7 @@ export const createGangInformationDocument = createAsyncThunk(
     "gangInformation/createGangInformationDocument",
     async (formData) => {
         try {
-            const id = await createGangDoc(formData);
+            const id = await createGangDoc({...formData, id: Date.now()});
             return {...formData, id};
             
         } catch (error) {
@@ -70,8 +72,12 @@ export const updateGangInformationDocument = createAsyncThunk(
     "gangInformation/updateGangInformationDocument",
     async (data) => {
         try {
-            await updateGangDoc(data);
-            return data;
+
+            const dataObject = {...data, id: Date.now()};
+            await updateGangDoc(dataObject);
+
+            console.log("dataObject from update = = = ", dataObject);
+            return dataObject;
             
         } catch (error) {
             console.log("Error adding new gang. Error: ", error);
@@ -83,6 +89,7 @@ export const deleteMember = createAsyncThunk(
     "gangInformation/deleteMember",
     async (data) => {
         try {
+            console.log("data from slice = ", data);
             await deleteUser(data);
             return data;
             

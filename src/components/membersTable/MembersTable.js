@@ -12,6 +12,7 @@ import Paper from '@mui/material/Paper';
 import { Button } from '@mui/material';
 
 const MembersTable = (props) => {
+
   return (
      <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -26,7 +27,7 @@ const MembersTable = (props) => {
         </TableHead>
         <TableBody>
           {props.data.members.map((row, index) => (
-            
+      
             <TableRow
               key={index}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

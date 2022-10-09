@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,17 +16,23 @@ const Navbar = () => {
     const userDoc = useSelector((state) => state.user)
 
     const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
 
-        if (user) {
-            if (!userDoc.currentUser) {
-                dispatch(getUserData(user.uid)).unwrap().then((response) => {
-                });
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {    
+            if (user) {
+                console.log("user = ", user);
+                if (!userDoc.currentUser) {
+                    console.log("getting user called");
+                    dispatch(getUserData(user.uid)).unwrap().catch((e) => {
+                        console.log("Error getting user data. Error = ", e);
+                    })
+                }
+            } else {
+                dispatch(noUserFound())
             }
-        } else {
-            dispatch(noUserFound())
-        }
-    })
+        })
+    }, [userDoc.currentUser])
 
     const onLogOutClicked = () => {
         dispatch(logOut());
