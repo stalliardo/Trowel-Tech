@@ -21,7 +21,6 @@ const Navbar = () => {
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {    
             if (user) {
-                console.log("user = ", user);
                 if (!userDoc.currentUser) {
                     console.log("getting user called");
                     dispatch(getUserData(user.uid)).unwrap().catch((e) => {

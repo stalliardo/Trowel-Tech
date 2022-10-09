@@ -6,6 +6,7 @@ import SelectMenu from '../selectMenu/SelectMenu';
 import { useDispatch, useSelector } from 'react-redux';
 import { getData, createGangInformationDocument, updateGangInformationDocument, deleteMember, setIsLoading } from '../../features/gangInfo/gangInformationSlice';
 import MembersTable from '../membersTable/MembersTable';
+import { setGangId } from '../../features/user/userSlice';
 
 const GangInformation = () => {
 
@@ -20,12 +21,9 @@ const GangInformation = () => {
                 console.log("Error getting data. Error: ", e);
             });
         } else {
-            console.log("ELSE CALLED !!!!!!!!");
             dispatch(setIsLoading(false));
         }
-
-     
-    }, [])
+    }, [userDoc])
 
     const gangData = useSelector((state) => state.gangInformation);
     const isLoading = useSelector((state) => state.gangInformation.isLoading)
@@ -43,7 +41,7 @@ const GangInformation = () => {
     }
 
     const handleDeleteMember = (row) => {
-        const data = {row, id: userDoc.gangId}
+        const data = {row, id: userDoc.gangId || row.id}
         dispatch(deleteMember(data)).unwrap().then(() => {
         }).catch((e) => {
             console.log("Error deleting user. Error: ", e);
@@ -54,15 +52,15 @@ const GangInformation = () => {
         e.preventDefault();
 
         if (userDoc.gangId) {
-            console.log("UPDATE CALLED");
             dispatch(updateGangInformationDocument({formData, gangId: userDoc.gangId})).unwrap().then((response) => {
             }).catch((e) => {
-                console.log("e = ", e);
+                console.log("Error updating gang. Error = ", e);
             })
         } else {
             dispatch(createGangInformationDocument({ ...formData, creatorId: userDoc.id })).unwrap().then((response) => {
+                dispatch(setGangId(response.id))
             }).catch((e) => {
-                console.log("e = ", e);
+                console.log("Error creating gang. Error = ", e);
             })
         }
     }
@@ -135,12 +133,3 @@ const GangInformation = () => {
 }
 
 export default GangInformation
-
-
-// TODOS
-
-// make sure all form fields are entered
-
-// Implement the edit functionality
-
-// 

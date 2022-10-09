@@ -15,6 +15,10 @@ export const userSlice = createSlice({
 
         noUserFound: (state, action) => {
             state.isLoadingUserData = false;
+        },
+
+        setGangId: (state, action) => {
+            state.currentUser = {...state.currentUser, gangId: action.payload}
         }
     },
     extraReducers: (builder) => {
@@ -25,7 +29,6 @@ export const userSlice = createSlice({
         builder.addCase(signUpUser.fulfilled, (state, action) => {
             state.isLoading = false;
             state.currentUser = action.payload;
-            console.log("fulfilled called from user slice. action.payload = ", action.payload);
         });
 
         builder.addCase(signUpUser.rejected, (state) => {
@@ -43,7 +46,6 @@ export const userSlice = createSlice({
         });
 
         builder.addCase(getUserData.fulfilled, (state, action) => {
-            console.log("getUserData.payload = ", action.payload);
             state.isLoadingUserData = false;
             state.currentUser = action.payload;
         });
@@ -59,7 +61,7 @@ export const userSlice = createSlice({
     }
 })
 
-export const { setUser, noUserFound } = userSlice.actions;
+export const { setUser, noUserFound, setGangId } = userSlice.actions;
 
 export const signUpUser = createAsyncThunk(
     "user/signUpUser",
@@ -98,10 +100,8 @@ export const getUserData = createAsyncThunk(
     async (userId) => {
         try {
             const userData = await getUserDoc(userId);
-            console.log("getting userdata... and data is: ", userData);
             return userData;
         } catch (error) {
-            console.log("get user data failed");
             throw (error);
         }
     }
