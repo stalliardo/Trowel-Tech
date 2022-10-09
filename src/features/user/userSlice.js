@@ -98,7 +98,7 @@ export const getUserData = createAsyncThunk(
     async (userId) => {
         try {
             const userData = await getUserDoc(userId);
-            console.log("getting userdata");
+            console.log("getting userdata...");
             return userData;
         } catch (error) {
             console.log("get user data failed");

@@ -11,9 +11,14 @@ export const gangInformationSlice = createSlice({
         isLoading: true
     },
 
+    reducers: {
+        setIsLoading(state, action) {
+            state.isLoading = action.payload;
+        }
+    },
+
     extraReducers: (builder) => {
         builder.addCase(createGangInformationDocument.fulfilled, (state, action) => {
-            console.log("action from saveGangInformation = ", action);
             state.members.push({
                 firstName: action.payload.firstName,
                 lastName: action.payload.lastName,
@@ -24,13 +29,13 @@ export const gangInformationSlice = createSlice({
         },
 
         builder.addCase(getData.fulfilled, (state, action) => {
-            console.log("PAYLOAD MEMBERS DATA = ", action.payload.members);
-            state.members = action.payload.members // <- FIX this wont work when more than one object in the array
-            console.log("settign isLoading to false");
+            state.members = action.payload.members;
             state.isLoading = false;
         }),
+
         // builder.addCase(getData.pending, (state, action) => {
         // }),
+
         builder.addCase(getData.rejected, (state, action) => {
             state.isLoading = false;
         }),
@@ -40,22 +45,19 @@ export const gangInformationSlice = createSlice({
         }),
 
         builder.addCase(deleteMember.fulfilled, (state, action) => {
-            console.log("data from delete = ", action.payload);
-            console.log("members befroe delete = ", state.members);
-            state.members.filter(item => item !== action.payload);
+            const newMembersArray = state.members.filter(item => item.id !== action.payload.row.id);
+            state.members = newMembersArray
         }),
     )}
-
-
 })
+
+export const { setIsLoading } = gangInformationSlice.actions;
 
 export const createGangInformationDocument = createAsyncThunk(
     "gangInformation/createGangInformationDocument",
     async (formData) => {
         try {
-            console.log("thunk formData = ", formData);
             const id = await createGangDoc(formData);
-            // need to return the form data and the new id for the gang
             return {...formData, id};
             
         } catch (error) {
@@ -68,9 +70,7 @@ export const updateGangInformationDocument = createAsyncThunk(
     "gangInformation/updateGangInformationDocument",
     async (data) => {
         try {
-            console.log("data from updateGangInformationDocument = ", data);
             await updateGangDoc(data);
-            // need to return the form data and the new id for the gang
             return data;
             
         } catch (error) {
@@ -83,9 +83,7 @@ export const deleteMember = createAsyncThunk(
     "gangInformation/deleteMember",
     async (data) => {
         try {
-            console.log("data from deleteMember = ", data);
             await deleteUser(data);
-            // need to return the form data and the new id for the gang
             return data;
             
         } catch (error) {
@@ -100,7 +98,6 @@ export const getData = createAsyncThunk(
         try {
             
             const data = await getGangData(gangId);
-            // need to return the form data and the new id for the gang
            return data;
             
         } catch (error) {
