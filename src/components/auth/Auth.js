@@ -51,7 +51,7 @@ const Auth = () => {
         e.preventDefault();
         
         if (isSignUp) {
-            dispatch(signUpUser(formData)).unwrap().then((response) => {
+            dispatch(signUpUser(formData)).unwrap().then(() => {
                 navigate("/");
               }).catch((error) => {
                 setErrorText("An error occured. Please try again.")
@@ -59,11 +59,12 @@ const Auth = () => {
             })
         } else {
             console.log("signing in....");
-            dispatch(signIn(formData)).then(() => {
+            dispatch(signIn(formData)).unwrap().then(() => {
                 console.log("succesful sign in");
                 navigate("/");
             }).catch((error) => {
                 console.log("Error signing in. Error: ", error);
+                // TODO handle failure. Show notification
             })
         }
     }

@@ -12,6 +12,7 @@ import Auth from './components/auth/Auth';
 
 import { theme } from './theme/Theme';
 import { ThemeProvider } from '@mui/material';
+import GangInformation from './components/gangInformation/GangInformation';
 
   
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -30,6 +31,7 @@ root.render(
         </Route> */}
           </Route>
           <Route path="/auth" element={<Auth />} />
+          <Route path="/gang-information" element={<GangInformation />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
