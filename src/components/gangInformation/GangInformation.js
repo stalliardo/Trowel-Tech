@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getData, createGangInformationDocument, updateGangInformationDocument, deleteMember, setIsLoading } from '../../features/gangInfo/gangInformationSlice';
 import MembersTable from '../membersTable/MembersTable';
 import { setGangId } from '../../features/user/userSlice';
+import EditMemberModal from '../modal/Edit member modal/EditMemberModal';
 
 const GangInformation = () => {
 
@@ -80,6 +81,8 @@ const GangInformation = () => {
                         onDeleteClicked={handleDeleteMember}
                         />
                 </Box>
+
+                <EditMemberModal />
 
                 <Container disableGutters maxWidth="sm" sx={{ ml: "0", mr: "auto", mt: "30px" }}>
                     <Paper elevation={6} sx={{ padding: "30px", display: "flex", flexDirection: "column", alignItems: "center" }}>
