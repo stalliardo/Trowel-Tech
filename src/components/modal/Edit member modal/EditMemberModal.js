@@ -29,15 +29,29 @@ const EditMemberModal = (props) => {
         props.modalClosed()
     }
     
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        
-        console.log("on submit called. FormData - ", formData);
-
-    }
-
     const handleChange = (e) => {       
         setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        // Will need to filter out the edited row from the array in gangData
+        // Then push in the new row
+
+        const filteredMemebers = props.gangData.members.filter(member => member.id !== props.rowData.id);
+        console.log("member being edited = ", filteredMemebers);
+
+        // Now push the edited row into the array
+
+        filteredMemebers.push(formData);
+
+        console.log("filteedMembers after push = ", filteredMemebers);
+
+        // now dispatch this to update the record in the db, then set the state to update the table...
+
+        console.log("on submit called. FormData - ", formData);
+
     }
       
     return (
