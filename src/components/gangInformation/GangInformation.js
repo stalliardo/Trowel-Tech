@@ -39,6 +39,8 @@ const GangInformation = () => {
 
     const [showEditModal, setShowEditModal] = useState(false);
 
+    const [modalData, setModalData] = useState({});
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
@@ -46,6 +48,7 @@ const GangInformation = () => {
     const handleEditMemberClicked = (row) => {
         console.log("Edit clicked. Row = ", row);
         setShowEditModal(true);
+        setModalData(row);
     }
 
     const handleModalClosed = () => {
@@ -95,7 +98,15 @@ const GangInformation = () => {
                 </Box>
 
                 {/* {showEditModal && <EditMemberModal />} */}
-                {showEditModal ? <EditMemberModal modalOpened={showEditModal} modalClosed={handleModalClosed}/> : null}
+                {showEditModal ? 
+                    <EditMemberModal 
+                        modalOpened={showEditModal} 
+                        modalClosed={handleModalClosed}
+                        rowData={modalData}
+                        gangData={gangData}
+                    /> 
+                    : null
+                }
 
                 <Container disableGutters maxWidth="sm" sx={{ ml: "0", mr: "auto", mt: "30px" }}>
                     <Paper elevation={6} sx={{ padding: "30px", display: "flex", flexDirection: "column", alignItems: "center" }}>
