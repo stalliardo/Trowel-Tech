@@ -2,20 +2,31 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, TextField } from '@mui/material';
 import SelectMenu from '../../selectMenu/SelectMenu';
 
-const EditMemberModal = () => {
-
+const EditMemberModal = (props) => {
     const [open, setOpen] = useState(false);
-
+    
     const skillMenuItems = ["Bricklayer", "Hod Carrier"];
     const memberTypeOptions = ["Split", "Day Rate"];
 
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    useEffect(() => {
+        console.log("change detected");
+        setOpen(props.modalOpened)
+    }, [props.modalOpened])
+
+    const handleClose = () => {
+        setOpen(false);
+        props.modalClosed()
+    }
+
+    const handleCancelClicked = () => {
+        setOpen(false);
+        props.modalClosed()
+    }
     
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -29,7 +40,7 @@ const EditMemberModal = () => {
       
     return (
         <div>
-            <Button onClick={handleOpen}>Open modal</Button>
+            {/* <Button onClick={handleOpen}>Open modal</Button> */}
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -80,7 +91,10 @@ const EditMemberModal = () => {
                         </Grid>
 
                     </Grid>
-                    <Button variant='contained' type="submit" sx={{mt: "20px", width: {xs: "80%", md: "40%"}}}>Save</Button>
+                    <Grid container sx={{justifyContent: "space-between"}}>
+                        <Button variant='contained' type="submit" sx={{mt: "20px", width: {xs: "100%", md: "40%"}}}>Save</Button>
+                        <Button variant='contained' color="warning" sx={{mt: "20px", width: {xs: "100%", md: "40%"}}} onClick={handleCancelClicked}>Cancel</Button>
+                    </Grid>
                 </form>
             </Box>
         </Modal>

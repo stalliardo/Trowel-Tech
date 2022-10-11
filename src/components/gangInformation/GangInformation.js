@@ -37,8 +37,19 @@ const GangInformation = () => {
     const initialFormData = { firstName: "", lastName: "", memberType: "", dayRate: "0", skill: "" };
     const [formData, setFormData] = useState(initialFormData);
 
+    const [showEditModal, setShowEditModal] = useState(false);
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
+
+    const handleEditMemberClicked = (row) => {
+        console.log("Edit clicked. Row = ", row);
+        setShowEditModal(true);
+    }
+
+    const handleModalClosed = () => {
+        setShowEditModal(false)
     }
 
     const handleDeleteMember = (row) => {
@@ -79,10 +90,12 @@ const GangInformation = () => {
                     <MembersTable 
                         data={gangData} 
                         onDeleteClicked={handleDeleteMember}
+                        editClicked={handleEditMemberClicked}
                         />
                 </Box>
 
-                <EditMemberModal />
+                {/* {showEditModal && <EditMemberModal />} */}
+                {showEditModal ? <EditMemberModal modalOpened={showEditModal} modalClosed={handleModalClosed}/> : null}
 
                 <Container disableGutters maxWidth="sm" sx={{ ml: "0", mr: "auto", mt: "30px" }}>
                     <Paper elevation={6} sx={{ padding: "30px", display: "flex", flexDirection: "column", alignItems: "center" }}>
