@@ -1,7 +1,5 @@
 import React from 'react'
 
-// import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -39,7 +37,7 @@ const MembersTable = (props) => {
               <TableCell align="center">{row.dayRate}</TableCell>
               <TableCell align="center">{row.skill}</TableCell>
               <TableCell align="center">
-                <Button variant='contained' sx={{mr: "20px"}}>Edit</Button>
+                <Button variant='contained' sx={{mr: "20px"}} onClick={() => props.editClicked(row)}>Edit</Button>
                 <Button variant='contained' color='warning' onClick={() => props.onDeleteClicked(row) }>Delete</Button>
               </TableCell>
             </TableRow>

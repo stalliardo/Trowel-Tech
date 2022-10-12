@@ -1,14 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { createGangDoc, updateGangDoc, getGangData, deleteUser } from "../../services/database/gangInformation";
+import { createGangDoc, updateGangDoc, getGangData, deleteUser, overwriteMembersArray } from "../../services/database/gangInformation";
 
 export const gangInformationSlice = createSlice({
     name: "gangInformation",
     initialState: {
         id: "",
         creatorId: "",
-        // createdOn: new Date(),
         members: [],
-        isLoading: true
+        isLoading: true,
+        isEditing: false
     },
 
     reducers: {
@@ -30,14 +30,12 @@ export const gangInformationSlice = createSlice({
             })
             state.id = action.payload.id
         },
-
             builder.addCase(getData.fulfilled, (state, action) => {
                 state.members = action.payload.members;
                 state.isLoading = false;
+                state.creatorId = action.payload.creatorId;
+                state.id = action.payload.id;
             }),
-
-            // builder.addCase(getData.pending, (state, action) => {
-            // }),
 
             builder.addCase(getData.rejected, (state, action) => {
                 state.isLoading = false;
@@ -52,6 +50,19 @@ export const gangInformationSlice = createSlice({
                 const newMembersArray = state.members.filter(item => item.id !== action.payload.row.id);
                 state.members = newMembersArray
             }),
+
+            builder.addCase(editMember.pending, (state) => {
+                state.isEditing = true;
+            }),
+
+            builder.addCase(editMember.fulfilled, (state, action) => {
+                state.members = action.payload.membersArray;
+                state.isEditing = false;
+            }),
+
+            builder.addCase(editMember.rejected, (state) => {
+                state.isEditing = false;
+            }),
         )
     }
 })
@@ -63,7 +74,6 @@ export const createGangInformationDocument = createAsyncThunk(
     async (formData) => {
         try {
             const id = await createGangDoc({ ...formData, id: Date.now() });
-            console.log("id from create SLice = ", id);
             return { ...formData, id };
 
         } catch (error) {
@@ -76,15 +86,24 @@ export const updateGangInformationDocument = createAsyncThunk(
     "gangInformation/updateGangInformationDocument",
     async (data) => {
         try {
-
             const dataObject = { ...data, id: Date.now() };
             await updateGangDoc(dataObject);
-
-            console.log("dataObject from update = = = ", dataObject);
             return dataObject;
-
         } catch (error) {
             console.log("Error adding new gang. Error: ", error);
+        }
+    }
+)
+
+export const editMember = createAsyncThunk(
+    "gangInformation/editMember",
+    async (data) => {
+        try {
+            await overwriteMembersArray(data);
+            return data;
+        } catch (error) {
+            console.log("Error overwriting members array. Error: ", error);
+            throw error;
         }
     }
 )
@@ -93,10 +112,8 @@ export const deleteMember = createAsyncThunk(
     "gangInformation/deleteMember",
     async (data) => {
         try {
-            console.log("data from slice = ", data);
             await deleteUser(data);
             return data;
-
         } catch (error) {
             console.log("Error deleting user . Error: ", error);
         }

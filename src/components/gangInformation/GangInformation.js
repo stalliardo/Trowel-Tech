@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getData, createGangInformationDocument, updateGangInformationDocument, deleteMember, setIsLoading } from '../../features/gangInfo/gangInformationSlice';
 import MembersTable from '../membersTable/MembersTable';
 import { setGangId } from '../../features/user/userSlice';
+import EditMemberModal from '../modal/Edit member modal/EditMemberModal';
 
 const GangInformation = () => {
 
@@ -28,20 +29,30 @@ const GangInformation = () => {
     const gangData = useSelector((state) => state.gangInformation);
     const isLoading = useSelector((state) => state.gangInformation.isLoading)
 
-    const [buttonDisabled, setButtonDisabled] = useState(false);
-
     const skillMenuItems = ["Bricklayer", "Hod Carrier"];
     const memberTypeOptions = ["Split", "Day Rate"];
 
     const initialFormData = { firstName: "", lastName: "", memberType: "", dayRate: "0", skill: "" };
+
     const [formData, setFormData] = useState(initialFormData);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [modalData, setModalData] = useState({});
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
+    const handleEditMemberClicked = (row) => {
+        setShowEditModal(true);
+        setModalData(row);
+    }
+
+    const handleModalClosed = () => {
+        setShowEditModal(false)
+    }
+
     const handleDeleteMember = (row) => {
-        const data = {row, id: userDoc.gangId || row.id}
+        const data = { row, id: userDoc.gangId || row.id }
         dispatch(deleteMember(data)).unwrap().then(() => {
         }).catch((e) => {
             console.log("Error deleting user. Error: ", e);
@@ -52,7 +63,7 @@ const GangInformation = () => {
         e.preventDefault();
 
         if (userDoc.gangId) {
-            dispatch(updateGangInformationDocument({formData, gangId: userDoc.gangId})).unwrap().then((response) => {
+            dispatch(updateGangInformationDocument({ formData, gangId: userDoc.gangId })).unwrap().then((response) => {
             }).catch((e) => {
                 console.log("Error updating gang. Error = ", e);
             })
@@ -71,15 +82,23 @@ const GangInformation = () => {
 
             <Container sx={{ mt: "20px" }}>
                 <Typography variant='h4' >Members:</Typography>
-                {/* TODO */}
-                {/* {gangData ? <Typography variant='h6'>No members have been added yet. Please use the form below to add memebers to the gang.</Typography> : null} */}
-
-                <Box sx={{ width: "100%", border: "1px solid red" }}>
-                    <MembersTable 
-                        data={gangData} 
+                <Box sx={{ width: "100%" }}>
+                    <MembersTable
+                        data={gangData}
                         onDeleteClicked={handleDeleteMember}
-                        />
+                        editClicked={handleEditMemberClicked}
+                    />
                 </Box>
+
+                {showEditModal ?
+                    <EditMemberModal
+                        modalOpened={showEditModal}
+                        modalClosed={handleModalClosed}
+                        rowData={modalData}
+                        gangData={gangData}
+                    />
+                    : null
+                }
 
                 <Container disableGutters maxWidth="sm" sx={{ ml: "0", mr: "auto", mt: "30px" }}>
                     <Paper elevation={6} sx={{ padding: "30px", display: "flex", flexDirection: "column", alignItems: "center" }}>
@@ -121,7 +140,7 @@ const GangInformation = () => {
                                 </Grid>
                             </Grid>
 
-                            <Button type='submit' variant='contained' fullWidth sx={{ mt: "20px" }} disabled={buttonDisabled}>
+                            <Button type='submit' variant='contained' fullWidth sx={{ mt: "20px" }}>
                                 {isLoading ? <CircularProgress style={{ color: "white" }} /> : "Add Member"}
                             </Button>
                         </form>

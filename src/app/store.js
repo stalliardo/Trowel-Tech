@@ -7,6 +7,6 @@ export const store = configureStore({
   reducer: {
     todo: todoReducer,
     user: userSlice,
-    gangInformation: gangInformationSlice
+    gangInformation: gangInformationSlice,
   },
 });

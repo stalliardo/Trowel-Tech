@@ -3,12 +3,13 @@ import React from 'react'
 import { InputLabel, MenuItem, FormControl, Select } from '@mui/material'
 import { Box } from '@mui/system'
 
-const SelectMenu = ({value, label, name, handleChange, menuItems = []} ) => {
+const SelectMenu = ({value, label, name, handleChange, menuItems, defaultValue = []} ) => {
     return (
         <Box sx={{ minWidth: 120 }}>
             <FormControl fullWidth>
                 <InputLabel>{label}</InputLabel>
                 <Select
+                    defaultValue={defaultValue}
                     value={value}
                     label={label}
                     name={name}

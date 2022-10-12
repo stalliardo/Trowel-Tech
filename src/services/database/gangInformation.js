@@ -1,5 +1,5 @@
 import { db } from '../../firebase';
-import { doc, getDoc, setDoc, addDoc, collection, updateDoc, arrayUnion, arrayRemove, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, setDoc, addDoc, collection, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 
 export const createGangDoc = async (formData) => {
     const { firstName, lastName, memberType, dayRate, skill, creatorId, id } = formData;
@@ -32,6 +32,14 @@ export const updateGangDoc = async (data) => {
     })
 }
 
+export const overwriteMembersArray = async (data) => {
+    const gangInformationRef = doc(db, "gangInformation", data.gangId);
+
+    await updateDoc(gangInformationRef, {
+        members: data.membersArray
+    })
+}
+
 export const deleteUser = async (data) => {
     const docRef = doc(db, "gangInformation", data.id);
 
@@ -45,6 +53,6 @@ export const getGangData = async (id) => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-        return docSnap.data();
+        return {...docSnap.data(), id};
     }
 }
