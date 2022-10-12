@@ -17,7 +17,6 @@ const Navbar = () => {
 
     const auth = getAuth();
 
-
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {    
             if (user) {
@@ -77,3 +76,8 @@ const Navbar = () => {
 }
 
 export default Navbar;
+
+// TODO:
+
+    // Check if the user is present, if so add links for account, home, gang information, members
+    // Change GangInformation to Members as all that is in there is a members table and add members form
