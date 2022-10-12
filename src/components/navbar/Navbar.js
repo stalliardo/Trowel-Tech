@@ -81,3 +81,23 @@ export default Navbar;
 
     // Check if the user is present, if so add links for account, home, gang information, members
     // Change GangInformation to Members as all that is in there is a members table and add members form
+
+    // Links required:
+        // - Gang info
+        // - Tools
+        // - Statistics
+        // - Hours Diary
+
+    // How will the links be displayed on all devices?
+
+    // Create an Avatar with the initials displayed
+    // This will also have a drop down menu containing:
+        // "signed in as full name"
+        // "Your Account"
+        // "Help"
+        // "Settings"
+        // "Sign Out"
+    
+    // Other links will be displayed to the right of the trowel tech text. These links will be the ones noted above in the links required
+
+    // Will also have an alert icon to the left of the avatar (future feature)
