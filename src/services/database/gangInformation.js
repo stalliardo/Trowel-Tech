@@ -1,5 +1,5 @@
 import { db } from '../../firebase';
-import { doc, getDoc, setDoc, addDoc, collection, updateDoc, arrayUnion, arrayRemove, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, setDoc, addDoc, collection, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
 
 export const createGangDoc = async (formData) => {
     const { firstName, lastName, memberType, dayRate, skill, creatorId, id } = formData;
@@ -29,6 +29,14 @@ export const updateGangDoc = async (data) => {
 
     await updateDoc(gangInformationRef, {
         members: arrayUnion({...data.formData, id: data.id})
+    })
+}
+
+export const overwriteMembersArray = async (data) => {
+    const gangInformationRef = doc(db, "gangInformation", data.gangId);
+
+    await updateDoc(gangInformationRef, {
+        members: data.membersArray
     })
 }
 

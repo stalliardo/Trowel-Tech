@@ -29,16 +29,13 @@ const GangInformation = () => {
     const gangData = useSelector((state) => state.gangInformation);
     const isLoading = useSelector((state) => state.gangInformation.isLoading)
 
-    const [buttonDisabled, setButtonDisabled] = useState(false);
-
     const skillMenuItems = ["Bricklayer", "Hod Carrier"];
     const memberTypeOptions = ["Split", "Day Rate"];
 
     const initialFormData = { firstName: "", lastName: "", memberType: "", dayRate: "0", skill: "" };
+
     const [formData, setFormData] = useState(initialFormData);
-
     const [showEditModal, setShowEditModal] = useState(false);
-
     const [modalData, setModalData] = useState({});
 
     const handleChange = (e) => {
@@ -46,7 +43,6 @@ const GangInformation = () => {
     }
 
     const handleEditMemberClicked = (row) => {
-        console.log("Edit clicked. Row = ", row);
         setShowEditModal(true);
         setModalData(row);
     }
@@ -56,7 +52,7 @@ const GangInformation = () => {
     }
 
     const handleDeleteMember = (row) => {
-        const data = {row, id: userDoc.gangId || row.id}
+        const data = { row, id: userDoc.gangId || row.id }
         dispatch(deleteMember(data)).unwrap().then(() => {
         }).catch((e) => {
             console.log("Error deleting user. Error: ", e);
@@ -67,7 +63,7 @@ const GangInformation = () => {
         e.preventDefault();
 
         if (userDoc.gangId) {
-            dispatch(updateGangInformationDocument({formData, gangId: userDoc.gangId})).unwrap().then((response) => {
+            dispatch(updateGangInformationDocument({ formData, gangId: userDoc.gangId })).unwrap().then((response) => {
             }).catch((e) => {
                 console.log("Error updating gang. Error = ", e);
             })
@@ -86,25 +82,21 @@ const GangInformation = () => {
 
             <Container sx={{ mt: "20px" }}>
                 <Typography variant='h4' >Members:</Typography>
-                {/* TODO */}
-                {/* {gangData ? <Typography variant='h6'>No members have been added yet. Please use the form below to add memebers to the gang.</Typography> : null} */}
-
-                <Box sx={{ width: "100%", border: "1px solid red" }}>
-                    <MembersTable 
-                        data={gangData} 
+                <Box sx={{ width: "100%" }}>
+                    <MembersTable
+                        data={gangData}
                         onDeleteClicked={handleDeleteMember}
                         editClicked={handleEditMemberClicked}
-                        />
+                    />
                 </Box>
 
-                {/* {showEditModal && <EditMemberModal />} */}
-                {showEditModal ? 
-                    <EditMemberModal 
-                        modalOpened={showEditModal} 
+                {showEditModal ?
+                    <EditMemberModal
+                        modalOpened={showEditModal}
                         modalClosed={handleModalClosed}
                         rowData={modalData}
                         gangData={gangData}
-                    /> 
+                    />
                     : null
                 }
 
@@ -148,7 +140,7 @@ const GangInformation = () => {
                                 </Grid>
                             </Grid>
 
-                            <Button type='submit' variant='contained' fullWidth sx={{ mt: "20px" }} disabled={buttonDisabled}>
+                            <Button type='submit' variant='contained' fullWidth sx={{ mt: "20px" }}>
                                 {isLoading ? <CircularProgress style={{ color: "white" }} /> : "Add Member"}
                             </Button>
                         </form>
