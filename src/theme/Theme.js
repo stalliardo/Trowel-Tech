@@ -1,4 +1,4 @@
-import { blue, red } from "@mui/material/colors";
+import { blue, red, blueGrey } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 
 export const theme = createTheme({
@@ -6,6 +6,9 @@ export const theme = createTheme({
         // primary: {
         //     main: red[500], // works
         // },
+        backDrop: {
+            main: blueGrey[900]
+        },
         text: {
             // main: red[300],
             // secondary: red[400],
@@ -19,6 +22,9 @@ export const theme = createTheme({
             "Roboto",
             "Linden Hill"
         ],
+        // span: {
+        //     fontFamily: "Russo One"
+        // },
         button: {
            letterSpacing: "2px"
         }

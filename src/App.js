@@ -10,6 +10,7 @@ import Footer from './components/footer/Footer';
 function App() {
 
   const user = useSelector((state) => state.user);
+  console.log("user from app = ", user);
 
   return (
     <div className="App">
