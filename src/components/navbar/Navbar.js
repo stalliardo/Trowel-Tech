@@ -27,8 +27,14 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
+// - Gang info
+        // - Tools
+        // - Statistics
+        // - Hours Diary
+
+
 const drawerWidth = 280;
-const navItems = ['Home', 'About', 'Contact'];
+const navItems = ['Home', 'Tools', 'Statistics', 'Hours Diary', 'Plot Data', 'About', 'Contact', 'Profile', 'Settings', 'Sign Out'];
 
 function Navbar(props) {
     const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -66,22 +72,40 @@ function Navbar(props) {
     }
 
     const drawer = (
-        <Box onClick={handleDrawerToggle} sx={{ pl: "20px", pt: "20px", background: "linear-gradient(131deg, rgba(1,179,217,1) 0%, rgba(3,2,74,1) 100%)", height: "100vh" }}>
-            <Box sx={{display: "flex", alignItems: "center"}}>
+        <Box onClick={handleDrawerToggle} sx={{ pt: "20px", background: "linear-gradient(131deg, rgba(1,179,217,1) 0%, rgba(3,2,74,1) 100%)", height: "100vh" }}>
+            <Box sx={{display: "flex", alignItems: "center", pl: "10px"}}>
                 <Avatar sx={{ bgcolor: "primary.light", height: "60px", width: "60px" }}>DS</Avatar>
                 <Typography variant='p' color="white" ml="20px" fontSize="20px" letterSpacing="2px">Stalliardo</Typography>
             </Box>
 
-        <Divider sx={{pb: "20px"}}/>
-        <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding sx={{color: "white", letterSpacing: "2px"}}>
-            <ListItemButton onClick={() => handleNavItemClicked(item)}>
-              <ListItemText component="a" primary={item}/>
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+            <Divider color="white"  sx={{mt: "20px"}}/>
+            <List>
+                {navItems.map((item, index) => {
+                    if(item === "Contact") {
+
+                        // Todo add the two listItems to a component then return that instead ie, return <LinkItem>
+                        return (
+                            <div key={`div ${item}`}>
+                                <ListItem key={item} disablePadding sx={{color: "white", letterSpacing: "2px"}}>
+                                    <ListItemButton onClick={() => handleNavItemClicked(item)}>
+                                        <ListItemText primary={item}/>
+                                    </ListItemButton> 
+                                </ListItem>  
+                                <Divider key={`divider ${item}`} color="white"/>
+                            </div>
+                        )
+                    }
+                return (
+                    <ListItem key={item} disablePadding sx={{color: "white", letterSpacing: "2px"}}>
+                        <ListItemButton onClick={() => handleNavItemClicked(item)}>
+                            <ListItemText primary={item}/>
+                        </ListItemButton>
+                        
+                    </ListItem>  
+                )
+                
+            })}
+            </List>
     </Box>
   );
   
