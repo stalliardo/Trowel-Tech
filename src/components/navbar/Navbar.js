@@ -27,12 +27,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-// - Gang info
-        // - Tools
-        // - Statistics
-        // - Hours Diary
-
-
 const drawerWidth = 280;
 const navItems = ['Home', 'Tools', 'Statistics', 'Hours Diary', 'Plot Data', 'About', 'Contact', 'Profile', 'Settings', 'Sign Out'];
 
@@ -81,29 +75,16 @@ function Navbar(props) {
             <Divider color="white"  sx={{mt: "20px"}}/>
             <List>
                 {navItems.map((item, index) => {
-                    if(item === "Contact") {
-
-                        // Todo add the two listItems to a component then return that instead ie, return <LinkItem>
-                        return (
-                            <div key={`div ${item}`}>
-                                <ListItem key={item} disablePadding sx={{color: "white", letterSpacing: "2px"}}>
-                                    <ListItemButton onClick={() => handleNavItemClicked(item)}>
-                                        <ListItemText primary={item}/>
-                                    </ListItemButton> 
-                                </ListItem>  
-                                <Divider key={`divider ${item}`} color="white"/>
-                            </div>
-                        )
-                    }
-                return (
-                    <ListItem key={item} disablePadding sx={{color: "white", letterSpacing: "2px"}}>
-                        <ListItemButton onClick={() => handleNavItemClicked(item)}>
-                            <ListItemText primary={item}/>
-                        </ListItemButton>
-                        
-                    </ListItem>  
-                )
-                
+                 return (
+                  <div key={`div ${item}`}>
+                      <ListItem key={item} disablePadding sx={{color: "white", letterSpacing: "2px"}}>
+                          <ListItemButton onClick={() => handleNavItemClicked(item)}>
+                              <ListItemText primary={item}/>
+                          </ListItemButton> 
+                      </ListItem>  
+                      { item === "Contact" ? <Divider key={`divider ${item}`} color="white"/> : null}
+                  </div>
+              )       
             })}
             </List>
     </Box>
