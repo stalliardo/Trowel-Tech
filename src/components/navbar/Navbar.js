@@ -1,9 +1,4 @@
 import React, { useEffect } from 'react'
-// import AppBar from '@mui/material/AppBar';
-// import Box from '@mui/material/Box';
-// import Toolbar from '@mui/material/Toolbar';
-// import Typography from '@mui/material/Typography';
-// import Button from '@mui/material/Button';
 
 import { Avatar, Grid, useThemeProps } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,15 +21,18 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 280;
 const navItems = ['Home', 'Tools', 'Statistics', 'Hours Diary', 'Plot Data', 'About', 'Contact', 'Profile', 'Settings', 'Sign Out'];
 
-function Navbar(props) {
+const Navbar = (props) => {
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
     const dispatch = useDispatch();
-    const userDoc = useSelector((state) => state.user)
+    const navigate = useNavigate();
+    
+    const userDoc = useSelector((state) => state.user);
 
     const auth = getAuth();
 
@@ -62,7 +60,17 @@ function Navbar(props) {
     };
 
     const handleNavItemClicked = (link) => {
-        console.log("nav item clicked. Link = ", link);
+       if(link === "Sign Out") {
+        // dispatch(logOut());
+        // naviaget to the home page...
+        navigate("/home");
+
+       }
+
+       // handle navigation...
+
+
+        
     }
 
     const drawer = (
