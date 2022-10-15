@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
-import { Avatar, Grid, useThemeProps } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getUserData, logOut, noUserFound } from '../../features/user/userSlice'
@@ -8,26 +8,33 @@ import { getUserData, logOut, noUserFound } from '../../features/user/userSlice'
 
 
 
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
+import { Avatar, Menu, MenuItem, Tooltip, AppBar, Box, Divider, Drawer, IconButton, List, ListItem, ListItemText, ListItemButton, Toolbar, Typography, Button } from '@mui/material';
+// import AppBar from '@mui/material/AppBar';
+// import Box from '@mui/material/Box';
+// import Divider from '@mui/material/Divider';
+// import Drawer from '@mui/material/Drawer';
+// import IconButton from '@mui/material/IconButton';
+// import List from '@mui/material/List';
+// import ListItem from '@mui/material/ListItem';
+// import ListItemButton from '@mui/material/ListItemButton';
+// import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import { useNavigate } from 'react-router-dom';
+// import Toolbar from '@mui/material/Toolbar';
+// import Typography from '@mui/material/Typography';
+// import Button from '@mui/material/Button';
+
 
 const drawerWidth = 280;
-const navItems = ['Home', 'Tools', 'Statistics', 'Hours Diary', 'Plot Data', 'About', 'Contact', 'Profile', 'Settings', 'Sign Out'];
+const navItemsMobile = ['Home', 'Tools', 'Statistics', 'Hours Diary', 'Plot Data', 'About', 'Contact', 'Profile', 'Settings', 'Sign Out'];
+const navItemsDesktop = ['Home', 'Tools', 'Statistics', 'Hours Diary', 'Plot Data', 'About', 'Contact', ];
+const settings = ['Profile', 'Settings', 'Sign Out'];
+
 
 const Navbar = (props) => {
-    const [mobileOpen, setMobileOpen] = React.useState(false);
+
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const [anchorElUser, setAnchorElUser] = useState(null);
+    
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -54,6 +61,16 @@ const Navbar = (props) => {
     const onLogOutClicked = () => {
         dispatch(logOut());
     }
+
+
+    const handleCloseUserMenu = () => {
+      setAnchorElUser(null);
+    };
+
+    const handleOpenUserMenu = (event) => {
+      setAnchorElUser(event.currentTarget);
+    };
+  
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -82,7 +99,7 @@ const Navbar = (props) => {
 
             <Divider color="white"  sx={{mt: "20px"}}/>
             <List>
-                {navItems.map((item, index) => {
+                {navItemsMobile.map((item, index) => {
                  return (
                   <div key={`div ${item}`}>
                       <ListItem key={item} disablePadding sx={{color: "white", letterSpacing: "2px"}}>
@@ -107,7 +124,7 @@ const Navbar = (props) => {
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: 'none' } }}
+              sx={{ mr: 2, display: { xs: 'block', md: "none" } }}
             >
               <MenuIcon />
             </IconButton> : null}
@@ -120,13 +137,54 @@ const Navbar = (props) => {
             >
               Trowel Tech
             </Typography>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              {navItems.map((item) => (
+
+
+
+
+            <Box sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1, ml: "30px", mt: "10px"}}>
+              {navItemsDesktop.map((item) => (
                 <Button key={item} sx={{ color: '#fff' }}>
                   {item}
                 </Button>
               ))}
             </Box>
+
+
+
+            <Box sx={{ display: {xs: 'none', md:"block"}, flexGrow: 0 }}>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <Avatar sx={{ bgcolor: "primary.light", height: "50px", width: "50px" }}>DS</Avatar>
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+
+
+
+
+
           </Toolbar>
         </AppBar>
         {
@@ -139,7 +197,7 @@ const Navbar = (props) => {
                 keepMounted: true, // Better open performance on mobile.
               }}
               sx={{
-                display: { xs: 'block', sm: 'none' },
+                display: { xs: 'block', md: 'none' },
                 '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
               }}
             >
@@ -152,28 +210,3 @@ const Navbar = (props) => {
 }
 
 export default Navbar;
-
-// TODO:
-
-    // Check if the user is present, if so add links for account, home, gang information, members
-    // Change GangInformation to Members as all that is in there is a members table and add members form
-
-    // Links required:
-        // - Gang info
-        // - Tools
-        // - Statistics
-        // - Hours Diary
-
-    // How will the links be displayed on all devices?
-
-    // Create an Avatar with the initials displayed
-    // This will also have a drop down menu containing:
-        // "signed in as full name"
-        // "Your Account"
-        // "Help"
-        // "Settings"
-        // "Sign Out"
-    
-    // Other links will be displayed to the right of the trowel tech text. These links will be the ones noted above in the links required
-
-    // Will also have an alert icon to the left of the avatar (future feature)
