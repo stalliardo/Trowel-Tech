@@ -73,6 +73,9 @@ const Navbar = (props) => {
         if(link === "Plot Data") {
           navigate("Plot-Data");
         } else {
+          if(link === "Home") {
+            navigate("/")
+          }
           navigate(link)
         }
        }   

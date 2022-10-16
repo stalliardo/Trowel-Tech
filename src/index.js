@@ -26,7 +26,7 @@ root.render(
           <Route path="/" element={<App />}></Route>
           <Route path="/auth" element={<Auth />} />
           <Route path="/members" element={<GangInformation />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/home" element={<App />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
