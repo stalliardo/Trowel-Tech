@@ -25,7 +25,7 @@ root.render(
         <Routes>
           <Route path="/" element={<App />}></Route>
           <Route path="/auth" element={<Auth />} />
-          <Route path="/gang-information" element={<GangInformation />} />
+          <Route path="/members" element={<GangInformation />} />
           <Route path="/home" element={<Home />} />
         </Routes>
       </BrowserRouter>

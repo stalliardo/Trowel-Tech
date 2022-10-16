@@ -25,8 +25,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 
 const drawerWidth = 280;
-const navItemsMobile = ['Home', 'Tools', 'Statistics', 'Hours Diary', 'Plot Data', 'About', 'Contact', 'Profile', 'Settings', 'Sign Out'];
-const navItemsDesktop = ['Home', 'Tools', 'Statistics', 'Hours Diary', 'Plot Data', 'About', 'Contact', ];
+const navItemsMobile = ['Home', 'Members',  'Plot Data', 'About', 'Contact', 'Profile', 'Settings', 'Sign Out'];
+const navItemsDesktop = ['Home', 'Members',  'Plot Data', 'About', 'Contact', ];
 const settings = ['Profile', 'Settings', 'Sign Out'];
 
 
@@ -60,11 +60,21 @@ const Navbar = (props) => {
 
     const onLogOutClicked = () => {
         dispatch(logOut());
+        navigate("/");
     }
 
 
-    const handleCloseUserMenu = (setting) => {
-      console.log("setting = ", setting);
+    const handleCloseUserMenu = (link) => {
+      if(link === "Settings" ||  "Profile" || "Sign Out") {
+        if(link === "Sign Out") {
+          dispatch(logOut())
+          navigate("/");
+        } else {
+          // navigate to route...
+        
+          navigate(link)
+        }
+      }
       setAnchorElUser(null);
     };
 
@@ -79,11 +89,17 @@ const Navbar = (props) => {
 
     const handleNavItemClicked = (link) => {
        if(link === "Sign Out") {
-        // dispatch(logOut());
-        // naviaget to the home page...
+        dispatch(logOut());
         navigate("/home");
-
+       } else {
+        if(link === "Plot Data") {
+          navigate("Plot-Data");
+        } else {
+          navigate(link)
+        }
        }
+
+       console.log("nav item clicked. item: ", link);
 
        // handle navigation...
 
@@ -142,9 +158,9 @@ const Navbar = (props) => {
 
 
 
-            <Box sx={{ display: { xs: 'none', md: 'block', border: "1px solid red" }, flexGrow: 1, ml: "30px", mt: "8px"}}>
+            <Box sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1, ml: "30px", mt: "8px"}}>
               {navItemsDesktop.map((item) => (
-                <Button key={item} sx={{ color: "white", fontSize: "12px" }}>
+                <Button key={item} sx={{ color: "white", fontSize: "12px" }} onClick={() => handleNavItemClicked(item)}>
                   {item}
                 </Button>
               ))}
