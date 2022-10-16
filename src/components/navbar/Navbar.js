@@ -63,7 +63,8 @@ const Navbar = (props) => {
     }
 
 
-    const handleCloseUserMenu = () => {
+    const handleCloseUserMenu = (setting) => {
+      console.log("setting = ", setting);
       setAnchorElUser(null);
     };
 
@@ -141,9 +142,9 @@ const Navbar = (props) => {
 
 
 
-            <Box sx={{ display: { xs: 'none', md: 'block' }, flexGrow: 1, ml: "30px", mt: "10px"}}>
+            <Box sx={{ display: { xs: 'none', md: 'block', border: "1px solid red" }, flexGrow: 1, ml: "30px", mt: "8px"}}>
               {navItemsDesktop.map((item) => (
-                <Button key={item} sx={{ color: '#fff' }}>
+                <Button key={item} sx={{ color: "white", fontSize: "12px" }}>
                   {item}
                 </Button>
               ))}
@@ -154,7 +155,7 @@ const Navbar = (props) => {
             <Box sx={{ display: {xs: 'none', md:"block"}, flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar sx={{ bgcolor: "primary.light", height: "50px", width: "50px" }}>DS</Avatar>
+              <Avatar sx={{ bgcolor: "primary.main", height: "50px", width: "50px", letterSpacing: "2px" }}>DS</Avatar>
               </IconButton>
             </Tooltip>
             <Menu
@@ -174,7 +175,7 @@ const Navbar = (props) => {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
