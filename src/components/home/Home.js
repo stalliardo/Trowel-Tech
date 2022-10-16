@@ -13,7 +13,15 @@ const Home = () => {
         return <JoinOrCreatePrompt/>
     } else {
         return (
-            <div>Home</div>
+            <div>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                Home
+            </div>
+            
         )
     }
     
