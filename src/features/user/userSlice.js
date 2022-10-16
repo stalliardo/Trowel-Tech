@@ -47,6 +47,7 @@ export const userSlice = createSlice({
 
         builder.addCase(getUserData.fulfilled, (state, action) => {
             state.isLoadingUserData = false;
+            console.log("payload = ", action.payload);
             state.currentUser = action.payload;
         });
 
@@ -71,6 +72,7 @@ export const signUpUser = createAsyncThunk(
             const credential = await signUpUserWithEmailAndPassword(formData);
             // TEST -> is this still required?
             const serializedUser = {
+                
                 name: formData.firstName + " " + formData.lastName,
                 email: formData.email,
                 uid: credential.user.uid
