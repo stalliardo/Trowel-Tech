@@ -24,9 +24,9 @@ root.render(
       <Navbar />
         <Routes>
           <Route path="/" element={<App />}></Route>
-          <Route path="/auth" element={<Auth />} />
+          {/* <Route path="/auth" element={<Auth />} />
           <Route path="/members" element={<GangInformation />} />
-          <Route path="/home" element={<App />} />
+          <Route path="/home" element={<App />} /> */}
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
