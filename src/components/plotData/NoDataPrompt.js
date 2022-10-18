@@ -2,7 +2,7 @@ import React from 'react'
 
 const NoDataPrompt = () => {
   return (
-    <div>NoDataPrompt</div>
+    <div>No Data Prompt</div>
   )
 }
 

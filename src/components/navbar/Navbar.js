@@ -23,6 +23,7 @@ const Navbar = (props) => {
     const auth = getAuth();
 
     useEffect(() => {
+      console.log("get user called from nav");
         onAuthStateChanged(auth, (user) => {    
             if (user) {
                 if (!userDoc) {

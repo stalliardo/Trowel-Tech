@@ -18,6 +18,8 @@ import PlotData from './components/plotData/PlotData';
 
   
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+console.log("index called");
 root.render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>
