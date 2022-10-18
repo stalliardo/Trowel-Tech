@@ -4,7 +4,7 @@ import Home from './Home';
 import Edit from './Edit';
 import CircularIndicator from '../loadingIndicator/CircularIndicator'
 import { getPlotData } from '../../features/plotData/plotDataSlice';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const PlotData = () => {
 
@@ -12,12 +12,9 @@ const PlotData = () => {
   const user = useSelector(state => state.user.currentUser);
   const navigate = useNavigate();
 
-  console.log("user called ", user);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
-
 
     if (user && user.gangId) {
       console.log("dispatch called");
@@ -38,9 +35,4 @@ const PlotData = () => {
   
 }
 
-export default PlotData
-
-// Things to check 
-  // is there a user?
-  // is there a gangId?
-  // 
+export default PlotData;

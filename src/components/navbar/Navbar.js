@@ -20,24 +20,7 @@ const Navbar = (props) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     
-    const auth = getAuth();
-
-    useEffect(() => {
-      console.log("get user called from nav");
-        onAuthStateChanged(auth, (user) => {    
-            if (user) {
-                if (!userDoc) {
-                    console.log("getting user called");
-                    dispatch(getUserData(user.uid)).unwrap().catch((e) => {
-                        console.log("Error getting user data. Error = ", e);
-                    })
-                }
-            } else {
-                dispatch(noUserFound())
-            }
-        })
-    }, [userDoc])
-
+    
     const extractInitials = (name) => {
       const names = name.split(" ");
       const initials = names.shift().charAt(0) + names.pop().charAt(0);
@@ -75,9 +58,9 @@ const Navbar = (props) => {
           navigate("Plot-Data");
         } else {
           if(link === "Home") {
-            navigate("/")
-          }
-          navigate(link)
+            navigate("/");
+            
+          } else navigate(link);
         }
        }   
     }
