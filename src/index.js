@@ -14,6 +14,7 @@ import { theme } from './theme/Theme';
 import { ThemeProvider } from '@mui/material';
 import GangInformation from './components/gangInformation/GangInformation';
 import Home from './components/home/Home';
+import PlotData from './components/plotData/PlotData';
 
   
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -27,6 +28,7 @@ root.render(
           <Route path="/auth" element={<Auth />} />
           <Route path="/members" element={<GangInformation />} />
           <Route path="/home" element={<App />} />
+          <Route path="/plot-data" element={<PlotData />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
