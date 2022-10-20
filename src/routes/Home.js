@@ -1,17 +1,20 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import JoinOrCreatePrompt from './JoinOrCreatePrompt';
+import LandingPage from '../components/landingPage/LandingPage';
+import JoinOrCreatePrompt from '../components/home/JoinOrCreatePrompt';
 
 
 const Home = () => {
-    // TODO...
     const { currentUser } = useSelector((state) => state.user);
-    console.log('user from state = ', currentUser);
+    console.log('currentUSerfrom home page  = ', currentUser);
 
-    if(!currentUser.priceGangId){
-        //then display the prompt comp
+    if(!currentUser){
+        return <LandingPage />
+    } 
+    else if(!currentUser.gangId) {
         return <JoinOrCreatePrompt/>
-    } else {
+    }
+    else {
         return (
             <div>
                 <br></br>
@@ -23,15 +26,8 @@ const Home = () => {
             </div>
             
         )
-    }
-    
-
-    
+    } 
+   
 }
 
 export default Home;
-
-// 1 - Check if the user has entered gang information
-// 2 - If not display the prompts for creating or joing a gang
-
-// Need to create the post registration home page comp

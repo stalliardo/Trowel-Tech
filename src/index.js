@@ -12,23 +12,25 @@ import Auth from './components/auth/Auth';
 
 import { theme } from './theme/Theme';
 import { ThemeProvider } from '@mui/material';
-import GangInformation from './components/gangInformation/GangInformation';
-import Home from './components/home/Home';
-import PlotData from './components/plotData/PlotData';
+import GangInformation from './routes/GangInformation';
+import Home from './routes/Home';
+import PlotData from './routes/plotData/PlotData';
 
-  
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-      <Navbar />
+        <Navbar />
         <Routes>
-          <Route path="/" element={<App />}></Route>
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/members" element={<GangInformation />} />
-          <Route path="/home" element={<App />} />
-          <Route path="/plot-data" element={<PlotData />} />
+          <Route path="/" element={<App />}>
+            <Route index element={<Home />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route path="/members" element={<GangInformation />} />
+            <Route path="/Plot-Data" element={<PlotData />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

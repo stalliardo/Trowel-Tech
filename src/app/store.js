@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import gangInformationSlice from '../features/gangInfo/gangInformationSlice';
+import plotDataSlice from '../features/plotData/plotDataSlice';
 import todoReducer from '../features/todo/todoSlice'
 import userSlice from '../features/user/userSlice';
 
@@ -8,5 +9,6 @@ export const store = configureStore({
     todo: todoReducer,
     user: userSlice,
     gangInformation: gangInformationSlice,
+    plotData: plotDataSlice
   },
 });
