@@ -15,6 +15,8 @@ import { ThemeProvider } from '@mui/material';
 import GangInformation from './routes/GangInformation';
 import Home from './routes/Home';
 import PlotData from './routes/plotData/PlotData';
+import Edit from './routes/plotData/Edit';
+import Index from './routes/plotData/Index';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -29,7 +31,10 @@ root.render(
             <Route index element={<Home />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/members" element={<GangInformation />} />
-            <Route path="/Plot-Data" element={<PlotData />} />
+            <Route path="/Plot-Data" element={<PlotData />} >
+              <Route index element={<Index/>}/>
+              <Route path="edit" element={<Edit/>}/>
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>
