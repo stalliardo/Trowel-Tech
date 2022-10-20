@@ -2,12 +2,12 @@ import { Avatar, Box, Button, CircularProgress, Grid, Paper, TextField, Typograp
 import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
 import { Container } from '@mui/system'
 import React, { useEffect, useState } from 'react'
-import SelectMenu from '../selectMenu/SelectMenu';
+import SelectMenu from '../components/selectMenu/SelectMenu';
 import { useDispatch, useSelector } from 'react-redux';
-import { getData, createGangInformationDocument, updateGangInformationDocument, deleteMember, setIsLoading } from '../../features/gangInfo/gangInformationSlice';
-import MembersTable from '../membersTable/MembersTable';
-import { setGangId } from '../../features/user/userSlice';
-import EditMemberModal from '../modal/Edit member modal/EditMemberModal';
+import { getData, createGangInformationDocument, updateGangInformationDocument, deleteMember, setIsLoading } from '../features/gangInfo/gangInformationSlice';
+import MembersTable from '../components/membersTable/MembersTable';
+import { setGangId } from '../features/user/userSlice';
+import EditMemberModal from '../components/modal/Edit member modal/EditMemberModal';
 
 const GangInformation = () => {
 

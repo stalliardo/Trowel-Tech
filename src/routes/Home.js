@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import LandingPage from '../landingPage/LandingPage';
-import JoinOrCreatePrompt from './JoinOrCreatePrompt';
+import LandingPage from '../components/landingPage/LandingPage';
+import JoinOrCreatePrompt from '../components/home/JoinOrCreatePrompt';
 
 
 const Home = () => {

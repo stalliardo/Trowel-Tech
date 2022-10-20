@@ -1,14 +1,14 @@
 import { Container } from '@mui/material'
 import React from 'react'
 
-import NoDataPrompt from './NoDataPrompt'
+import NoDataPrompt from '../../components/plotData/NoDataPrompt'
 
 const Home = (props) => {
 
   return (
 
     
-      !props.hasGangId ? <Container>No gang id</Container> : props.data.length ? <Container>Data found</Container> : <NoDataPrompt />
+      props.data.length ? <Container>Data found</Container> : <NoDataPrompt />
     
     // <div>
     //   <div>{props.data.length ? "data" : "No Data"}</div>

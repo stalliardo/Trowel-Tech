@@ -12,9 +12,9 @@ import Auth from './components/auth/Auth';
 
 import { theme } from './theme/Theme';
 import { ThemeProvider } from '@mui/material';
-import GangInformation from './components/gangInformation/GangInformation';
-import Home from './components/home/Home';
-import PlotData from './components/plotData/PlotData';
+import GangInformation from './routes/GangInformation';
+import Home from './routes/Home';
+import PlotData from './routes/plotData/PlotData';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
