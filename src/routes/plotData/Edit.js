@@ -4,7 +4,7 @@ import OverviewContainer from '../../components/plotData/OverviewContainer'
 
 const Edit = () => {
   return (
-    <Container maxWidth="lg" sx={{}}>
+    <Container maxWidth="lg" sx={{backgroundColor: "backDrop.dark", height: "100vh", pt: "20px", mt: "20px"}}>
       <OverviewContainer />
     </Container>
   )
