@@ -17,6 +17,7 @@ import Home from './routes/Home';
 import PlotData from './routes/plotData/PlotData';
 import Edit from './routes/plotData/Edit';
 import Index from './routes/plotData/Index';
+import Information from './components/plotData/Information'
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -33,7 +34,9 @@ root.render(
             <Route path="/members" element={<GangInformation />} />
             <Route path="/Plot-Data" element={<PlotData />} >
               <Route index element={<Index/>}/>
-              <Route path="edit" element={<Edit/>}/>
+              <Route path="edit" element={<Edit/>}>
+                <Route path="plot-information" element={<Information />}/>
+              </Route>
             </Route>
           </Route>
         </Routes>
