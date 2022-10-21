@@ -15,7 +15,7 @@ const OverviewContainer = () => {
             <Grid container justifyContent="space-between" px="30px" sx={{ flexDirection: { xs: "column", md: "row" }, }}>
                 <OverViewItem header="Total Price" value="£15000"/>
                 <OverViewItem header="Current Financials" value="+£1000"/>
-                <OverViewItem header="Staus" value="Uncatergorized"/>
+                <OverViewItem header="Staus" value="Uncategorized"/>
             </Grid>
         </Paper>
     )
