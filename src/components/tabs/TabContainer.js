@@ -19,7 +19,6 @@ const navItems = [
         to: "financials",
         text: "Financials"
     },
-
 ]
 
 const TabContainer = () => {

@@ -18,6 +18,7 @@ import PlotData from './routes/plotData/PlotData';
 import Edit from './routes/plotData/Edit';
 import Index from './routes/plotData/Index';
 import Information from './components/plotData/Information'
+import Breakdown from './components/plotData/Breakdown'
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -36,6 +37,7 @@ root.render(
               <Route index element={<Index/>}/>
               <Route path="edit" element={<Edit/>}>
                 <Route path="plot-information" element={<Information />}/>
+                <Route path="lift-breakdown" element={<Breakdown />}/>
               </Route>
             </Route>
           </Route>
