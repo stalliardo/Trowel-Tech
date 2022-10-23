@@ -12,7 +12,7 @@ const NoDataPrompt = () => {
       <Typography variant='p' color="text.subText">Welcome to the plot data section of the site. Here you can create plots
         so you can easily record price and progress information. Start by creating your first plot.
       </Typography>
-        <LinkButton to="edit" text="Create Plot" style={{mt: "30px"}}/>
+        <LinkButton to="edit/information" text="Create Plot" style={{mt: "30px"}}/>
     </Container>
   )
 }

@@ -12,3 +12,9 @@ export const getPlots = async (id) => {
         console.log("no data found");
     }
 }
+
+export const savePlotData = async (formData) => {
+    const docRef = await addDoc(collection(db, "plotData"), formData);
+    console.log("document added. doc = ", docRef);
+    return docRef.id;
+}

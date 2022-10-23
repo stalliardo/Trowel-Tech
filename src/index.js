@@ -36,7 +36,7 @@ root.render(
             <Route path="/Plot-Data" element={<PlotData />} >
               <Route index element={<Index/>}/>
               <Route path="edit" element={<Edit/>}>
-                <Route path="plot-information" element={<Information />}>
+                <Route path="information" element={<Information />}>
                   <Route path=':plotId'/>
                 </Route>
                 <Route path="lift-breakdown" element={<Breakdown />}/>

@@ -4,7 +4,7 @@ import TabItem from './TabItem'
 
 const navItems = [
     {
-        to: "plot-information",
+        to: "information",
         text: "Plot Information"
     },
     {

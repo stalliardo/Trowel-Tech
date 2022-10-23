@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 import SelectMenu from '../selectMenu/SelectMenu';
 
 import { PLOT_TYPES, STATUS } from '../../constants/plotData';
+import { useDispatch, useSelector } from 'react-redux';
+import { addPlotData, getPlotData } from '../../features/plotData/plotDataSlice';
 
 const gridItemStyle = {
   display: "flex",
@@ -17,25 +19,43 @@ const GridLabel = ({ text }) => {
 }
 
 const Information = () => {
-
+  const user = useSelector(state => state.user.currentUser);
   const params = useParams();
   
   if (Object.keys(params).length === 0) {
-    console.log("No params found");
+    // console.log("No params found");
   }
 
   const [formData, setFormData] = useState({ plotNumber: "", totalPrice: "", plotType: "House", currentStatus: "Uncategorized", numberOfStories: "" });
+  const [buttonDisabled, setButtonDisabled] = useState(true); // Will need to set this to false if the formData is present TODO
+
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
-    console.log("e.target.value = ", e.target.value);
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-    console.log("formData after set = ", formData);
+    setFormData({ ...formData, [e.target.name]: e.target.value })    
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("formDatat = ", formData);
+
+    dispatch(addPlotData({...formData, gangId: user.gangId})).unwrap().then((data) => {
+      console.log("data from dispatch = ", data);
+    }).catch((error) => {
+      console.log("error Saving data. Error: ", error);
+    })
   }
+
+  const buttonDisabledHandler = () => {
+    if(formData.plotNumber === "" || formData.totalPrice === "" || formData.numberOfStories === "") {
+      setButtonDisabled(true);
+    } else {
+      setButtonDisabled(false);
+    }
+  }
+
+  useEffect(() => {
+    buttonDisabledHandler();
+  }, [formData])
 
   return (
     <form onSubmit={handleSubmit}>
@@ -48,7 +68,7 @@ const Information = () => {
 
         <Grid item xs={12} sm={6} sx={gridItemStyle}>
           <GridLabel text="Total Price" />
-          <TextField name="totalPrice" autoFocus sx={{ width: "60%", mr: "20px" }} onChange={handleChange} defaultValue={formData.plotNumber} />
+          <TextField name="totalPrice" type="number" sx={{ width: "60%", mr: "20px" }} onChange={handleChange} defaultValue={formData.plotNumber} />
         </Grid>
 
         <Grid item xs={12} sm={6} sx={gridItemStyle}>
@@ -77,13 +97,13 @@ const Information = () => {
 
         <Grid item xs={12} sm={6} sx={gridItemStyle}>
           <GridLabel text="Number of Stories" />
-          <TextField name="numberOfStories" autoFocus sx={{ width: "60%", mr: "20px" }} onChange={handleChange} defaultValue={formData.numberOfStories} />
+          <TextField name="numberOfStories" type="number" sx={{ width: "60%", mr: "20px" }} onChange={handleChange} defaultValue={formData.numberOfStories} />
         </Grid>
 
 
 
         <Grid item xs={12} sm={3} sx={{mr: "20px"}}>
-          <Button variant="contained" type='submit' fullWidth sx={{ mt: "20px" }}>Save</Button>
+          <Button variant="contained" type='submit' fullWidth sx={{ mt: "20px" }} disabled={buttonDisabled}>Save</Button>
         </Grid>
       </Grid>
     </form>
@@ -91,7 +111,3 @@ const Information = () => {
 }
 
 export default Information
-
-
-// Check the query params for an id
-// no id means this plot is being created
