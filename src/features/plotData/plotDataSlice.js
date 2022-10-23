@@ -1,22 +1,34 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getPlots, savePlotData } from '../../services/database/plotData';
+import { getAllPlots, savePlotData } from '../../services/database/plotData';
 
 export const plotDataSlice = createSlice({
     name: 'plotData',
     initialState: {
         isLoading: false,
-        
+        allPlots: []
     },
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(getPlotData.pending, (state, action) => {
+        builder.addCase(getPlot.pending, (state, action) => {
             state.isLoading = true;
         });
-        builder.addCase(getPlotData.fulfilled, (state, action) => {
+        builder.addCase(getPlot.fulfilled, (state, action) => {
             state.isLoading = false;
-        
+
         });
-        builder.addCase(getPlotData.rejected, (state, action) => {
+        builder.addCase(getPlot.rejected, (state, action) => {
+            state.isLoading = false;
+        });
+        builder.addCase(getPlots.pending, (state, action) => {
+            state.isLoading = true;
+        });
+        builder.addCase(getPlots.fulfilled, (state, action) => {
+            state.isLoading = false;
+            console.log("fulfilled called. Payload = ", action.payload);
+            state.allPlots = action.payload;
+
+        });
+        builder.addCase(getPlots.rejected, (state, action) => {
             state.isLoading = false;
         });
         builder.addCase(addPlotData.pending, (state, action) => {
@@ -24,7 +36,7 @@ export const plotDataSlice = createSlice({
         });
         builder.addCase(addPlotData.fulfilled, (state, action) => {
             state.isLoading = false;
-        
+
         });
         builder.addCase(addPlotData.rejected, (state, action) => {
             state.isLoading = false;
@@ -34,16 +46,33 @@ export const plotDataSlice = createSlice({
 
 // export const { increment, decrement, incrementByAmount } = plotDataSlice.actions;
 
-export const getPlotData = createAsyncThunk(
-    "plotData/getPlotData",
+export const getPlot = createAsyncThunk(
+    "plotData/getPlot",
     async (gangId) => {
         try {
-            const response = await getPlots(gangId);
-            
+            const response = await getPlot(gangId);
+
 
             return response;
 
 
+        } catch (error) {
+            console.log('Error getting plot data. Error = ', error);
+        }
+    }
+);
+
+export const getPlots = createAsyncThunk(
+    "plotData/getPlots",
+    async (gangId) => {
+        try {
+            const response = await getAllPlots(gangId);
+            const plotDataArray = [];
+            response.forEach((doc) => {
+                plotDataArray.push(doc.data())
+            });
+
+            return plotDataArray;
         } catch (error) {
             console.log('Error getting plot data. Error = ', error);
         }
@@ -55,7 +84,7 @@ export const addPlotData = createAsyncThunk(
     async (formData) => {
         try {
             const id = await savePlotData(formData);
-            return {...formData, id};
+            return { ...formData, id };
         } catch (error) {
             console.log('Error getting plot data. Error = ', error);
         }
