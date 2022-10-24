@@ -13,8 +13,7 @@ const tableData = {
         {pn: "25/26", type: "House", status: "In Progress", totalPrice: "15,000", Financials: "+£403"},
         {pn: "25/26", type: "House", status: "In Progress", totalPrice: "15,000", Financials: "+£403"},
         {pn: "25/26", type: "House", status: "In Progress", totalPrice: "15,000", Financials: "+£403"}
-    ],
-    actions: ["edit", "delete"]
+    ]
 }
 
 const IndexContainer = () => {
@@ -23,7 +22,7 @@ const IndexContainer = () => {
         <Typography textAlign="left" variant='h5' mb="15px">Plots</Typography>
         <Filter />
         <Box component="div" sx={{mt: "40px"}}>
-            <ExtendableTable data={tableData}/>
+            <ExtendableTable data={tableData} deleteButton={true} editButton={true}/>
         </Box>
   </Container>
   )

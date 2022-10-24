@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -7,48 +7,41 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button } from '@mui/material';
+import { IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+
 
 const ExtendableTable = (props) => {
-
-    const rowArray = [];
-
-    if(props.data.actions){
-        props.data.rows.forEach(element => {
-            console.log("element = ", element);
-            props.data.actions.forEach((action) => {
-                // Pushing twice FIX
-                rowArray.push({...element, action});
-            })
-            console.log("rowArray = ", rowArray);
-        });
-    }
-
   return (
-     <TableContainer component={Paper}>
+    <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead sx={{backgroundColor: "darkgray"}}>
+        <TableHead sx={{ backgroundColor: "darkgray" }}>
           <TableRow>
             {props.data.head.map((item, index) => (
-                 <TableCell key={index + "31"} align="left">{item}</TableCell>
+              <TableCell key={index + "31"} align="left">{item}</TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
           {props.data.rows.map((row, index) => (
-      
             <TableRow
               key={index}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-             {Object.values(row).map((r, inx) => {
-              
+              {Object.values(row).map((r, inx) => {
                 return (
-                    <TableCell key={inx + "41"}>{r}</TableCell>
+                  <TableCell key={inx + "41"}>{r}</TableCell>
                 )
-                
-             })}
+              })}
 
+              {(props.deleteButton || props.editButton) &&
+                <TableCell sx={{width: "100px"}}>
+                  {props.editButton && <IconButton color="primary"><EditIcon /></IconButton>}
+                 {props.editButton &&  <IconButton color='error'> <DeleteIcon /> </IconButton>}
+                 
+                </TableCell>
+              }
             </TableRow>
           ))}
         </TableBody>
@@ -58,6 +51,3 @@ const ExtendableTable = (props) => {
 }
 
 export default ExtendableTable
-
-// Check the data inside this comp..
-// if actions is present add the action into the row array
