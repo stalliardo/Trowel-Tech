@@ -24,7 +24,6 @@ export const plotDataSlice = createSlice({
         });
         builder.addCase(getPlots.fulfilled, (state, action) => {
             state.isLoading = false;
-            console.log("fulfilled called. Payload = ", action.payload);
             state.allPlots = action.payload;
 
         });

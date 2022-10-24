@@ -8,19 +8,21 @@ import { Box } from '@mui/system';
 
 const tableData = {
     head: ["Plot Number", "Type", "Status", "Total Price", "Financials", "Actions"],
-    rows: [
-        {pn: "25/26", type: "House", status: "In Progress", totalPrice: "15,000", Financials: "+£403"},
-        {pn: "25/26", type: "House", status: "In Progress", totalPrice: "15,000", Financials: "+£403"},
-        {pn: "25/26", type: "House", status: "In Progress", totalPrice: "15,000", Financials: "+£403"},
-        {pn: "25/26", type: "House", status: "In Progress", totalPrice: "15,000", Financials: "+£403"}
-    ],
+    rows: []
 }
 
-const IndexContainer = () => {
+const IndexContainer = (props) => {
 
-    // If data is passed in, i will have to format it so that it can be used within the table.
-    // Will need the id though, which isnt currently being returned
+    if(props.data.length) {
+        const rowData = [];
 
+        props.data.forEach((item) => {
+            const rowItem = {plotNumber: item.plotNumber, type: item.plotType, status: item.currentStatus, totalPrice: item.totalPrice, id: item.id, financials: "TODO"}
+            rowData.push(rowItem);
+        });
+
+        tableData.rows = rowData;
+    }
 
   return (
     <Container maxWidth="lg" sx={{ backgroundColor: "backDrop.dark", height: "100vh", pt: "20px", mt: "20px" }}>

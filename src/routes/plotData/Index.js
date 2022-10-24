@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-
-import CircularIndicator from '../../components/loadingIndicator/CircularIndicator'
-import { Container } from '@mui/material';
 
 import { getPlots } from '../../features/plotData/plotDataSlice';
 
 import NoDataPrompt from '../../components/plotData/NoDataPrompt'
 import IndexContainer from '../../components/plotData/IndexContainer';
-
+import CircularIndicator from '../../components/loadingIndicator/CircularIndicator'
 
 const Home = () => {
   const data = useSelector(state => state.plotData.allPlots)
@@ -18,12 +15,11 @@ const Home = () => {
 
   useEffect(() => {
     if (user && user.gangId) {
-      console.log("dispatch called");
       dispatch(getPlots(user.gangId)).unwrap().then((response) => {
-        console.log("Then called + response = ", response);
+        // TODO
       })
     } 
-  }, [])
+  }, []);
 
   const isLoading = useSelector(state => state.plotData.isLoading);
 
