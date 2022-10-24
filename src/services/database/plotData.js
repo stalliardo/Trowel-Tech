@@ -16,14 +16,17 @@ export const getPlot = async (id) => {
 export const getAllPlots = async (id) => {
     const plotsRef = collection(db, "plotData");
     const q = await query(plotsRef, where("gangId", "==", id));
+    const querySnapshot = await getDocs(q);
+    const dataWithIds = [];
 
-   const querySnapshot = await getDocs(q);
-   querySnapshot.forEach((doc) => {
-    console.log("doc.id = ", doc.data());
-   });
+    if (!querySnapshot.empty) {
+        querySnapshot.forEach((snapshot) => {
+            dataWithIds.push({ ...snapshot.data(), id: snapshot.id });
+        })
+    }
 
-   return querySnapshot;
-    
+    return dataWithIds.length ? dataWithIds : [];
+
 }
 
 export const savePlotData = async (formData) => {

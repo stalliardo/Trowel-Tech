@@ -19,14 +19,16 @@ const Home = () => {
   useEffect(() => {
     if (user && user.gangId) {
       console.log("dispatch called");
-      dispatch(getPlots(user.gangId)) // TODO
+      dispatch(getPlots(user.gangId)).unwrap().then((response) => {
+        console.log("Then called + response = ", response);
+      })
     } 
   }, [])
 
   const isLoading = useSelector(state => state.plotData.isLoading);
 
   return (
-      isLoading ? <CircularIndicator style={{mt: "100px"}}/> : data.length ? <IndexContainer /> : <NoDataPrompt />
+      isLoading ? <CircularIndicator style={{mt: "100px"}}/> : data.length ? <IndexContainer data={data}/> : <NoDataPrompt />
   )
 }
 

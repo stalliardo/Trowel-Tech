@@ -67,12 +67,8 @@ export const getPlots = createAsyncThunk(
     async (gangId) => {
         try {
             const response = await getAllPlots(gangId);
-            const plotDataArray = [];
-            response.forEach((doc) => {
-                plotDataArray.push(doc.data())
-            });
-
-            return plotDataArray;
+            
+            return response;
         } catch (error) {
             console.log('Error getting plot data. Error = ', error);
         }
