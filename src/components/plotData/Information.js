@@ -5,7 +5,9 @@ import SelectMenu from '../selectMenu/SelectMenu';
 
 import { PLOT_TYPES, STATUS } from '../../constants/plotData';
 import { useDispatch, useSelector } from 'react-redux';
-import { addPlotData, getPlotData } from '../../features/plotData/plotDataSlice';
+import { addPlotData, getPlot, getPlotData } from '../../features/plotData/plotDataSlice';
+
+import CircularIndicator from '../loadingIndicator/CircularIndicator'
 
 const gridItemStyle = {
   display: "flex",
@@ -19,26 +21,34 @@ const GridLabel = ({ text }) => {
 }
 
 const Information = () => {
-  const user = useSelector(state => state.user.currentUser);
-  const params = useParams();
-  
-  if (Object.keys(params).length === 0) {
-    // console.log("No params found");
-  }
-
-  const [formData, setFormData] = useState({ plotNumber: "", totalPrice: "", plotType: "House", currentStatus: "Uncategorized", numberOfStories: "" });
-  const [buttonDisabled, setButtonDisabled] = useState(true); // Will need to set this to false if the formData is present TODO
-
   const dispatch = useDispatch();
 
+  const params = useParams();
+
+  const plotData = useSelector(state => state.plotData.singlePlotData);
+  const user = useSelector(state => state.user.currentUser);
+  const isLoading = useSelector(state => state.plotData.isLoading);
+
+  const [formData, setFormData] = useState(plotData || { plotNumber: "", totalPrice: "", plotType: "House", currentStatus: "Uncategorized", numberOfStories: "" });
+  const [buttonDisabled, setButtonDisabled] = useState(true); // Will need to set this to false if the formData is present TODO
+
+  useEffect(() => {
+    if (Object.keys(params).length > 0 && !plotData) {
+      dispatch(getPlot(params.plotId)).unwrap().then((data) => {
+        setFormData(data);
+      })
+    }
+  }, [])
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })    
+    setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
   const handleSubmit = (e) => {
+    //TODO need to determine if creating or editing, do this via the query param
     e.preventDefault();
 
-    dispatch(addPlotData({...formData, gangId: user.gangId})).unwrap().then((data) => {
+    dispatch(addPlotData({ ...formData, gangId: user.gangId })).unwrap().then((data) => {
       console.log("data from dispatch = ", data);
     }).catch((error) => {
       console.log("error Saving data. Error: ", error);
@@ -46,7 +56,7 @@ const Information = () => {
   }
 
   const buttonDisabledHandler = () => {
-    if(formData.plotNumber === "" || formData.totalPrice === "" || formData.numberOfStories === "") {
+    if (formData.plotNumber === "" || formData.totalPrice === "" || formData.numberOfStories === "") {
       setButtonDisabled(true);
     } else {
       setButtonDisabled(false);
@@ -58,17 +68,17 @@ const Information = () => {
   }, [formData])
 
   return (
-    <form onSubmit={handleSubmit}>
+    isLoading ? <CircularIndicator /> : <form onSubmit={handleSubmit}>
       <Grid container sx={{ justifyContent: "space-between" }}>
 
         <Grid item xs={12} sm={6} sx={gridItemStyle} >
           <GridLabel text="Plot Number" />
-          <TextField name="plotNumber" autoFocus sx={{ width: "60%", mr: "20px" }} onChange={handleChange} defaultValue={formData.plotNumber} />
+          <TextField name="plotNumber" autoFocus value={formData.plotNumber} sx={{ width: "60%", mr: "20px" }} onChange={handleChange} />
         </Grid>
 
         <Grid item xs={12} sm={6} sx={gridItemStyle}>
           <GridLabel text="Total Price" />
-          <TextField name="totalPrice" type="number" sx={{ width: "60%", mr: "20px" }} onChange={handleChange} defaultValue={formData.plotNumber} />
+          <TextField name="totalPrice" type="number" value={formData.totalPrice} sx={{ width: "60%", mr: "20px" }} onChange={handleChange} />
         </Grid>
 
         <Grid item xs={12} sm={6} sx={gridItemStyle}>
@@ -97,12 +107,10 @@ const Information = () => {
 
         <Grid item xs={12} sm={6} sx={gridItemStyle}>
           <GridLabel text="Number of Stories" />
-          <TextField name="numberOfStories" type="number" sx={{ width: "60%", mr: "20px" }} onChange={handleChange} defaultValue={formData.numberOfStories} />
+          <TextField name="numberOfStories" type="number" value={formData.numberOfStories} sx={{ width: "60%", mr: "20px" }} onChange={handleChange} />
         </Grid>
 
-
-
-        <Grid item xs={12} sm={3} sx={{mr: "20px"}}>
+        <Grid item xs={12} sm={3} sx={{ mr: "20px" }}>
           <Button variant="contained" type='submit' fullWidth sx={{ mt: "20px" }} disabled={buttonDisabled}>Save</Button>
         </Grid>
       </Grid>
@@ -111,3 +119,7 @@ const Information = () => {
 }
 
 export default Information
+
+// FIX:
+  // When navigating back the index page the state of the plot being previously edited is still in use i think this because the dispatch function isnt being 
+  // called as it is checking for !plotData {}

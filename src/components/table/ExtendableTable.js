@@ -14,13 +14,11 @@ import EditIcon from '@mui/icons-material/Edit';
 const ExtendableTable = (props) => {
 
   const handleEditClicked = (row) => {
-    // TODO
-    console.log("row clicked = ", row);
+    props.handleEdit(row);
   }
 
   const handleDeleteClicked = (row) => {
-    // TODO
-    console.log("delete clicked row = ", row);
+    props.handleDelete(row);
   }
 
   return (

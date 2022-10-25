@@ -7,10 +7,10 @@ import OverviewContainer from '../../components/plotData/OverviewContainer'
 import TabContainer from '../../components/tabs/TabContainer'
 
 const Edit = () => {
-
+  
   // TODO download .XLS button?
-
-  const isLoading = useSelector(state => state.plotData.isLoading);
+  
+  const isLoading = useSelector(state => state.plotData.isLoadingSinglePlot);
   
   return (
       isLoading ? <CircularIndicator style={{mt: "100px"}} /> :

@@ -5,6 +5,7 @@ import { Container, Typography } from '@mui/material'
 import Filter from '../../components/plotData/Filter'
 import ExtendableTable from '../table/ExtendableTable'
 import { Box } from '@mui/system';
+import { useNavigate } from 'react-router-dom';
 
 const tableData = {
     head: ["Plot Number", "Type", "Status", "Total Price", "Financials", "Actions"],
@@ -12,6 +13,12 @@ const tableData = {
 }
 
 const IndexContainer = (props) => {
+    const navigate  = useNavigate();
+    
+    const handleEdit = (row) => {
+        console.log("edit called from indexcontainer. Row - ", row);
+        navigate(`edit/information/${row.id}`);
+    }
 
     if(props.data.length) {
         const rowData = [];
@@ -29,7 +36,7 @@ const IndexContainer = (props) => {
         <Typography textAlign="left" variant='h5' mb="15px">Plots</Typography>
         <Filter />
         <Box component="div" sx={{mt: "40px"}}>
-            <ExtendableTable data={tableData} deleteButton={true} editButton={true}/>
+            <ExtendableTable data={tableData} deleteButton={true} editButton={true} handleEdit={handleEdit}/>
         </Box>
   </Container>
   )

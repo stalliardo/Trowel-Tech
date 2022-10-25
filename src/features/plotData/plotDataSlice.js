@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getAllPlots, savePlotData } from '../../services/database/plotData';
+import { getOnePlot, getAllPlots, savePlotData } from '../../services/database/plotData';
 
 export const plotDataSlice = createSlice({
     name: 'plotData',
     initialState: {
         isLoading: false,
-        allPlots: []
+        allPlots: [],
+        singlePlotData: null,
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -14,7 +15,7 @@ export const plotDataSlice = createSlice({
         });
         builder.addCase(getPlot.fulfilled, (state, action) => {
             state.isLoading = false;
-
+            state.singlePlotData = action.payload;
         });
         builder.addCase(getPlot.rejected, (state, action) => {
             state.isLoading = false;
@@ -47,14 +48,11 @@ export const plotDataSlice = createSlice({
 
 export const getPlot = createAsyncThunk(
     "plotData/getPlot",
-    async (gangId) => {
+    async (plotId) => {
         try {
-            const response = await getPlot(gangId);
-
+            const response = await getOnePlot(plotId);
 
             return response;
-
-
         } catch (error) {
             console.log('Error getting plot data. Error = ', error);
         }

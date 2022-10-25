@@ -37,7 +37,7 @@ root.render(
               <Route index element={<Index/>}/>
               <Route path="edit" element={<Edit/>}>
                 <Route path="information" element={<Information />}>
-                  <Route path=':plotId'/>
+                  <Route path=':plotId' element={<Information />}/>
                 </Route>
                 <Route path="lift-breakdown" element={<Breakdown />}/>
               </Route>
