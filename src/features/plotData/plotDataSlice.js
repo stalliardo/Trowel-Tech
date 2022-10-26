@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit'
 import { getOnePlot, getAllPlots, savePlotData } from '../../services/database/plotData';
 
 export const plotDataSlice = createSlice({
@@ -8,7 +8,11 @@ export const plotDataSlice = createSlice({
         allPlots: [],
         singlePlotData: null,
     },
-    reducers: {},
+    reducers: {
+        setSinglePlot: (state, action) => {
+            state.singlePlotData = state.allPlots.find((plot) => plot.id === action.payload);
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(getPlot.pending, (state, action) => {
             state.isLoading = true;
@@ -26,7 +30,6 @@ export const plotDataSlice = createSlice({
         builder.addCase(getPlots.fulfilled, (state, action) => {
             state.isLoading = false;
             state.allPlots = action.payload;
-
         });
         builder.addCase(getPlots.rejected, (state, action) => {
             state.isLoading = false;
@@ -44,7 +47,7 @@ export const plotDataSlice = createSlice({
     }
 })
 
-// export const { increment, decrement, incrementByAmount } = plotDataSlice.actions;
+export const { setSinglePlot } = plotDataSlice.actions;
 
 export const getPlot = createAsyncThunk(
     "plotData/getPlot",

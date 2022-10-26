@@ -6,6 +6,8 @@ import Filter from '../../components/plotData/Filter'
 import ExtendableTable from '../table/ExtendableTable'
 import { Box } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setSinglePlot } from '../../features/plotData/plotDataSlice';
 
 const tableData = {
     head: ["Plot Number", "Type", "Status", "Total Price", "Financials", "Actions"],
@@ -14,9 +16,10 @@ const tableData = {
 
 const IndexContainer = (props) => {
     const navigate  = useNavigate();
-    
+    const dispatch = useDispatch();
+
     const handleEdit = (row) => {
-        console.log("edit called from indexcontainer. Row - ", row);
+        dispatch(setSinglePlot(row.id));
         navigate(`edit/information/${row.id}`);
     }
 

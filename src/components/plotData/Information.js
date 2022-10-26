@@ -5,7 +5,7 @@ import SelectMenu from '../selectMenu/SelectMenu';
 
 import { PLOT_TYPES, STATUS } from '../../constants/plotData';
 import { useDispatch, useSelector } from 'react-redux';
-import { addPlotData, getPlot, getPlotData } from '../../features/plotData/plotDataSlice';
+import { addPlotData } from '../../features/plotData/plotDataSlice';
 
 import CircularIndicator from '../loadingIndicator/CircularIndicator'
 
@@ -31,14 +31,6 @@ const Information = () => {
 
   const [formData, setFormData] = useState(plotData || { plotNumber: "", totalPrice: "", plotType: "House", currentStatus: "Uncategorized", numberOfStories: "" });
   const [buttonDisabled, setButtonDisabled] = useState(true); // Will need to set this to false if the formData is present TODO
-
-  useEffect(() => {
-    if (Object.keys(params).length > 0 && !plotData) {
-      dispatch(getPlot(params.plotId)).unwrap().then((data) => {
-        setFormData(data);
-      })
-    }
-  }, [])
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -119,7 +111,3 @@ const Information = () => {
 }
 
 export default Information
-
-// FIX:
-  // When navigating back the index page the state of the plot being previously edited is still in use i think this because the dispatch function isnt being 
-  // called as it is checking for !plotData {}
