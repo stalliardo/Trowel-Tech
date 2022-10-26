@@ -1,6 +1,6 @@
 import { Button, Grid, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import SelectMenu from '../selectMenu/SelectMenu';
 
 import { PLOT_TYPES, STATUS } from '../../constants/plotData';
@@ -25,12 +25,20 @@ const Information = () => {
 
   const params = useParams();
 
+  const navigate = useNavigate();
+
   const plotData = useSelector(state => state.plotData.singlePlotData);
   const user = useSelector(state => state.user.currentUser);
   const isLoading = useSelector(state => state.plotData.isLoading);
 
   const [formData, setFormData] = useState(plotData || { plotNumber: "", totalPrice: "", plotType: "House", currentStatus: "Uncategorized", numberOfStories: "" });
   const [buttonDisabled, setButtonDisabled] = useState(true); // Will need to set this to false if the formData is present TODO
+
+  useEffect(() => {
+    if(Object.keys(params).length && !plotData) {
+      navigate("/plot-data");
+    }
+  })
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
