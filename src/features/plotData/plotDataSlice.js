@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit'
-import { getOnePlot, getAllPlots, savePlotData } from '../../services/database/plotData';
+import { getOnePlot, getAllPlots, savePlotData, editPlot } from '../../services/database/plotData';
 
 export const plotDataSlice = createSlice({
     name: 'plotData',
@@ -24,6 +24,7 @@ export const plotDataSlice = createSlice({
         builder.addCase(getPlot.rejected, (state, action) => {
             state.isLoading = false;
         });
+
         builder.addCase(getPlots.pending, (state, action) => {
             state.isLoading = true;
         });
@@ -34,6 +35,7 @@ export const plotDataSlice = createSlice({
         builder.addCase(getPlots.rejected, (state, action) => {
             state.isLoading = false;
         });
+
         builder.addCase(addPlotData.pending, (state, action) => {
             state.isLoading = true;
         });
@@ -42,6 +44,17 @@ export const plotDataSlice = createSlice({
 
         });
         builder.addCase(addPlotData.rejected, (state, action) => {
+            state.isLoading = false;
+        });
+
+        builder.addCase(edit.pending, (state, action) => {
+            state.isLoading = true;
+        });
+        builder.addCase(edit.fulfilled, (state, action) => {
+            state.isLoading = false;
+
+        });
+        builder.addCase(edit.rejected, (state, action) => {
             state.isLoading = false;
         });
     }
@@ -81,6 +94,18 @@ export const addPlotData = createAsyncThunk(
         try {
             const id = await savePlotData(formData);
             return { ...formData, id };
+        } catch (error) {
+            console.log('Error getting plot data. Error = ', error);
+        }
+    }
+);
+
+export const edit = createAsyncThunk(
+    "plotData/edit",
+    async (formData) => {
+        try {
+            await editPlot(formData);
+            // return { ...formData, id };
         } catch (error) {
             console.log('Error getting plot data. Error = ', error);
         }

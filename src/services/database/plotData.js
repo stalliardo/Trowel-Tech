@@ -1,5 +1,5 @@
 import { db } from '../../firebase';
-import { doc, getDoc, setDoc, addDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { doc, getDoc, setDoc, addDoc, collection, query, where, getDocs, updateDoc } from 'firebase/firestore';
 
 export const getOnePlot = async (id) => {
     const docRef = doc(db, "plotData", id);
@@ -32,4 +32,9 @@ export const savePlotData = async (formData) => {
     const docRef = await addDoc(collection(db, "plotData"), formData);
     console.log("document added. doc = ", docRef);
     return docRef.id;
+}
+
+export const editPlot = async(data) => {
+    const docRef = doc(db, "plotData", data.id);
+    await updateDoc(docRef, data)
 }

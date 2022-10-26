@@ -5,7 +5,7 @@ import SelectMenu from '../selectMenu/SelectMenu';
 
 import { PLOT_TYPES, STATUS } from '../../constants/plotData';
 import { useDispatch, useSelector } from 'react-redux';
-import { addPlotData } from '../../features/plotData/plotDataSlice';
+import { addPlotData, edit } from '../../features/plotData/plotDataSlice';
 
 import CircularIndicator from '../loadingIndicator/CircularIndicator'
 
@@ -22,10 +22,9 @@ const GridLabel = ({ text }) => {
 
 const Information = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const params = useParams();
-
-  const navigate = useNavigate();
 
   const plotData = useSelector(state => state.plotData.singlePlotData);
   const user = useSelector(state => state.user.currentUser);
@@ -35,7 +34,7 @@ const Information = () => {
   const [buttonDisabled, setButtonDisabled] = useState(true); // Will need to set this to false if the formData is present TODO
 
   useEffect(() => {
-    if(Object.keys(params).length && !plotData) {
+    if (Object.keys(params).length && !plotData) {
       navigate("/plot-data");
     }
   })
@@ -48,11 +47,16 @@ const Information = () => {
     //TODO need to determine if creating or editing, do this via the query param
     e.preventDefault();
 
-    dispatch(addPlotData({ ...formData, gangId: user.gangId })).unwrap().then((data) => {
-      console.log("data from dispatch = ", data);
-    }).catch((error) => {
-      console.log("error Saving data. Error: ", error);
-    })
+    if (!Object.keys(params).length) {
+      dispatch(addPlotData({ ...formData, gangId: user.gangId })).unwrap().then((data) => {
+      }).catch((error) => {
+        console.log("error Saving data. Error: ", error);
+      })
+    } else {
+      dispatch(edit(formData)).then(() => {
+        navigate("/plot-data")
+      })
+    }
   }
 
   const buttonDisabledHandler = () => {

@@ -7,7 +7,7 @@ import NoDataPrompt from '../../components/plotData/NoDataPrompt'
 import IndexContainer from '../../components/plotData/IndexContainer';
 import CircularIndicator from '../../components/loadingIndicator/CircularIndicator'
 
-const Home = () => {
+const Index = () => {
   const data = useSelector(state => state.plotData.allPlots)
   const user = useSelector(state => state.user.currentUser);
 
@@ -15,9 +15,7 @@ const Home = () => {
 
   useEffect(() => {
     if (user && user.gangId) {
-      dispatch(getPlots(user.gangId)).unwrap().then((response) => {
-        // TODO
-      })
+      dispatch(getPlots(user.gangId));
     } 
   }, []);
 
@@ -28,4 +26,4 @@ const Home = () => {
   )
 }
 
-export default Home;
+export default Index;
