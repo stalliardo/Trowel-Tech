@@ -7,7 +7,7 @@ import ExtendableTable from '../table/ExtendableTable'
 import { Box } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { deletePlotData, setSinglePlot } from '../../features/plotData/plotDataSlice';
+import { deletePlotData, setQueryParam, setSinglePlot } from '../../features/plotData/plotDataSlice';
 import LinkButton from '../button/LinkButton';
 
 const tableData = {
@@ -21,6 +21,7 @@ const IndexContainer = (props) => {
 
     const handleEdit = (row) => {
         dispatch(setSinglePlot(row.id));
+        dispatch(setQueryParam(row.id));
         navigate(`edit/information/${row.id}`);
     }
 

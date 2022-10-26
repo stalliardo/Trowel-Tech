@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getPlots } from '../../features/plotData/plotDataSlice';
+import { getPlots, setQueryParam } from '../../features/plotData/plotDataSlice';
 
 import NoDataPrompt from '../../components/plotData/NoDataPrompt'
 import IndexContainer from '../../components/plotData/IndexContainer';
@@ -16,6 +16,7 @@ const Index = () => {
   useEffect(() => {
     if (user && user.gangId) {
       dispatch(getPlots(user.gangId));
+      dispatch(setQueryParam(null));
     } 
   }, []);
 

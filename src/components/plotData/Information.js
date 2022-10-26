@@ -54,7 +54,10 @@ const Information = () => {
     e.preventDefault();
 
     if (!Object.keys(params).length) {
-      dispatch(addPlotData({ ...formData, gangId: user.gangId })).unwrap().then((data) => {
+      dispatch(addPlotData({ ...formData, gangId: user.gangId })).unwrap().then(() => {
+        // is this actually desired behaviour a user will propbably then want to enter data for the other tabs????
+        // TODO do i now load that data into the form?? how's this best handled?
+        // navigate("/plot-data");
       }).catch((error) => {
         console.log("error Saving data. Error: ", error);
       })

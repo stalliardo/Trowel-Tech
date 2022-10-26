@@ -7,10 +7,15 @@ export const plotDataSlice = createSlice({
         isLoading: false,
         allPlots: [],
         singlePlotData: null,
+        queryParam: null,
     },
     reducers: {
         setSinglePlot: (state, action) => {
             state.singlePlotData = state.allPlots.find((plot) => plot.id === action.payload);
+        },
+
+        setQueryParam: (state, action) => {
+            state.queryParam = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -71,7 +76,7 @@ export const plotDataSlice = createSlice({
     }
 })
 
-export const { setSinglePlot } = plotDataSlice.actions;
+export const { setSinglePlot, setQueryParam } = plotDataSlice.actions;
 
 export const getPlot = createAsyncThunk(
     "plotData/getPlot",

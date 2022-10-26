@@ -22,15 +22,17 @@ const navItems = [
 ]
 
 const TabContainer = () => {
-  return (
-    <Box sx={{height: "50px", borderBottom: "1px solid grey", display: "flex", alignItems: "center"}}>
-        {
-            navItems.map((item, index) => {
-                return <TabItem to={item.to} text={item.text} key={index}/>
-            })
-        }
-    </Box>
-  )
+   
+
+    return (
+        <Box sx={{ height: "50px", borderBottom: "1px solid grey", display: "flex", alignItems: "center" }}>
+            {
+                navItems.map((item, index) => {
+                    return <TabItem to={item.to} text={item.text} key={index} />
+                })
+            }
+        </Box>
+    )
 }
 
 export default TabContainer
