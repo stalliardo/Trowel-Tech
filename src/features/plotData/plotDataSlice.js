@@ -46,6 +46,7 @@ export const plotDataSlice = createSlice({
         });
         builder.addCase(addPlotData.fulfilled, (state, action) => {
             state.isLoading = false;
+            state.singlePlotData = action.payload;
 
         });
         builder.addCase(addPlotData.rejected, (state, action) => {

@@ -5,7 +5,7 @@ import SelectMenu from '../selectMenu/SelectMenu';
 
 import { PLOT_TYPES, STATUS } from '../../constants/plotData';
 import { useDispatch, useSelector } from 'react-redux';
-import { addPlotData, edit } from '../../features/plotData/plotDataSlice';
+import { addPlotData, edit, setQueryParam } from '../../features/plotData/plotDataSlice';
 
 import CircularIndicator from '../loadingIndicator/CircularIndicator'
 
@@ -35,6 +35,8 @@ const Information = () => {
   const [formData, setFormData] = useState(plotData || initialFormData);
   const [buttonDisabled, setButtonDisabled] = useState(true); // Will need to set this to false if the formData is present TODO
 
+  console.log("formData = ", formData);
+
   useEffect(() => {
     if (Object.keys(params).length && !plotData) {
       navigate("/plot-data");
@@ -54,16 +56,16 @@ const Information = () => {
     e.preventDefault();
 
     if (!Object.keys(params).length) {
-      dispatch(addPlotData({ ...formData, gangId: user.gangId })).unwrap().then(() => {
-        // is this actually desired behaviour a user will propbably then want to enter data for the other tabs????
-        // TODO do i now load that data into the form?? how's this best handled?
-        // navigate("/plot-data");
+      dispatch(addPlotData({ ...formData, gangId: user.gangId })).unwrap().then((data) => {
+        dispatch(setQueryParam(data.id));
+        navigate(`${data.id}`);
       }).catch((error) => {
         console.log("error Saving data. Error: ", error);
       })
     } else {
       dispatch(edit(formData)).then(() => {
-        navigate("/plot-data")
+        // FIX ->  should not navigate away after edit. The user can do this via the back button
+        // navigate("/plot-data")
       })
     }
   }
@@ -131,4 +133,7 @@ const Information = () => {
   )
 }
 
-export default Information
+export default Information;
+
+// User saves new plot
+// the form is still intact but, when they click another tab the data has gone.....

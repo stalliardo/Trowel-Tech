@@ -6,9 +6,38 @@ import CircularIndicator from '../../components/loadingIndicator/CircularIndicat
 import OverviewContainer from '../../components/plotData/OverviewContainer'
 import TabContainer from '../../components/tabs/TabContainer'
 
+const defaultNavItems = [
+  {
+      to: "information",
+      text: "Plot Information"
+  },
+  {
+      to: "lift-breakdown",
+      text: "Lift Breakdown"
+  },
+  {
+      to: "deductions",
+      text: "Deductions"
+  },
+  {
+      to: "financials",
+      text: "Financials"
+  },
+]
+
 const Edit = () => {
   
   // TODO download .XLS button?
+
+  const queryParam = useSelector(state => state.plotData.queryParam);
+
+  let navItems = [];
+
+  if(!queryParam) {
+    navItems = defaultNavItems.filter(item => item.to === "information");
+  } else {
+    navItems = defaultNavItems;
+  }
   
   const isLoading = useSelector(state => state.plotData.isLoadingSinglePlot);
   
@@ -18,7 +47,7 @@ const Edit = () => {
       <OverviewContainer />
 
       <Paper elevation={3} sx={{ mt: "50px", textAlign: "left", }}>
-          <TabContainer />
+          <TabContainer navItems={navItems}/>
           <Box sx={{padding: "20px"}} >
             <Outlet />
           </Box>
@@ -28,4 +57,4 @@ const Edit = () => {
   )
 }
 
-export default Edit
+export default Edit;

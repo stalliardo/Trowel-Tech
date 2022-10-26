@@ -39,7 +39,9 @@ root.render(
                 <Route path="information" element={<Information />}>
                   <Route path=':plotId' element={<Information />}/>
                 </Route>
-                <Route path="lift-breakdown" element={<Breakdown />}/>
+                <Route path="lift-breakdown">
+                  <Route path=":plotId" element={<Breakdown />}/>
+                </Route>
               </Route>
             </Route>
           </Route>
