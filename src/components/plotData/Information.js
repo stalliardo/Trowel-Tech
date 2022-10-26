@@ -30,14 +30,20 @@ const Information = () => {
   const user = useSelector(state => state.user.currentUser);
   const isLoading = useSelector(state => state.plotData.isLoading);
 
-  const [formData, setFormData] = useState(plotData || { plotNumber: "", totalPrice: "", plotType: "House", currentStatus: "Uncategorized", numberOfStories: "" });
+  const initialFormData = { plotNumber: "", totalPrice: "", plotType: "House", currentStatus: "Uncategorized", numberOfStories: "" }
+
+  const [formData, setFormData] = useState(plotData || initialFormData);
   const [buttonDisabled, setButtonDisabled] = useState(true); // Will need to set this to false if the formData is present TODO
 
   useEffect(() => {
     if (Object.keys(params).length && !plotData) {
       navigate("/plot-data");
     }
-  })
+
+    if(!Object.keys(params).length && plotData) {
+      setFormData(initialFormData);
+    }
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })

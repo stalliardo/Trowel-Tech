@@ -8,6 +8,7 @@ import { Box } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { deletePlotData, setSinglePlot } from '../../features/plotData/plotDataSlice';
+import LinkButton from '../button/LinkButton';
 
 const tableData = {
     head: ["Plot Number", "Type", "Status", "Total Price", "Financials", "Actions"],
@@ -43,7 +44,10 @@ const IndexContainer = (props) => {
 
   return (
     <Container maxWidth="lg" sx={{ backgroundColor: "backDrop.dark", height: "100vh", pt: "20px", mt: "20px" }}>
-        <Typography textAlign="left" variant='h5' mb="15px">Plots</Typography>
+        <Box component="div" sx={{display: "flex", justifyContent: "space-between"}}>
+            <Typography textAlign="left" variant='h5' mb="15px">Plots</Typography>
+            <LinkButton to="edit/information" text="Add Plot"/>
+        </Box>
         <Filter />
         <Box component="div" sx={{mt: "40px"}}>
             <ExtendableTable data={tableData} deleteButton={true} editButton={true} handleEdit={handleEdit} handleDelete={handleDelete}/>
