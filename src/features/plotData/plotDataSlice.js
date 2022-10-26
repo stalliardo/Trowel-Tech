@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit'
-import { getOnePlot, getAllPlots, savePlotData, editPlot } from '../../services/database/plotData';
+import { getOnePlot, getAllPlots, savePlotData, editPlot, deletePlot } from '../../services/database/plotData';
 
 export const plotDataSlice = createSlice({
     name: 'plotData',
@@ -57,6 +57,17 @@ export const plotDataSlice = createSlice({
         builder.addCase(edit.rejected, (state, action) => {
             state.isLoading = false;
         });
+
+        builder.addCase(deletePlotData.pending, (state, action) => {
+            state.isLoading = true;
+        });
+        builder.addCase(deletePlotData.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.allPlots = state.allPlots.filter(plot => plot.id !== action.payload);
+        });
+        builder.addCase(deletePlotData.rejected, (state, action) => {
+            state.isLoading = false;
+        });
     }
 })
 
@@ -106,6 +117,18 @@ export const edit = createAsyncThunk(
         try {
             await editPlot(formData);
             // return { ...formData, id };
+        } catch (error) {
+            console.log('Error getting plot data. Error = ', error);
+        }
+    }
+);
+
+export const deletePlotData = createAsyncThunk(
+    "plotData/deletePlotData",
+    async (id) => {
+        try {
+            await deletePlot(id);
+            return id;
         } catch (error) {
             console.log('Error getting plot data. Error = ', error);
         }

@@ -7,7 +7,7 @@ import ExtendableTable from '../table/ExtendableTable'
 import { Box } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setSinglePlot } from '../../features/plotData/plotDataSlice';
+import { deletePlotData, setSinglePlot } from '../../features/plotData/plotDataSlice';
 
 const tableData = {
     head: ["Plot Number", "Type", "Status", "Total Price", "Financials", "Actions"],
@@ -21,6 +21,13 @@ const IndexContainer = (props) => {
     const handleEdit = (row) => {
         dispatch(setSinglePlot(row.id));
         navigate(`edit/information/${row.id}`);
+    }
+
+    const handleDelete = (row) => {
+        const confirmation = window.confirm(`Are you sure you want to delete plot ${row.plotNumber}?`);
+        if(confirmation) {
+            dispatch(deletePlotData(row.id));
+        }
     }
 
     if(props.data.length) {
@@ -39,7 +46,7 @@ const IndexContainer = (props) => {
         <Typography textAlign="left" variant='h5' mb="15px">Plots</Typography>
         <Filter />
         <Box component="div" sx={{mt: "40px"}}>
-            <ExtendableTable data={tableData} deleteButton={true} editButton={true} handleEdit={handleEdit}/>
+            <ExtendableTable data={tableData} deleteButton={true} editButton={true} handleEdit={handleEdit} handleDelete={handleDelete}/>
         </Box>
   </Container>
   )
