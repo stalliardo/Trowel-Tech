@@ -8,6 +8,7 @@ export const plotDataSlice = createSlice({
         allPlots: [],
         singlePlotData: null,
         queryParam: null,
+        filteredPlots: null,
     },
     reducers: {
         setSinglePlot: (state, action) => {
@@ -16,6 +17,17 @@ export const plotDataSlice = createSlice({
 
         setQueryParam: (state, action) => {
             state.queryParam = action.payload;
+        },
+
+        filterPlots: (state, action) => {
+            const filteredPlots = state.allPlots.filter(plot => plot[action.payload.key] === action.payload.value);
+
+            if (filteredPlots.length) {
+                state.filteredPlots = filteredPlots;
+            } 
+        },
+        clearFilters: (state, action) => {
+            state.filteredPlots = null;
         }
     },
     extraReducers: (builder) => {
@@ -77,7 +89,7 @@ export const plotDataSlice = createSlice({
     }
 })
 
-export const { setSinglePlot, setQueryParam } = plotDataSlice.actions;
+export const { setSinglePlot, setQueryParam, filterPlots, clearFilters } = plotDataSlice.actions;
 
 export const getPlot = createAsyncThunk(
     "plotData/getPlot",
@@ -97,7 +109,7 @@ export const getPlots = createAsyncThunk(
     async (gangId) => {
         try {
             const response = await getAllPlots(gangId);
-            
+
             return response;
         } catch (error) {
             console.log('Error getting plot data. Error = ', error);

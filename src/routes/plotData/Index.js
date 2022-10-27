@@ -10,6 +10,7 @@ import CircularIndicator from '../../components/loadingIndicator/CircularIndicat
 const Index = () => {
   const data = useSelector(state => state.plotData.allPlots)
   const user = useSelector(state => state.user.currentUser);
+  const filteredPlots = useSelector(state => state.plotData.filteredPlots);
 
   const dispatch = useDispatch();
 
@@ -23,7 +24,7 @@ const Index = () => {
   const isLoading = useSelector(state => state.plotData.isLoading);
 
   return (
-      isLoading ? <CircularIndicator style={{mt: "100px"}}/> : data.length ? <IndexContainer data={data}/> : <NoDataPrompt />
+      isLoading ? <CircularIndicator style={{mt: "100px"}}/> : data.length ? <IndexContainer data={filteredPlots || data}/> : <NoDataPrompt />
   )
 }
 

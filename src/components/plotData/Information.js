@@ -35,8 +35,6 @@ const Information = () => {
   const [formData, setFormData] = useState(plotData || initialFormData);
   const [buttonDisabled, setButtonDisabled] = useState(true); // Will need to set this to false if the formData is present TODO
 
-  console.log("formData = ", formData);
-
   useEffect(() => {
     if (Object.keys(params).length && !plotData) {
       navigate("/plot-data");

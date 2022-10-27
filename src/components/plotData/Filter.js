@@ -4,51 +4,68 @@ import { Button, Grid, Paper, TextField } from '@mui/material'
 import SelectMenu from '../selectMenu/SelectMenu'
 
 import { STATUS, PLOT_TYPES } from '../../constants/plotData'
+import { useDispatch } from 'react-redux'
+import { clearFilters, filterPlots } from '../../features/plotData/plotDataSlice'
 
 const Filter = () => {
-  
-  const [filterOptions, setFilterOptions] = useState({search: "", category: "", status: ""});
+  const dispatch = useDispatch();
+
+  const defaultFilterOptions = { plotNumber: "", plotType: "", currentStatus: "" };
+  const [filterOptions, setFilterOptions] = useState(defaultFilterOptions);
 
   const handleChange = (e) => {
-    setFilterOptions({...filterOptions, [e.target.name]: e.target.value});
+    setFilterOptions({ ...defaultFilterOptions, [e.target.name]: e.target.value });
   }
 
   const handleSearch = () => {
-    // TODO
-    console.log("search called. FilterOptions = ", filterOptions);
+    let filterData;
+
+    Object.keys(filterOptions).forEach((option) => {
+      if (filterOptions[option] !== "") {
+        filterData = { value: filterOptions[option], key: option }
+      }
+    });
+
+    dispatch(filterPlots(filterData));
+  }
+
+  const handleClearFilters = () => {
+    dispatch(clearFilters())
+    setFilterOptions(defaultFilterOptions);
   }
 
   return (
     <Paper elevation={4}>
-      <Grid container sx={{ padding: "10px 20px 30px", textAlign: "left", justifyContent: "space-between", alignItems: "flex-end"}}>
+      <Grid container sx={{ padding: "10px 20px 30px", textAlign: "left", justifyContent: "space-between", alignItems: "flex-end" }}>
         <Grid item xs={12} md={3}>
-          <TextField label="Search Plots" name="search" autoFocus sx={{ width: "200px" }} onChange={handleChange} />
+          <TextField label="Search Plot number" name="plotNumber" value={filterOptions.plotNumber} autoFocus sx={{ width: "200px" }} onChange={handleChange} />
         </Grid>
 
-        <Grid item xs={12} sm={3} sx={{mt: "20px"}}>
+        <Grid item xs={12} sm={3} sx={{ mt: "20px" }}>
           <SelectMenu
-            value={filterOptions.category}
-            label="Category"
-            name="category"
+            value={filterOptions.plotType}
+            label="Plot Type"
+            name="plotType"
             menuItems={PLOT_TYPES}
             handleChange={handleChange}
             styles={{ width: "200px" }}
           />
         </Grid>
 
-        <Grid item xs={12} sm={3} sx={{mt: "20px"}}>
+        <Grid item xs={12} sm={3} sx={{ mt: "20px" }}>
           <SelectMenu
-            value={filterOptions.status}
+            value={filterOptions.currentStatus}
             label="Status"
-            name="status"
+            name="currentStatus"
             menuItems={STATUS}
             handleChange={handleChange}
             styles={{ width: "200px" }}
           />
         </Grid>
 
-        <Grid item xs={12} sm={2}>
-          <Button variant='contained' sx={{mt: "20px"}} onClick={handleSearch}>Search</Button>
+        <Grid item xs={12} sm={2} display="flex">
+          <Button variant='contained' sx={{ mt: "20px", mr: "20px" }} onClick={handleSearch}>Search</Button>
+          <Button variant='contained' sx={{ mt: "20px" }} onClick={handleClearFilters}>Clear</Button>
         </Grid>
       </Grid>
     </Paper>
