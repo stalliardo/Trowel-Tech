@@ -28,6 +28,9 @@ export const plotDataSlice = createSlice({
         },
         clearFilters: (state, action) => {
             state.filteredPlots = null;
+        },
+        clearSinglePlotData: (state, action) => {
+            state.singlePlotData = null;
         }
     },
     extraReducers: (builder) => {
@@ -89,7 +92,7 @@ export const plotDataSlice = createSlice({
     }
 })
 
-export const { setSinglePlot, setQueryParam, filterPlots, clearFilters } = plotDataSlice.actions;
+export const { setSinglePlot, setQueryParam, filterPlots, clearFilters, clearSinglePlotData } = plotDataSlice.actions;
 
 export const getPlot = createAsyncThunk(
     "plotData/getPlot",
