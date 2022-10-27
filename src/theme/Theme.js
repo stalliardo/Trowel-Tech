@@ -7,13 +7,15 @@ export const theme = createTheme({
         //     main: red[500], // works
         // },
         backDrop: {
-            main: blueGrey[900]
+            main: blueGrey[900],
+            light: lightBlue[50],
+            dark: grey[300]
         },
         text: {
             // main: red[300],
             // secondary: red[400],
             // disabled: red[900],
-            subText: grey[600],
+            subText: grey[500],
             title: {
                 main: grey[700],
             }
