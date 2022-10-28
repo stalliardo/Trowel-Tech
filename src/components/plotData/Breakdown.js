@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import SelectMenu from '../selectMenu/SelectMenu';
 
-import { PLOT_TYPES, STATUS, BREAKDOWN_METHOD } from '../../constants/plotData';
+import { BREAKDOWN_METHOD } from '../../constants/plotData';
 import { useDispatch, useSelector } from 'react-redux';
-import { addInformation, addPlotData, edit, setQueryParam } from '../../features/plotData/plotDataSlice';
+import { addInformation } from '../../features/plotData/plotDataSlice';
 
 import CircularIndicator from '../loadingIndicator/CircularIndicator'
 
@@ -22,18 +22,15 @@ const GridLabel = ({ text }) => {
 
 const Breakdown = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const params = useParams();
 
   const plotData = useSelector(state => state.plotData.singlePlotData);
-  const user = useSelector(state => state.user.currentUser);
   const isLoading = useSelector(state => state.plotData.isLoading);
 
   const initialFormData = { firstLift: "", secondLift: "", thirdLift: "", fourthLift: "", gables: "", other: "", breakdownMethod: "" }
 
   const [formData, setFormData] = useState(plotData.information || initialFormData);
-  // const [formData, setFormData] = useState(plotData ? plotData.information : initialFormData);
   const [buttonDisabled, setButtonDisabled] = useState(true); // Will need to set this to false if the formData is present TODO
 
   useEffect(() => {
@@ -60,7 +57,6 @@ const Breakdown = () => {
   }
 
   const buttonDisabledHandler = () => {
-
     let disabled = true;
 
     Object.keys(formData).forEach((key) => {
