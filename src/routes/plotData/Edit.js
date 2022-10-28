@@ -1,10 +1,15 @@
-import { Box, Container, Paper } from '@mui/material'
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { Outlet } from 'react-router-dom'
+
+import { useDispatch, useSelector } from 'react-redux'
+
+import { Outlet, useNavigate,  } from 'react-router-dom'
+
+import { Box, Button, Container, Paper } from '@mui/material'
+
 import CircularIndicator from '../../components/loadingIndicator/CircularIndicator'
 import OverviewContainer from '../../components/plotData/OverviewContainer'
 import TabContainer from '../../components/tabs/TabContainer'
+import { clearSinglePlotData } from '../../features/plotData/plotDataSlice'
 
 const defaultNavItems = [
   {
@@ -40,10 +45,22 @@ const Edit = () => {
   }
   
   const isLoading = useSelector(state => state.plotData.isLoadingSinglePlot);
+
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleBackClicked = () => {
+    dispatch(clearSinglePlotData());
+    navigate("/plot-data");
+  }
   
   return (
       isLoading ? <CircularIndicator style={{mt: "100px"}} /> :
     <Container maxWidth="lg" sx={{ backgroundColor: "backDrop.dark", height: "100vh", pt: "20px", mt: "20px" }}>
+      <Box component="div" sx={{ display: "flex" }}>
+        <Button variant='contained' onClick={handleBackClicked}>Back</Button>
+      </Box>
       <OverviewContainer />
 
       <Paper elevation={3} sx={{ mt: "50px", textAlign: "left", }}>

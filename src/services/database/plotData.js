@@ -21,16 +21,14 @@ export const getAllPlots = async (id) => {
     if (!querySnapshot.empty) {
         querySnapshot.forEach((snapshot) => {
             dataWithIds.push({ ...snapshot.data(), id: snapshot.id });
-        })
+        });
     }
 
     return dataWithIds.length ? dataWithIds : [];
-
 }
 
-export const savePlotData = async (formData) => {
-    const docRef = await addDoc(collection(db, "plotData"), formData);
-    console.log("document added. doc = ", docRef);
+export const savePlotData = async (data) => {
+    const docRef = await addDoc(collection(db, "plotData"), data);
     return docRef.id;
 }
 
@@ -42,4 +40,11 @@ export const editPlot = async(data) => {
 export const deletePlot = async(id) => {
     const docRef = doc(db, "plotData", id);
     await deleteDoc(docRef, id);
+}
+
+export const addInformationDataToDoc = async (existingData, informationData) => {
+    const docRef = doc(db, "plotData", existingData.id);
+    // need to spread the exisitind doc and add the information...
+    console.log("trying to update with: ", {...existingData, information: informationData});
+    await updateDoc(docRef, {...existingData, information: informationData});
 }
