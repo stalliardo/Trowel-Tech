@@ -1,13 +1,18 @@
-import { Button, Grid, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import SelectMenu from '../selectMenu/SelectMenu';
+
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 
 import { BREAKDOWN_METHOD } from '../../constants/plotData';
 import { useDispatch, useSelector } from 'react-redux';
 import { addInformation } from '../../features/plotData/plotDataSlice';
 
 import CircularIndicator from '../loadingIndicator/CircularIndicator'
+import { calculateLiftPrices } from '../../services/plotData/liftBreakdown';
 
 const gridItemStyle = {
   display: "flex",
@@ -20,10 +25,10 @@ const GridLabel = ({ text }) => {
   return <Typography component="label" sx={{ fontSize: "18px" }}>{text}</Typography>
 }
 
-const GridItem = ({text, name, value, autofocus, handleChange}) => {
+const GridItem = ({text, name, value, autofocus, handleChange, disabled}) => {
   return <Grid item xs={12} sm={6} sx={gridItemStyle} >
     <GridLabel text={text} />
-    <TextField name={name} autoFocus={autofocus} type="number" value={value} sx={{ width: "60%", mr: "20px" }} onChange={handleChange} />
+    <TextField name={name} autoFocus={autofocus} type="number" disabled={disabled} value={value} sx={{ width: "60%", mr: "20px" }} onChange={handleChange} />
   </Grid>
 }
 
@@ -51,7 +56,8 @@ const Breakdown = () => {
   }, []);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+    // TODO Check here if the user is entering values when the type is calculated
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
   const handleSubmit = (e) => {
@@ -77,7 +83,16 @@ const Breakdown = () => {
 
   useEffect(() => {
     buttonDisabledHandler();
+    
+    // TODO
+    
+    // if(formData.breakdownMethod === "Calculated"){
+    //   const result = calculateLiftPrices(parseInt(plotData.totalPrice));
+    //   setFormData({...formData, firstLift: result.largeLift, secondLift: result.smallLift, thirdLift: result.largeLift, fourthLift: result.smallLift, gables: result.gablesPrice, other: 0});
+    // }
   }, [formData])
+
+  
 
   return (
     isLoading ? <CircularIndicator /> : <form onSubmit={handleSubmit}>
@@ -97,7 +112,7 @@ const Breakdown = () => {
           </Grid>
         </Grid>
 
-        <GridItem text="First Lift" name="firstLift" autofocus={true} value={formData.firstLift} handleChange={handleChange}/>
+        <GridItem text="First Lift" name="firstLift" autofocus={true} value={formData.firstLift} handleChange={handleChange} disabled={true}/>
         <GridItem text="Second Lift" name="secondLift" autofocus={false} value={formData.secondLift} handleChange={handleChange}/>
         <GridItem text="Third Lift" name="thirdLift" autofocus={false} value={formData.thirdLift} handleChange={handleChange}/>
         <GridItem text="Fourth Lift" name="fourthLift" autofocus={false} value={formData.fourthLift} handleChange={handleChange}/>
