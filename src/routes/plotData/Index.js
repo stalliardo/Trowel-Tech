@@ -16,7 +16,6 @@ const Index = () => {
 
   useEffect(() => {
     if (!data.length) {
-      console.log("no data called");
       dispatch(getPlots(user.gangId));
       dispatch(setQueryParam(null));
       dispatch(clearSinglePlotData());

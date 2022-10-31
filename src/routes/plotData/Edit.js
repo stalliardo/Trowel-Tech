@@ -31,9 +31,7 @@ const defaultNavItems = [
 ]
 
 const Edit = () => {
-  
   // TODO download .XLS button?
-
   const queryParam = useSelector(state => state.plotData.queryParam);
 
   let navItems = [];
@@ -45,7 +43,6 @@ const Edit = () => {
   }
   
   const isLoading = useSelector(state => state.plotData.isLoadingSinglePlot);
-
 
   const navigate = useNavigate();
   const dispatch = useDispatch();

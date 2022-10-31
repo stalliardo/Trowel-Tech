@@ -20,6 +20,13 @@ const GridLabel = ({ text }) => {
   return <Typography component="label" sx={{ fontSize: "18px" }}>{text}</Typography>
 }
 
+const GridItem = ({text, name, value, autofocus, handleChange}) => {
+  return <Grid item xs={12} sm={6} sx={gridItemStyle} >
+    <GridLabel text={text} />
+    <TextField name={name} autoFocus={autofocus} type="number" value={value} sx={{ width: "60%", mr: "20px" }} onChange={handleChange} />
+  </Grid>
+}
+
 const Breakdown = () => {
   const dispatch = useDispatch();
 
@@ -51,18 +58,18 @@ const Breakdown = () => {
     //TODO need to determine if creating or editing, do this via the query param
     e.preventDefault();
 
-    dispatch(addInformation({plotData, formData})).unwrap().then((response) => {
-      console.log("response from addInformation = ", response);
+    dispatch(addInformation({ plotData, formData })).unwrap().then((response) => {
+      setFormData(response.formData);
     })
   }
 
   const buttonDisabledHandler = () => {
-    let disabled = true;
+    let disabled = false;
 
     Object.keys(formData).forEach((key) => {
-      if(formData[key] !== "") {
-        disabled = false;
-      } 
+      if (formData[key] === "") {
+        disabled = true;
+      }
     });
 
     setButtonDisabled(disabled);
@@ -70,7 +77,6 @@ const Breakdown = () => {
 
   useEffect(() => {
     buttonDisabledHandler();
-    console.log("use effect called");
   }, [formData])
 
   return (
@@ -91,35 +97,12 @@ const Breakdown = () => {
           </Grid>
         </Grid>
 
-        <Grid item xs={12} sm={6} sx={gridItemStyle} >
-          <GridLabel text="First Lift" />
-          <TextField name="firstLift" autoFocus value={formData.firstLift} sx={{ width: "60%", mr: "20px" }} onChange={handleChange} />
-        </Grid>
-
-        <Grid item xs={12} sm={6} sx={gridItemStyle}>
-          <GridLabel text="Second Lift" />
-          <TextField name="secondLift" autoFocus value={formData.secondLift} sx={{ width: "60%", mr: "20px" }} onChange={handleChange} />
-        </Grid>
-
-        <Grid item xs={12} sm={6} sx={gridItemStyle}>
-          <GridLabel text="Third Lift" />
-          <TextField name="thirdLift" autoFocus value={formData.thirdLift} sx={{ width: "60%", mr: "20px" }} onChange={handleChange} />
-        </Grid>
-
-        <Grid item xs={12} sm={6} sx={gridItemStyle}>
-          <GridLabel text="Fourth Lift" />
-          <TextField name="fourthLift" autoFocus value={formData.fourthLift} sx={{ width: "60%", mr: "20px" }} onChange={handleChange} />
-        </Grid>
-
-        <Grid item xs={12} sm={6} sx={gridItemStyle}>
-          <GridLabel text="Gables" />
-          <TextField name="gables" autoFocus value={formData.gables} sx={{ width: "60%", mr: "20px" }} onChange={handleChange} />
-        </Grid>
-
-        <Grid item xs={12} sm={6} sx={gridItemStyle}>
-          <GridLabel text="Other" />
-          <TextField name="other" autoFocus value={formData.other} sx={{ width: "60%", mr: "20px" }} onChange={handleChange} />
-        </Grid>
+        <GridItem text="First Lift" name="firstLift" autofocus={true} value={formData.firstLift} handleChange={handleChange}/>
+        <GridItem text="Second Lift" name="secondLift" autofocus={false} value={formData.secondLift} handleChange={handleChange}/>
+        <GridItem text="Third Lift" name="thirdLift" autofocus={false} value={formData.thirdLift} handleChange={handleChange}/>
+        <GridItem text="Fourth Lift" name="fourthLift" autofocus={false} value={formData.fourthLift} handleChange={handleChange}/>
+        <GridItem text="Gables" name="gables" autofocus={false} value={formData.gables} handleChange={handleChange}/>
+        <GridItem text="Other" name="other" autofocus={false} value={formData.other} handleChange={handleChange}/>
 
         <Grid item xs={12} sm={3} sx={{ mr: "20px" }}>
           <Button variant="contained" type='submit' fullWidth sx={{ mt: "20px" }} disabled={buttonDisabled}>Save</Button>

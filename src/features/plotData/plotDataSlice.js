@@ -97,7 +97,14 @@ export const plotDataSlice = createSlice({
         });
         builder.addCase(addInformation.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.singlePlotData.information = action.payload;
+            state.singlePlotData.information = action.payload.formData;
+            
+            state.allPlots = state.allPlots.filter(plot => plot.id !== action.payload.plotData.id);
+            
+            const plotDataWithInformationObject = {...action.payload.plotData};
+            plotDataWithInformationObject.information = action.payload.formData;
+            
+            state.allPlots.push(plotDataWithInformationObject);
         });
         builder.addCase(addInformation.rejected, (state) => {
             state.isLoading = false;
@@ -175,7 +182,7 @@ export const addInformation = createAsyncThunk(
         try {
             await addInformationDataToDoc(data.plotData, data.formData);
             //need to return the formData so it can be added to the local state
-            return data.formData;
+            return data;
         } catch (error) {
             console.log('Error getting plot data. Error = ', error);
         }
