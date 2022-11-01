@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import { store } from './app/store'
-import { Provider } from 'react-redux'
+import { store } from './app/store';
+import { Provider } from 'react-redux';
 
 import { BrowserRouter, Routes, Route, } from "react-router-dom";
 
@@ -17,15 +17,17 @@ import Home from './routes/Home';
 import PlotData from './routes/plotData/PlotData';
 import Edit from './routes/plotData/Edit';
 import Index from './routes/plotData/Index';
-import Information from './components/plotData/Information'
-import Breakdown from './components/plotData/Breakdown'
-
+import Information from './components/plotData/Information';
+import Breakdown from './components/plotData/Breakdown';
+import Deductions from './components/plotData/Deductions';
+import Toast from './components/notifications/Toast';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <Provider store={store}>
     <ThemeProvider theme={theme}>
+      <Toast />
       <BrowserRouter>
         <Navbar />
         <Routes>
@@ -41,6 +43,9 @@ root.render(
                 </Route>
                 <Route path="lift-breakdown">
                   <Route path=":plotId" element={<Breakdown />}/>
+                </Route>
+                <Route path="deductions">
+                  <Route path=":plotId" element={<Deductions />}/>
                 </Route>
               </Route>
             </Route>
