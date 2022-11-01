@@ -61,6 +61,9 @@ const Information = () => {
         console.log("error Saving data. Error: ", error);
       })
     } else {
+      if(!formData.id) {
+        formData.id = params.plotId;
+      }
       dispatch(edit(formData)).then(() => {
         // FIX ->  should not navigate away after edit. The user can do this via the back button
         // navigate("/plot-data")
@@ -132,6 +135,3 @@ const Information = () => {
 }
 
 export default Information;
-
-// User saves new plot
-// the form is still intact but, when they click another tab the data has gone.....

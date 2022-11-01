@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getPlots, setQueryParam } from '../../features/plotData/plotDataSlice';
+import { clearSinglePlotData, getPlots, setQueryParam } from '../../features/plotData/plotDataSlice';
 
 import NoDataPrompt from '../../components/plotData/NoDataPrompt'
 import IndexContainer from '../../components/plotData/IndexContainer';
@@ -15,9 +15,10 @@ const Index = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user && user.gangId) {
+    if (!data.length) {
       dispatch(getPlots(user.gangId));
       dispatch(setQueryParam(null));
+      dispatch(clearSinglePlotData());
     } 
   }, []);
 
