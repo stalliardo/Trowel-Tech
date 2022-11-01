@@ -44,7 +44,5 @@ export const deletePlot = async(id) => {
 
 export const addInformationDataToDoc = async (existingData, informationData) => {
     const docRef = doc(db, "plotData", existingData.id);
-    // need to spread the exisitind doc and add the information...
-    console.log("trying to update with: ", {...existingData, information: informationData});
     await updateDoc(docRef, {...existingData, information: informationData});
 }

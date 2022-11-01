@@ -44,7 +44,7 @@ const Breakdown = () => {
 
   const initialFormData = { firstLift: "", secondLift: "", thirdLift: "", fourthLift: "", gables: "", other: "", breakdownMethod: "" }
 
-  const [formData, setFormData] = useState(plotData.information || initialFormData);
+  const [formData, setFormData] = useState(plotData ? plotData.information : initialFormData);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [inputsDisabled, setInputsDisabled] = useState(false);
   const [errorText, setErrorText] = useState("");
@@ -78,6 +78,7 @@ const Breakdown = () => {
         submitForm = true;
       }
     } else {
+      setErrorText("");
       submitForm = true;
     }
 
@@ -105,6 +106,7 @@ const Breakdown = () => {
       const result = calculateLiftPrices(parseInt(plotData.totalPrice));
       setFormData({ ...formData, firstLift: result.largeLift, secondLift: result.smallLift, thirdLift: result.largeLift, fourthLift: result.smallLift, gables: result.gablesPrice, other: 0 });
       setInputsDisabled(true);
+      setErrorText("");
     } else {
       setInputsDisabled(false);
     }
