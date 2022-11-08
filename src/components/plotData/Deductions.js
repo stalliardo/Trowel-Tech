@@ -12,6 +12,8 @@ import TextField from '@mui/material/TextField';
 import { showToast } from '../../features/notifications/notificationSlice';
 import { getData } from '../../features/gangInfo/gangInformationSlice';
 import CircularIndicator from '../loadingIndicator/CircularIndicator';
+import { RateReview } from '@mui/icons-material';
+import { addDeduction } from '../../services/database/liftDeductions';
 
 const extractFullName = (membersArray) => {
   return membersArray.map((member) => {
@@ -37,7 +39,7 @@ const DeductionRow = ({ title, memberValue, members, hoursValue, handleChange, h
 
         <Grid item xs={12} md={5} display="flex" sx={{ alignItems: "center" }}>
           <GridLabel text="Hours" />
-          <TextField name="hours" value={hoursValue} type="number" required={true} onChange={handleChange} sx={{ ml: "20px",  width: "60%"}} />
+          <TextField name="hours" value={hoursValue} type="number" required={true} onChange={handleChange} sx={{ ml: "20px", width: "60%" }} />
         </Grid>
 
         <Grid item xs={12} md={2} display="flex" sx={{ alignItems: "center" }}>
@@ -57,6 +59,7 @@ const Deductions = () => {
   const [hours, setHours] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [selectedLift, setSelectedLift] = useState("");
+  const plotData = useSelector(state => state.plotData.singlePlotData);
 
   const liftOptions = ["1st Lift", "2nd Lift", "3rd Lift", "4th Lift", "Gables", "Other"];
 
@@ -72,28 +75,45 @@ const Deductions = () => {
         setSelectedLift(e.target.value);
         break;
       }
-      case "member" : {
+      case "member": {
         setSelectedMember(e.target.value);
         break;
       }
-      case "hours" : {
+      case "hours": {
         setHours(e.target.value);
         break;
       }
-      default:{}
+      default: { }
     }
   }
 
-  const handleSave = () => {   
+  const handleSave = () => {
     const member = members.find(m => m.firstName + " " + m.lastName === selectedMember);
-  
-    // dispatch(showToast({message: "Deduction saved successfully!"}))
+
+    const data = {
+      member: member.firstName + " " + member.lastName,
+      hourlyRate: parseInt(member.dayRate) / 8,
+      hours,
+      lift: selectedLift,
+      plotId: plotData.id
+    };
+
+    addDeduction(data).then((response) => {
+      setIsLoading(true);
+      dispatch(showToast({ message: `Deduction for ${member.firstName} saved successfully!`, duration: 3000 }));
+      setSelectedMember("");
+      setHours("");
+    }).catch((e) => {
+      dispatch(showToast({ message: `Deduction for ${member.firstName} failed! Please try again`, duration: 3000, alertType: "error" }));
+    }).finally(() => {
+      setIsLoading(false);
+    });
   }
 
   useEffect(() => {
-    if(!membersFromStore.length) {
+    if (!membersFromStore.length) {
       setIsLoading(true);
-      if(user && user.gangId) {
+      if (user && user.gangId) {
         dispatch(getData(user.gangId)).unwrap().then((data) => {
           setMembers(data.members);
           setIsLoading(false);
@@ -106,24 +126,24 @@ const Deductions = () => {
 
   return (
     isLoading ? <CircularIndicator /> : <form onSubmit={handleSubmit}>
-    <Grid container sx={{pb: "20px"}}>
-      <Grid container >
+      <Grid container sx={{ pb: "20px" }}>
+        <Grid container >
 
-        <Grid item xs={12} display="flex" sx={{ alignItems: "center", justifyContent: "center" }}>
-          <GridLabel text="Select Lift" />
-          <SelectMenu
-            value={selectedLift}
-            name="selectedLift"
-            menuItems={liftOptions}
-            handleChange={handleChange}
-            styles={{ width: "30%", ml: "20px" }}
-          />
+          <Grid item xs={12} display="flex" sx={{ alignItems: "center", justifyContent: "center" }}>
+            <GridLabel text="Select Lift" />
+            <SelectMenu
+              value={selectedLift}
+              name="selectedLift"
+              menuItems={liftOptions}
+              handleChange={handleChange}
+              styles={{ width: "30%", ml: "20px" }}
+            />
+          </Grid>
+
+          {selectedLift && <DeductionRow title={selectedLift} memberValue={selectedMember} members={members} hoursValue={hours} handleChange={handleChange} handleClick={handleSave} />}
         </Grid>
-
-        {selectedLift && <DeductionRow title={selectedLift} memberValue={selectedMember} members={members} hoursValue={hours} handleChange={handleChange} handleClick={handleSave}/>}
       </Grid>
-    </Grid>
-  </form>
+    </form>
   )
 }
 
