@@ -12,16 +12,15 @@ import TextField from '@mui/material/TextField';
 import { showToast } from '../../features/notifications/notificationSlice';
 import { getData } from '../../features/gangInfo/gangInformationSlice';
 import CircularIndicator from '../loadingIndicator/CircularIndicator';
-import { RateReview } from '@mui/icons-material';
 import { addDeduction } from '../../services/database/liftDeductions';
 
 const extractFullName = (membersArray) => {
   return membersArray.map((member) => {
     return `${member.firstName} ${member.lastName}`;
-  })
+  });
 }
 
-const DeductionRow = ({ title, memberValue, members, hoursValue, handleChange, handleClick }) => {
+const DeductionRow = ({ title, memberValue, members, hoursValue, handleChange, handleClick, buttonDisabled }) => {
   return (
     <Grid container sx={{ mt: "20px" }}>
       <Typography variant='h5' color="text.title.main">{title}</Typography>
@@ -39,11 +38,11 @@ const DeductionRow = ({ title, memberValue, members, hoursValue, handleChange, h
 
         <Grid item xs={12} md={5} display="flex" sx={{ alignItems: "center" }}>
           <GridLabel text="Hours" />
-          <TextField name="hours" value={hoursValue} type="number" required={true} onChange={handleChange} sx={{ ml: "20px", width: "60%" }} />
+          <TextField name="hours" value={hoursValue} type="number" InputProps={{inputProps: { min: 0 }}} required={true} onChange={handleChange} sx={{ ml: "20px", width: "60%" }} />
         </Grid>
 
         <Grid item xs={12} md={2} display="flex" sx={{ alignItems: "center" }}>
-          <Button variant='contained' onClick={handleClick}>Save</Button>
+          <Button variant='contained' onClick={handleClick} disabled={buttonDisabled} sx={{width: "100%"}}>Save</Button>
         </Grid>
       </Grid>
     </Grid>
@@ -59,6 +58,7 @@ const Deductions = () => {
   const [hours, setHours] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [selectedLift, setSelectedLift] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState(true);
   const plotData = useSelector(state => state.plotData.singlePlotData);
 
   const liftOptions = ["1st Lift", "2nd Lift", "3rd Lift", "4th Lift", "Gables", "Other"];
@@ -95,7 +95,7 @@ const Deductions = () => {
       hourlyRate: parseInt(member.dayRate) / 8,
       hours,
       lift: selectedLift,
-      plotId: plotData.id
+      plotId: plotData.id // TEST -> is this needed now that the deductions is a subcollection of plotData?
     };
 
     addDeduction(data).then((response) => {
@@ -122,7 +122,11 @@ const Deductions = () => {
     } else {
       setMembers(membersFromStore);
     }
-  }, [selectedLift])
+  }, [selectedLift]);
+
+  useEffect(() => {
+    setButtonDisabled(selectedMember.length === 0 || parseInt(hours) <= 0);
+  }, [selectedMember, hours]);
 
   return (
     isLoading ? <CircularIndicator /> : <form onSubmit={handleSubmit}>
@@ -140,7 +144,15 @@ const Deductions = () => {
             />
           </Grid>
 
-          {selectedLift && <DeductionRow title={selectedLift} memberValue={selectedMember} members={members} hoursValue={hours} handleChange={handleChange} handleClick={handleSave} />}
+          {selectedLift && <DeductionRow
+            title={selectedLift}
+            memberValue={selectedMember}
+            members={members}
+            hoursValue={hours}
+            handleChange={handleChange}
+            handleClick={handleSave}
+            buttonDisabled={buttonDisabled}
+          />}
         </Grid>
       </Grid>
     </form>
