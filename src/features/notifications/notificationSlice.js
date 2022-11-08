@@ -6,7 +6,7 @@ export const notificationSlice = createSlice({
         isOpen: false,
         message: "",
         alertType: "success",
-        duration: 5000,
+        duration: 4000,
     },
     reducers: {
         showToast: (state, action) => {
