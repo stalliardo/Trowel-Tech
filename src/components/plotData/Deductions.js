@@ -100,7 +100,7 @@ const Deductions = () => {
 
     addDeduction(data).then((response) => {
       setIsLoading(true);
-      dispatch(showToast({ message: `Deduction for ${member.firstName} saved successfully!`, duration: 3000 }));
+      dispatch(showToast({ message: `Deduction for ${member.firstName} saved successfully!`, duration: 3000, alertType: "success" }));
       setSelectedMember("");
       setHours("");
     }).catch((e) => {
