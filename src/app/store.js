@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import gangInformationSlice from '../features/gangInfo/gangInformationSlice';
-import liftDeductionsSlice from '../features/liftDeductions/liftDeductionsSlice';
+import financialsSlice from '../features/financials/financialsSlice';
 import notificationSlice from '../features/notifications/notificationSlice';
 import plotDataSlice from '../features/plotData/plotDataSlice';
 import todoReducer from '../features/todo/todoSlice'
@@ -13,6 +13,6 @@ export const store = configureStore({
     gangInformation: gangInformationSlice,
     plotData: plotDataSlice,
     notification: notificationSlice,
-    liftDeduction: liftDeductionsSlice
+    financials: financialsSlice
   },
 });
