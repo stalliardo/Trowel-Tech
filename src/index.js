@@ -20,6 +20,7 @@ import Index from './routes/plotData/Index';
 import Information from './components/plotData/Information';
 import Breakdown from './components/plotData/Breakdown';
 import Deductions from './components/plotData/Deductions';
+import Financials from './components/plotData/Financials';
 import Toast from './components/notifications/Toast';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -46,6 +47,9 @@ root.render(
                 </Route>
                 <Route path="deductions">
                   <Route path=":plotId" element={<Deductions />}/>
+                </Route>
+                <Route path="financials">
+                  <Route path=":plotId" element={<Financials />}/>
                 </Route>
               </Route>
             </Route>
