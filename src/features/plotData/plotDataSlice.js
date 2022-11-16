@@ -14,17 +14,13 @@ export const plotDataSlice = createSlice({
         setSinglePlot: (state, action) => {
             state.singlePlotData = state.allPlots.find((plot) => plot.id === action.payload);
         },
-
         setQueryParam: (state, action) => {
             state.queryParam = action.payload;
         },
-
         filterPlots: (state, action) => {
             const filteredPlots = state.allPlots.filter(plot => plot[action.payload.key] === action.payload.value);
 
-            if (filteredPlots.length) {
-                state.filteredPlots = filteredPlots;
-            } 
+            if (filteredPlots.length) state.filteredPlots = filteredPlots;
         },
         clearFilters: (state) => {
             state.filteredPlots = null;
@@ -44,7 +40,6 @@ export const plotDataSlice = createSlice({
         builder.addCase(getPlot.rejected, (state) => {
             state.isLoading = false;
         });
-        /////////////////////////////////////////////////////////////////////////////////
         builder.addCase(getPlots.pending, (state) => {
             state.isLoading = true;
         });
@@ -55,7 +50,6 @@ export const plotDataSlice = createSlice({
         builder.addCase(getPlots.rejected, (state) => {
             state.isLoading = false;
         });
-        /////////////////////////////////////////////////////////////////////////////////
         builder.addCase(addPlotData.pending, (state) => {
             state.isLoading = true;
         });
@@ -67,8 +61,7 @@ export const plotDataSlice = createSlice({
         builder.addCase(addPlotData.rejected, (state) => {
             state.isLoading = false;
         });
-        /////////////////////////////////////////////////////////////////////////////////
-    builder.addCase(edit.pending, (state) => {
+        builder.addCase(edit.pending, (state) => {
             state.isLoading = true;
         });
         builder.addCase(edit.fulfilled, (state, action) => {
@@ -80,7 +73,6 @@ export const plotDataSlice = createSlice({
         builder.addCase(edit.rejected, (state) => {
             state.isLoading = false;
         });
-        /////////////////////////////////////////////////////////////////////////////////
         builder.addCase(deletePlotData.pending, (state) => {
             state.isLoading = true;
         });
@@ -91,19 +83,18 @@ export const plotDataSlice = createSlice({
         builder.addCase(deletePlotData.rejected, (state) => {
             state.isLoading = false;
         });
-        /////////////////////////////////////////////////////////////////////////////////
         builder.addCase(addInformation.pending, (state) => {
             state.isLoading = true;
         });
         builder.addCase(addInformation.fulfilled, (state, action) => {
             state.isLoading = false;
             state.singlePlotData.information = action.payload.formData;
-            
+
             state.allPlots = state.allPlots.filter(plot => plot.id !== action.payload.plotData.id);
-            
-            const plotDataWithInformationObject = {...action.payload.plotData};
+
+            const plotDataWithInformationObject = { ...action.payload.plotData };
             plotDataWithInformationObject.information = action.payload.formData;
-            
+
             state.allPlots.push(plotDataWithInformationObject);
         });
         builder.addCase(addInformation.rejected, (state) => {
