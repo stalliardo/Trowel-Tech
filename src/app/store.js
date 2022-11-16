@@ -3,12 +3,10 @@ import gangInformationSlice from '../features/gangInfo/gangInformationSlice';
 import financialsSlice from '../features/financials/financialsSlice';
 import notificationSlice from '../features/notifications/notificationSlice';
 import plotDataSlice from '../features/plotData/plotDataSlice';
-import todoReducer from '../features/todo/todoSlice'
 import userSlice from '../features/user/userSlice';
 
 export const store = configureStore({
   reducer: {
-    todo: todoReducer,
     user: userSlice,
     gangInformation: gangInformationSlice,
     plotData: plotDataSlice,
