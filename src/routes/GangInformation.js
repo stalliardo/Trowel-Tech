@@ -1,15 +1,26 @@
 import { Avatar, Box, Button, CircularProgress, Grid, Paper, TextField, Typography } from '@mui/material'
+
+
+
 import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
 import { Container } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import SelectMenu from '../components/selectMenu/SelectMenu';
 import { useDispatch, useSelector } from 'react-redux';
 import { getData, createGangInformationDocument, updateGangInformationDocument, deleteMember, setIsLoading } from '../features/gangInfo/gangInformationSlice';
-import MembersTable from '../components/membersTable/MembersTable';
+
 import { setGangId } from '../features/user/userSlice';
+
+import ExtendableTable from '../components/table/ExtendableTable';
+
 import EditMemberModal from '../components/modal/Edit member modal/EditMemberModal';
 
 const GangInformation = () => {
+
+    const tableData = {
+        head: ["Name", "Member Type", "Day Rate", "Skill", "Actions"],
+        rows: []
+    }
 
     const dispatch = useDispatch();
 
@@ -38,6 +49,25 @@ const GangInformation = () => {
     const [showEditModal, setShowEditModal] = useState(false);
     const [modalData, setModalData] = useState({});
 
+    useEffect(() => {
+        if (gangData.members.length) {
+            let data = [];
+
+            gangData.members.forEach((member) => {
+                console.log("for each called + member = ", member);
+                data.push({
+                    name: member.firstName + " " + member.lastName,
+                    memberType: member.memberType,
+                    dayRate: member.dayRate,
+                    skill: member.skill,
+                    id: member.id
+                })
+            });
+
+            tableData.rows = data;
+        }
+    }, [gangData.members])
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
@@ -57,6 +87,7 @@ const GangInformation = () => {
         }).catch((e) => {
             // TODO
         })
+        console.log("delete called");
     }
 
     const handleSubmit = (e) => {
@@ -83,11 +114,9 @@ const GangInformation = () => {
             <Container sx={{ mt: "20px" }}>
                 <Typography variant='h4' >Members:</Typography>
                 <Box sx={{ width: "100%" }}>
-                    <MembersTable
-                        data={gangData}
-                        onDeleteClicked={handleDeleteMember}
-                        editClicked={handleEditMemberClicked}
-                    />
+
+                    <ExtendableTable data={tableData} deleteButton={true} editButton={true} handleDelete={handleDeleteMember} handleEdit={handleEditMemberClicked} />
+
                 </Box>
 
                 {showEditModal ?
