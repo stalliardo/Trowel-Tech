@@ -24,11 +24,13 @@ export const createGangDoc = async (formData) => {
     return docRef.id;
 }
 
-export const updateGangDoc = async (data) => { // need to change this to use sub colection instaed of pain in the arse array
+export const updateGangDoc = async (data) => {
     const ref = collection(db, "gangInformation", data.gangId, "members");
 
     await addDoc(ref, {...data.formData, id: data.id});
 }
+
+// TODO below
 
 export const overwriteMembersArray = async (data) => {
     const gangInformationRef = doc(db, "gangInformation", data.gangId);
@@ -40,20 +42,8 @@ export const overwriteMembersArray = async (data) => {
 
 export const deleteUser = async (data) => {
     const ref = doc(db, "gangInformation", data.id, "members", data.row.id);
-
-    console.log("deleet data = ", data);
-
     await deleteDoc(ref);
 }
-
-// export const getGangData = async (id) => {
-//     const docRef = doc(db, "gangInformation", id);
-//     const docSnap = await getDoc(docRef);
-
-//     if (docSnap.exists()) {
-//         return {...docSnap.data(), id};
-//     }
-// }
 
 export const getGangData = async (id) => {
     const querySnapshot = await getDocs(collection(db, "gangInformation", id, "members"));

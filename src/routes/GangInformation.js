@@ -54,7 +54,6 @@ const GangInformation = () => {
             let data = [];
 
             gangData.members.forEach((member) => {
-                console.log("for each called + member = ", member);
                 data.push({
                     name: member.firstName + " " + member.lastName,
                     memberType: member.memberType,
@@ -87,7 +86,6 @@ const GangInformation = () => {
         }).catch((e) => {
             // TODO
         })
-        console.log("delete called");
     }
 
     const handleSubmit = (e) => {

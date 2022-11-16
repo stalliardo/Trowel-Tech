@@ -30,7 +30,6 @@ export const gangInformationSlice = createSlice({
             state.id = action.payload.id
         },
             builder.addCase(getData.fulfilled, (state, action) => {
-                console.log("action.palod = ", action.payload);
                 state.members = action.payload || [];
                 state.isLoading = false;
                 state.creatorId = action.payload.creatorId;
@@ -86,12 +85,10 @@ export const updateGangInformationDocument = createAsyncThunk(
     "gangInformation/updateGangInformationDocument",
     async (data) => {
         try {
-            console.log("update called");
             const dataObject = { ...data, id: Date.now() };
             await updateGangDoc(dataObject);
             return dataObject;
         } catch (error) {
-            console.log("error = ", error);
            throw error;
         }
     }
@@ -127,7 +124,6 @@ export const getData = createAsyncThunk(
     async (gangId) => {
         try {
             const data = await getGangData(gangId);
-            console.log("data = ", data);
             return data;
 
         } catch (error) {
