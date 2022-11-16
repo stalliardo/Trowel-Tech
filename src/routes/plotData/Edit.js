@@ -62,7 +62,7 @@ const Edit = () => {
 
       <Paper component={Container} elevation={3} maxWidth="lg" sx={{ mt: "50px", textAlign: "left", }}>
           <TabContainer navItems={navItems}/>
-          <Box sx={{padding: "20px"}} >
+          <Box sx={{padding: "20px 20px 60px"}} >
             <Outlet />
           </Box>
         </Paper>

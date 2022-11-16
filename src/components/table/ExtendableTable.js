@@ -12,8 +12,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
 const ExtendableTable = (props) => {
-  console.log("table called + props = ", props);
-
   const handleEditClicked = (row) => {
     props.handleEdit(row);
   }
@@ -47,7 +45,7 @@ const ExtendableTable = (props) => {
               {(props.deleteButton || props.editButton) &&
                 <TableCell sx={{ width: "100px" }}>
                   {props.editButton && <IconButton color="primary" onClick={() => handleEditClicked(row)}><EditIcon /></IconButton>}
-                  {props.editButton && <IconButton color='error' onClick={() => handleDeleteClicked(row)}> <DeleteIcon /> </IconButton>}
+                  {props.deleteButton && <IconButton color='error' onClick={() => handleDeleteClicked(row)}> <DeleteIcon /> </IconButton>}
                 </TableCell>
               }
             </TableRow>

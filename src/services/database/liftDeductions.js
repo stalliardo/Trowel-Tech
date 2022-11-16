@@ -1,5 +1,5 @@
 import { db } from '../../firebase';
-import { addDoc, collection, doc, getDocs } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, deleteDoc } from 'firebase/firestore';
 
 export const addDeduction = (data) => {
     // Subcollection -> plotData/id/deductions/doc
@@ -18,4 +18,11 @@ export const getDeductions = async (plotId) => {
     }
 
     return data;
+}
+
+export const deleteDeduction = ({deductionId, plotId}) => {
+    
+    const ref = doc(db, "plotData", plotId, "deductions", deductionId);
+
+    return deleteDoc(ref);
 }

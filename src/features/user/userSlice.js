@@ -37,17 +37,14 @@ export const userSlice = createSlice({
 
         builder.addCase(signIn.rejected, (state) => {
             state.isLoading = false;
-            console.log("sign in failed");
         });
 
-        // getUserData....
         builder.addCase(getUserData.pending, (state) => {
             state.isLoadingUserData = true;
         });
 
         builder.addCase(getUserData.fulfilled, (state, action) => {
             state.isLoadingUserData = false;
-            console.log("payload = ", action.payload);
             state.currentUser = action.payload;
         });
 
@@ -55,7 +52,6 @@ export const userSlice = createSlice({
             state.isLoadingUserData = false;
         });
 
-        // log out....
         builder.addCase(logOut.fulfilled, (state) => {
             state.currentUser = null;
         });
@@ -70,9 +66,7 @@ export const signUpUser = createAsyncThunk(
 
         try {
             const credential = await signUpUserWithEmailAndPassword(formData);
-            // TEST -> is this still required?
-            const serializedUser = {
-                
+            const serializedUser = {                
                 name: formData.firstName + " " + formData.lastName,
                 email: formData.email,
                 uid: credential.user.uid
@@ -90,7 +84,6 @@ export const signIn = createAsyncThunk(
     async (formData) => {
         try {
             await signInUserWithEmailAndPassword(formData);
-            console.log("thunk sign in successful");
         } catch (error) {
             throw error;
         }

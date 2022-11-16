@@ -19,7 +19,6 @@ export const gangInformationSlice = createSlice({
 
     extraReducers: (builder) => {
         builder.addCase(createGangInformationDocument.fulfilled, (state, action) => {
-            console.log("is there a gang id here i can use? ", action.payload);
             state.members.push({
                 firstName: action.payload.firstName,
                 lastName: action.payload.lastName,
@@ -77,7 +76,7 @@ export const createGangInformationDocument = createAsyncThunk(
             return { ...formData, id };
 
         } catch (error) {
-            console.log("Error adding new gang. Error: ", error);
+           throw error;
         }
     }
 )
@@ -90,7 +89,7 @@ export const updateGangInformationDocument = createAsyncThunk(
             await updateGangDoc(dataObject);
             return dataObject;
         } catch (error) {
-            console.log("Error adding new gang. Error: ", error);
+           throw error;
         }
     }
 )
@@ -102,7 +101,7 @@ export const editMember = createAsyncThunk(
             await overwriteMembersArray(data);
             return data;
         } catch (error) {
-            console.log("Error overwriting members array. Error: ", error);
+            
             throw error;
         }
     }
@@ -115,7 +114,7 @@ export const deleteMember = createAsyncThunk(
             await deleteUser(data);
             return data;
         } catch (error) {
-            console.log("Error deleting user . Error: ", error);
+           throw error;
         }
     }
 )
@@ -128,7 +127,7 @@ export const getData = createAsyncThunk(
             return data;
 
         } catch (error) {
-            console.log("Error adding new gang. Error: ", error);
+           throw error;
         }
     }
 )

@@ -17,7 +17,7 @@ const OverViewItem = ({header, value, hasColor}) => {
 const FinancialOverview = ({overviewText, totalDeductions, currentFinancials, liftTotal}) => {
 
     return (
-        <Box sx={{ padding: "1px 20px 30px" }}>
+        <Box sx={{ padding: "1px 0px 30px" }}>
             <Typography textAlign="left" variant='h5' mb="15px">{overviewText}</Typography>
             <Grid container justifyContent="space-between" px="30px" sx={{ flexDirection: { xs: "column", md: "row" }, }}>
                 <OverViewItem header="Lift Total" value={liftTotal}/>
@@ -29,9 +29,3 @@ const FinancialOverview = ({overviewText, totalDeductions, currentFinancials, li
 }
 
 export default FinancialOverview;
-
-// Get all the deductions from the db for the given plot
-// Store in the state
-// When clicking selectedLift filter the data via lift
-// calculate sums ie, total lift price - all deductions.
-// will also need the totals stored in state so other comps can access it. Like the main overview container and the index page table

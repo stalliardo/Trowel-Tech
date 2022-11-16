@@ -13,6 +13,7 @@ import { showToast } from '../../features/notifications/notificationSlice';
 import { getData } from '../../features/gangInfo/gangInformationSlice';
 import CircularIndicator from '../loadingIndicator/CircularIndicator';
 import { addDeduction } from '../../services/database/liftDeductions';
+import { addToDeductionArray } from '../../features/financials/financialsSlice';
 
 const extractFullName = (membersArray) => {
   return membersArray.map((member) => {
@@ -95,10 +96,11 @@ const Deductions = () => {
       hourlyRate: parseInt(member.dayRate) / 8,
       hours,
       lift: selectedLift,
-      plotId: plotData.id // TEST -> is this needed now that the deductions is a subcollection of plotData?
+      plotId: plotData.id
     };
 
     addDeduction(data).then((response) => {
+      dispatch(addToDeductionArray({...data, id: response.id}));
       setIsLoading(true);
       dispatch(showToast({ message: `Deduction for ${member.firstName} saved successfully!`, duration: 3000, alertType: "success" }));
       setSelectedMember("");

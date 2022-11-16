@@ -121,7 +121,7 @@ export const getPlot = createAsyncThunk(
             const response = await getOnePlot(plotId);
             return response;
         } catch (error) {
-            console.log('Error getting plot data. Error = ', error);
+            throw error;
         }
     }
 );
@@ -133,7 +133,7 @@ export const getPlots = createAsyncThunk(
             const response = await getAllPlots(gangId);
             return response;
         } catch (error) {
-            console.log('Error getting plot data. Error = ', error);
+            throw error;
         }
     }
 );
@@ -145,7 +145,7 @@ export const addPlotData = createAsyncThunk(
             const id = await savePlotData(formData);
             return { ...formData, id };
         } catch (error) {
-            console.log('Error getting plot data. Error = ', error);
+            throw error;
         }
     }
 );
@@ -153,12 +153,11 @@ export const addPlotData = createAsyncThunk(
 export const edit = createAsyncThunk(
     "plotData/edit",
     async (formData) => {
-        console.log("formData from edit = ", formData);
         try {
             await editPlot(formData);
             return formData;
         } catch (error) {
-            console.log('Error getting plot data. Error = ', error);
+            throw error;
         }
     }
 );
@@ -170,7 +169,7 @@ export const deletePlotData = createAsyncThunk(
             await deletePlot(id);
             return id;
         } catch (error) {
-            console.log('Error getting plot data. Error = ', error);
+            throw error;
         }
     }
 );
@@ -178,13 +177,11 @@ export const deletePlotData = createAsyncThunk(
 export const addInformation = createAsyncThunk(
     "plotData/addInformation",
     async (data) => {
-        console.log("infromation data = ", data.formData);
         try {
             await addInformationDataToDoc(data.plotData, data.formData);
-            //need to return the formData so it can be added to the local state
             return data;
         } catch (error) {
-            console.log('Error getting plot data. Error = ', error);
+            throw error;
         }
     }
 );

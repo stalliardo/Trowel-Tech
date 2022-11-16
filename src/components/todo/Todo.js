@@ -13,9 +13,6 @@ const Todo = () => {
 
         dispatch(fetchTodos());
 
-        // dispatch(fetchTodos()).unwrap().then((data) => {
-        //     console.log('data = ', data);    
-        // })
         
     }, [])
 
@@ -32,13 +29,6 @@ const Todo = () => {
 
         dispatch(saveTodo({value: todo}))
 
-        // addTodo({value: todo}).then((data) => {
-        //     console.log('Todo saved');
-            
-        // }).catch((error) => {
-        //     console.log('error adding todo. Error: ', error.message);
-            
-        // })
 
 
 

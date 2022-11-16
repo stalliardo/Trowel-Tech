@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { getDeductions } from '../../services/database/liftDeductions';
+import { deleteDeduction, getDeductions } from '../../services/database/liftDeductions';
 
 export const financialsSlice = createSlice({
     name: 'financials',
@@ -7,19 +7,38 @@ export const financialsSlice = createSlice({
         deductionData: [],   
     },
 
+    reducers: {
+        addToDeductionArray: (state, action) => {
+            state.deductionData.push(action.payload);
+        }
+    },
+
     extraReducers: (builder) => {
         builder.addCase(getAllDeductions.pending, (state) => {});
 
         builder.addCase(getAllDeductions.fulfilled, (state, action) => {
             state.deductionData = action.payload;
-            console.log("deductions from fulfilled = ", state.deductionData);
         });
 
         builder.addCase(getAllDeductions.rejected, (state) => {
             
         });
+
+        //////////////////////////////////////////////////////////////////////////////////////////
+
+        builder.addCase(deleteOneDeduction.fulfilled, (state, action) => {
+            state.deductionData = state.deductionData.filter(element => element.id !== action.payload);
+        });
+
+        builder.addCase(deleteOneDeduction.rejected, (state, action) => {
+            // TODO
+        });
+
+        
     }
 })
+
+export const { addToDeductionArray } = financialsSlice.actions;
 
 export const getAllDeductions = createAsyncThunk(
     "financials/getAllDeductions",
@@ -28,7 +47,19 @@ export const getAllDeductions = createAsyncThunk(
             const deductions = await getDeductions(plotId);
             return deductions;
         } catch (error) {
-            return error;
+            throw error;
+        }
+    }
+)
+
+export const deleteOneDeduction = createAsyncThunk(
+    "financials/deleteOneDeduction",
+    async (data) => {
+        try {
+            await deleteDeduction({...data});
+            return data.deductionId;
+        } catch (error) {
+            throw error;
         }
     }
 )

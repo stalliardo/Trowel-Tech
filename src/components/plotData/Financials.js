@@ -13,7 +13,7 @@ import ExtendableTable from '../table/ExtendableTable'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { getAllDeductions } from '../../features/financials/financialsSlice'
+import { deleteOneDeduction, getAllDeductions } from '../../features/financials/financialsSlice'
 import { calculateCurrentFinancialsForLift, extractTotalForLift, returnPriceFromLiftName } from '../../utils/deductionUtils'
 import { Typography } from '@mui/material'
 
@@ -43,7 +43,7 @@ const Financials = () => {
             navigate("/plot-data");
         } else if (!deductionData.length && plotData) {
             dispatch(getAllDeductions(plotData.id)).catch((e) => {
-                console.log("error getting deduction data. Error: ", e);
+                // TODO
             })
         } else {
             loadCalculations();
@@ -65,7 +65,7 @@ const Financials = () => {
     const buildTableRows = (deductions) => {
         const rowData = [];
         deductions.forEach((element) => {
-            const rowItem = {member: element.member, hours: element.hours, amountDeducted: element.hourlyRate * parseInt(element.hours)};
+            const rowItem = { member: element.member, hours: element.hours, amountDeducted: element.hourlyRate * parseInt(element.hours), id: element.id };
             rowData.push(rowItem);
         })
         tableData.rows = rowData;
@@ -82,19 +82,18 @@ const Financials = () => {
 
         if (plotData) loadCalculations();
 
-        if(deductionData) {
+        if (deductionData) {
             const filteredDeductionsArray = filterDeductionArray(deductionData, selectedLift);
 
             if (filteredDeductionsArray.length) {
                 buildTableRows(filteredDeductionsArray);
-                console.log("set show called");
                 setShowTable(true);
             } else {
                 setShowTable(false);
             }
-            
+
         }
-    }, [selectedLift])
+    }, [selectedLift, deductionData])
 
     const handleChange = (e) => {
         switch (e.target.name) {
@@ -106,17 +105,16 @@ const Financials = () => {
         }
     }
 
-    const handleEdit = (row) => {
-        // dispatch(setSinglePlot(row.id));
-        // dispatch(setQueryParam(row.id));
-        // navigate(`edit/information/${row.id}`);
-    }
-
+   
     const handleDelete = (row) => {
-        // const confirmation = window.confirm(`Are you sure you want to delete plot ${row.plotNumber}?`);
-        // if(confirmation) {
-        //     dispatch(deletePlotData(row.id));
-        // }
+        const confirmation = window.confirm(`Are you sure you want to delete the deduction for ${row.member}?`);
+        if(confirmation) {
+            dispatch(deleteOneDeduction({deductionId: row.id, plotId: plotData.id})).unwrap().then((response) => {
+                // TODO
+            }).catch((e) => {
+                // TODO
+            })
+        }
     }
 
     return (
@@ -146,14 +144,14 @@ const Financials = () => {
             </Grid>
 
             <Grid container>
-                
+
                 {
                     showTable ?
-                    <>
-                        <Typography variant='h5'>Deduction History</Typography>
-                        <ExtendableTable data={tableData} deleteButton={true} editButton={true} handleEdit={handleEdit} handleDelete={handleDelete}/>
-                    </>
-                    : null
+                        <>
+                            <Typography variant='h5'>Deduction History</Typography>
+                            <ExtendableTable data={tableData} deleteButton={true} handleDelete={handleDelete} />
+                        </>
+                        : null
                 }
             </Grid>
         </Box>
