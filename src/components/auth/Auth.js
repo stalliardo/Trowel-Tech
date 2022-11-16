@@ -55,15 +55,11 @@ const Auth = () => {
                 navigate("/");
               }).catch((error) => {
                 setErrorText("An error occured. Please try again.")
-                console.log('Error registering user. Error: ', error); 
             })
         } else {
-            console.log("signing in....");
             dispatch(signIn(formData)).unwrap().then(() => {
-                console.log("succesful sign in");
                 navigate("/");
             }).catch((error) => {
-                console.log("Error signing in. Error: ", error);
                 // TODO handle failure. Show notification
             })
         }

@@ -50,7 +50,6 @@ const Information = () => {
   }
 
   const handleSubmit = (e) => {
-    //TODO need to determine if creating or editing, do this via the query param
     e.preventDefault();
 
     if (!Object.keys(params).length) {
@@ -58,7 +57,7 @@ const Information = () => {
         dispatch(setQueryParam(data.id));
         navigate(`${data.id}`);
       }).catch((error) => {
-        console.log("error Saving data. Error: ", error);
+        // TODO
       })
     } else {
       if(!formData.id) {

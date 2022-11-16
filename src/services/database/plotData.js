@@ -8,7 +8,7 @@ export const getOnePlot = async (id) => {
     if (docSnap.exists()) {
         return docSnap.data();
     } else {
-        console.log("no data found");
+        // TODO
     }
 }
 

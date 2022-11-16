@@ -5,8 +5,7 @@ import { Container } from '@mui/system'
 const Footer = () => {
 
     const handleFooterLinkClicked = () => {
-        // TODO
-        console.log("footer clciked");
+        
     }
 
     const FooterLink = (props) => {
