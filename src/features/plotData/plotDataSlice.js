@@ -14,17 +14,13 @@ export const plotDataSlice = createSlice({
         setSinglePlot: (state, action) => {
             state.singlePlotData = state.allPlots.find((plot) => plot.id === action.payload);
         },
-
         setQueryParam: (state, action) => {
             state.queryParam = action.payload;
         },
-
         filterPlots: (state, action) => {
             const filteredPlots = state.allPlots.filter(plot => plot[action.payload.key] === action.payload.value);
 
-            if (filteredPlots.length) {
-                state.filteredPlots = filteredPlots;
-            } 
+            if (filteredPlots.length) state.filteredPlots = filteredPlots;
         },
         clearFilters: (state) => {
             state.filteredPlots = null;
@@ -44,7 +40,6 @@ export const plotDataSlice = createSlice({
         builder.addCase(getPlot.rejected, (state) => {
             state.isLoading = false;
         });
-        /////////////////////////////////////////////////////////////////////////////////
         builder.addCase(getPlots.pending, (state) => {
             state.isLoading = true;
         });
@@ -55,7 +50,6 @@ export const plotDataSlice = createSlice({
         builder.addCase(getPlots.rejected, (state) => {
             state.isLoading = false;
         });
-        /////////////////////////////////////////////////////////////////////////////////
         builder.addCase(addPlotData.pending, (state) => {
             state.isLoading = true;
         });
@@ -67,8 +61,7 @@ export const plotDataSlice = createSlice({
         builder.addCase(addPlotData.rejected, (state) => {
             state.isLoading = false;
         });
-        /////////////////////////////////////////////////////////////////////////////////
-    builder.addCase(edit.pending, (state) => {
+        builder.addCase(edit.pending, (state) => {
             state.isLoading = true;
         });
         builder.addCase(edit.fulfilled, (state, action) => {
@@ -80,7 +73,6 @@ export const plotDataSlice = createSlice({
         builder.addCase(edit.rejected, (state) => {
             state.isLoading = false;
         });
-        /////////////////////////////////////////////////////////////////////////////////
         builder.addCase(deletePlotData.pending, (state) => {
             state.isLoading = true;
         });
@@ -91,19 +83,18 @@ export const plotDataSlice = createSlice({
         builder.addCase(deletePlotData.rejected, (state) => {
             state.isLoading = false;
         });
-        /////////////////////////////////////////////////////////////////////////////////
         builder.addCase(addInformation.pending, (state) => {
             state.isLoading = true;
         });
         builder.addCase(addInformation.fulfilled, (state, action) => {
             state.isLoading = false;
             state.singlePlotData.information = action.payload.formData;
-            
+
             state.allPlots = state.allPlots.filter(plot => plot.id !== action.payload.plotData.id);
-            
-            const plotDataWithInformationObject = {...action.payload.plotData};
+
+            const plotDataWithInformationObject = { ...action.payload.plotData };
             plotDataWithInformationObject.information = action.payload.formData;
-            
+
             state.allPlots.push(plotDataWithInformationObject);
         });
         builder.addCase(addInformation.rejected, (state) => {
@@ -121,7 +112,7 @@ export const getPlot = createAsyncThunk(
             const response = await getOnePlot(plotId);
             return response;
         } catch (error) {
-            console.log('Error getting plot data. Error = ', error);
+            throw error;
         }
     }
 );
@@ -133,7 +124,7 @@ export const getPlots = createAsyncThunk(
             const response = await getAllPlots(gangId);
             return response;
         } catch (error) {
-            console.log('Error getting plot data. Error = ', error);
+            throw error;
         }
     }
 );
@@ -145,7 +136,7 @@ export const addPlotData = createAsyncThunk(
             const id = await savePlotData(formData);
             return { ...formData, id };
         } catch (error) {
-            console.log('Error getting plot data. Error = ', error);
+            throw error;
         }
     }
 );
@@ -153,12 +144,11 @@ export const addPlotData = createAsyncThunk(
 export const edit = createAsyncThunk(
     "plotData/edit",
     async (formData) => {
-        console.log("formData from edit = ", formData);
         try {
             await editPlot(formData);
             return formData;
         } catch (error) {
-            console.log('Error getting plot data. Error = ', error);
+            throw error;
         }
     }
 );
@@ -170,7 +160,7 @@ export const deletePlotData = createAsyncThunk(
             await deletePlot(id);
             return id;
         } catch (error) {
-            console.log('Error getting plot data. Error = ', error);
+            throw error;
         }
     }
 );
@@ -178,13 +168,11 @@ export const deletePlotData = createAsyncThunk(
 export const addInformation = createAsyncThunk(
     "plotData/addInformation",
     async (data) => {
-        console.log("infromation data = ", data.formData);
         try {
             await addInformationDataToDoc(data.plotData, data.formData);
-            //need to return the formData so it can be added to the local state
             return data;
         } catch (error) {
-            console.log('Error getting plot data. Error = ', error);
+            throw error;
         }
     }
 );

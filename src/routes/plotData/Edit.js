@@ -14,7 +14,8 @@ import { clearSinglePlotData } from '../../features/plotData/plotDataSlice'
 const defaultNavItems = [
   {
       to: "information",
-      text: "Plot Information"
+      text: "Plot Information",
+      requiresQueryParam: false
   },
   {
       to: "lift-breakdown",
@@ -36,11 +37,13 @@ const Edit = () => {
 
   let navItems = [];
 
-  if(!queryParam) {
-    navItems = defaultNavItems.filter(item => item.to === "information");
-  } else {
-    navItems = defaultNavItems;
-  }
+  navItems = defaultNavItems;
+
+  // if(!queryParam) {
+  //   navItems = defaultNavItems.filter(item => item.to === "information");
+  // } else {
+  //   navItems = defaultNavItems;
+  // }
   
   const isLoading = useSelector(state => state.plotData.isLoadingSinglePlot);
 
@@ -60,9 +63,9 @@ const Edit = () => {
       </Box>
       <OverviewContainer />
 
-      <Paper elevation={3} sx={{ mt: "50px", textAlign: "left", }}>
+      <Paper component={Container} elevation={3} maxWidth="lg" sx={{ mt: "50px", textAlign: "left", }}>
           <TabContainer navItems={navItems}/>
-          <Box sx={{padding: "20px"}} >
+          <Box sx={{padding: "20px 20px 60px"}} >
             <Outlet />
           </Box>
         </Paper>

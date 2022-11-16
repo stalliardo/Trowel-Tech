@@ -6,7 +6,7 @@ import JoinOrCreatePrompt from '../components/home/JoinOrCreatePrompt';
 
 const Home = () => {
     const { currentUser } = useSelector((state) => state.user);
-    console.log('currentUSerfrom home page  = ', currentUser);
+    console.log('current user from home page  = ', currentUser);
 
     if(!currentUser){
         return <LandingPage />

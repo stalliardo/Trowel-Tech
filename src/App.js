@@ -20,7 +20,7 @@ function App() {
       if (user) {
         if (!userDoc.currentUser) {
           dispatch(getUserData(user.uid)).unwrap().catch((e) => {
-            console.log("Error getting user data. Error = ", e);
+            // TODO
           })
         } 
       } else {

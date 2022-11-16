@@ -9,12 +9,10 @@ const JoinOrCreatePrompt = () => {
     const navigate = useNavigate();
 
     const onCreateClicked = () => {
-        console.log("o clicked");
         navigate("gang-information");
     }   
 
     const onJoinClicked = () => {
-        console.log("j clicked");
     }
 
     return (

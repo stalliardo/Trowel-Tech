@@ -19,7 +19,7 @@ const GangInformation = () => {
         if (userDoc && userDoc.gangId) {
             dispatch(getData(userDoc.gangId)).unwrap().then(() => {
             }).catch((e) => {
-                console.log("Error getting data. Error: ", e);
+                // TODO
             });
         } else {
             dispatch(setIsLoading(false));
@@ -55,7 +55,7 @@ const GangInformation = () => {
         const data = { row, id: userDoc.gangId || row.id }
         dispatch(deleteMember(data)).unwrap().then(() => {
         }).catch((e) => {
-            console.log("Error deleting user. Error: ", e);
+            // TODO
         })
     }
 
@@ -65,13 +65,13 @@ const GangInformation = () => {
         if (userDoc.gangId) {
             dispatch(updateGangInformationDocument({ formData, gangId: userDoc.gangId })).unwrap().then((response) => {
             }).catch((e) => {
-                console.log("Error updating gang. Error = ", e);
+                // TODO
             })
         } else {
             dispatch(createGangInformationDocument({ ...formData, creatorId: userDoc.id })).unwrap().then((response) => {
                 dispatch(setGangId(response.id))
             }).catch((e) => {
-                console.log("Error creating gang. Error = ", e);
+                // TODO
             })
         }
     }
