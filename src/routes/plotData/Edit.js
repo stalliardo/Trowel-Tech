@@ -60,7 +60,7 @@ const Edit = () => {
       </Box>
       <OverviewContainer />
 
-      <Paper elevation={3} sx={{ mt: "50px", textAlign: "left", }}>
+      <Paper component={Container} elevation={3} maxWidth="lg" sx={{ mt: "50px", textAlign: "left", }}>
           <TabContainer navItems={navItems}/>
           <Box sx={{padding: "20px"}} >
             <Outlet />

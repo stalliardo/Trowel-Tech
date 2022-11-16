@@ -2,14 +2,9 @@ import { Box, Typography } from '@mui/material'
 import React from 'react'
 
 const loadColor = (value) => {
-
-  if(value < 0) {
-    console.log("less than. before alteration =  ", value, " after = ", value * -1);
-  }
   if(value > 0) return "lightgreen";
   if(value === 0) return "text.title.main";
   if(value < 0) return "red";
-
 }
 
 const loadSymbol = (value, hasColor) => {

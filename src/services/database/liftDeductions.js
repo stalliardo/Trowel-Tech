@@ -8,7 +8,7 @@ export const addDeduction = (data) => {
 }
 
 export const getDeductions = async (plotId) => {
-    const querySnapshot = await getDocs(collection(db, "plotData", "KlhdEZ4D4dN0cl6yLGFY", "deductions"));
+    const querySnapshot = await getDocs(collection(db, "plotData", plotId, "deductions"));
     const data = [];
 
     if (!querySnapshot.empty) {

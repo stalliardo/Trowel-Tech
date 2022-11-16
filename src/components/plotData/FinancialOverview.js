@@ -17,7 +17,7 @@ const OverViewItem = ({header, value, hasColor}) => {
 const FinancialOverview = ({overviewText, totalDeductions, currentFinancials, liftTotal}) => {
 
     return (
-        <Box sx={{ mt: "20px", padding: "1px 20px 30px" }}>
+        <Box sx={{ padding: "1px 20px 30px" }}>
             <Typography textAlign="left" variant='h5' mb="15px">{overviewText}</Typography>
             <Grid container justifyContent="space-between" px="30px" sx={{ flexDirection: { xs: "column", md: "row" }, }}>
                 <OverViewItem header="Lift Total" value={liftTotal}/>
