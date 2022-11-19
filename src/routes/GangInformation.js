@@ -13,6 +13,8 @@ import ExtendableTable from '../components/table/ExtendableTable';
 import PageTitle from '../components/elements/PageTitle';
 
 import EditMemberModal from '../components/modal/Edit member modal/EditMemberModal';
+import ExtendableModal from '../components/modal/extendableModal/ExtendableModal';
+import AddMemberModal from '../components/modal/AddMemberModal';
 
 const GangInformation = () => {
 
@@ -91,6 +93,9 @@ const GangInformation = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        console.log('handle called');
+        
+
         if (userDoc.gangId) {
             dispatch(updateGangInformationDocument({ formData, gangId: userDoc.gangId })).unwrap().then((response) => {
             }).catch((e) => {
@@ -104,6 +109,8 @@ const GangInformation = () => {
             })
         }
     }
+
+    
 
     return (
         isLoading ? <Box sx={{ width: "fit-content", margin: "auto", mt: "100px" }}><CircularProgress size={70} /></Box> : <Container maxWidth="lg" sx={{ mt: "30px", pt: "30px", pb: "100px" }}>
@@ -184,9 +191,17 @@ const GangInformation = () => {
                         </form>
                     </Paper>
                 </Container>
+
+                <ExtendableModal title="Add Member" >
+                    <AddMemberModal />
+                </ExtendableModal>
             </Container>
         </Container>
     )
 }
 
-export default GangInformation
+export default GangInformation;
+
+// TODO
+// The save button should be disabled if any of the fields are empty
+// The add member form would look better as a modal
