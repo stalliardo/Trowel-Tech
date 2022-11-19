@@ -1,7 +1,5 @@
 import { Avatar, Box, Button, CircularProgress, Grid, Paper, TextField, Typography } from '@mui/material'
 
-
-
 import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
 import { Container } from '@mui/system'
 import React, { useEffect, useState } from 'react'
@@ -12,15 +10,16 @@ import { getData, createGangInformationDocument, updateGangInformationDocument, 
 import { setGangId } from '../features/user/userSlice';
 
 import ExtendableTable from '../components/table/ExtendableTable';
+import PageTitle from '../components/elements/PageTitle';
 
 import EditMemberModal from '../components/modal/Edit member modal/EditMemberModal';
 
 const GangInformation = () => {
 
-    const tableData = {
+    const [tableData, setTableData] = useState({
         head: ["Name", "Member Type", "Day Rate", "Skill", "Actions"],
         rows: []
-    }
+    })
 
     const dispatch = useDispatch();
 
@@ -28,8 +27,7 @@ const GangInformation = () => {
 
     useEffect(() => {
         if (userDoc && userDoc.gangId) {
-            dispatch(getData(userDoc.gangId)).unwrap().then(() => {
-            }).catch((e) => {
+            dispatch(getData(userDoc.gangId)).unwrap().catch((e) => {
                 // TODO
             });
         } else {
@@ -53,7 +51,7 @@ const GangInformation = () => {
         if (gangData.members.length) {
             let data = [];
 
-            gangData.members.forEach((member) => {
+            gangData.members.forEach((member) => {                
                 data.push({
                     name: member.firstName + " " + member.lastName,
                     memberType: member.memberType,
@@ -63,7 +61,9 @@ const GangInformation = () => {
                 })
             });
 
-            tableData.rows = data;
+            setTableData({head: tableData.head, rows: data})
+
+            tableData.rows = data;            
         }
     }, [gangData.members])
 
@@ -107,15 +107,26 @@ const GangInformation = () => {
 
     return (
         isLoading ? <Box sx={{ width: "fit-content", margin: "auto", mt: "100px" }}><CircularProgress size={70} /></Box> : <Container maxWidth="lg" sx={{ mt: "30px", pt: "30px", pb: "100px" }}>
-            <Typography fontFamily="'Russo one'" textAlign="center" variant="h4">Gang Information</Typography>
-
             <Container sx={{ mt: "20px" }}>
-                <Typography variant='h4' >Members:</Typography>
-                <Box sx={{ width: "100%" }}>
-
-                    <ExtendableTable data={tableData} deleteButton={true} editButton={true} handleDelete={handleDeleteMember} handleEdit={handleEditMemberClicked} />
-
-                </Box>
+                
+                {
+                    tableData.rows.length ?
+                        <>
+                            <Typography variant='h5' textAlign="left" >Members:</Typography>
+                            <Box sx={{ width: "100%" }}>
+                                <ExtendableTable data={tableData} deleteButton={true} editButton={true} handleDelete={handleDeleteMember} handleEdit={handleEditMemberClicked} />
+                            </Box>
+                        </>
+                        :
+                        <>
+                            <PageTitle title="Add Gang Members" />
+                            <br/>
+                            <Typography variant='p' color="text.subText">
+                                You haven't added any gang members. Once added you will be able to view, edit and delete a member. There data will then be used
+                                in the other sections of the site, such as lift deductions, hours diary etc.
+                            </Typography>
+                        </>
+                }
 
                 {showEditModal ?
                     <EditMemberModal
@@ -127,7 +138,7 @@ const GangInformation = () => {
                     : null
                 }
 
-                <Container disableGutters maxWidth="sm" sx={{ ml: "0", mr: "auto", mt: "30px" }}>
+                <Container disableGutters maxWidth="sm" sx={{ mt: "30px" }}>
                     <Paper elevation={6} sx={{ padding: "30px", display: "flex", flexDirection: "column", alignItems: "center" }}>
                         <Avatar sx={{ backgroundColor: "red", }}>
                             <GroupAddOutlinedIcon />

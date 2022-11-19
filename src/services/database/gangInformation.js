@@ -1,19 +1,15 @@
 import { db } from '../../firebase';
-import { doc, getDoc, getDocs, setDoc, addDoc, collection, updateDoc, arrayUnion, arrayRemove, deleteDoc } from 'firebase/firestore';
+import { doc, getDocs, addDoc, collection, updateDoc, deleteDoc } from 'firebase/firestore';
 
 export const createGangDoc = async (formData) => {
     const { firstName, lastName, memberType, dayRate, skill, creatorId, id } = formData;
+
     const docRef = await addDoc(collection(db, "gangInformation"), {
         creatorId,
-        members: arrayUnion({
-            id,
-            firstName,
-            lastName,
-            memberType,
-            dayRate,
-            skill
-        })
     });
+
+    const membersRef = collection(db, "gangInformation", docRef.id, "members");
+    await addDoc(membersRef, {id, firstName, lastName, memberType, dayRate, skill});
 
     const userRef = doc(db, "users", creatorId);
 

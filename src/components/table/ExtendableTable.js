@@ -11,7 +11,7 @@ import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
-const ExtendableTable = (props) => {
+const ExtendableTable = (props) => {  
   const handleEditClicked = (row) => {
     props.handleEdit(row);
   }
