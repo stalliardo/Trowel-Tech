@@ -6,6 +6,10 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import SelectMenu from '../selectMenu/SelectMenu';
+import { useDispatch } from 'react-redux';
+import { createGangInformationDocument, updateGangInformationDocument } from '../../features/gangInfo/gangInformationSlice';
+import { setGangId } from '../../features/user/userSlice';
+
 
 const memberTypeOptions = ["Split", "Day Rate"];
 const skillMenuItems = ["Bricklayer", "Hod Carrier"];
@@ -13,13 +17,34 @@ const skillMenuItems = ["Bricklayer", "Hod Carrier"];
 
 
 const AddMemberModal = (props) => {
-    
+
     const initialFormData = { firstName: "", lastName: "", memberType: "", dayRate: "0", skill: "" };
     const [formData, setFormData] = useState(initialFormData);
     const [isLoading, setIsLoading] = useState(false);
 
+
+    const dispatch = useDispatch();
+
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        console.log('handle called');
+        
+
+        if (props.userDoc.gangId) {
+            dispatch(updateGangInformationDocument({ formData, gangId: props.userDoc.gangId })).unwrap().then((response) => {
+                props.modalClosed();
+            }).catch((e) => {
+                // TODO
+            })
+        } else {
+            dispatch(createGangInformationDocument({ ...formData, creatorId: props.userDoc.id })).unwrap().then((response) => {
+                dispatch(setGangId(response.id));
+                props.modalClosed();
+            }).catch((e) => {
+                // TODO
+            })
+        }
 
     }
 
@@ -27,14 +52,18 @@ const AddMemberModal = (props) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
+    const handleCancelClicked = () => {
+        props.modalClosed()
+    }
+
     return (
         <form onSubmit={handleSubmit} style={{ width: "100%" }}>
             <Grid container spacing={2} >
                 <Grid item xs={12} sm={6}>
-                    <TextField name='firstName' label="First Name" onChange={handleChange} autoFocus fullWidth />
+                    <TextField name='firstName' label="First Name" required onChange={handleChange} autoFocus fullWidth />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <TextField name='lastName' label="Last Name" onChange={handleChange} fullWidth />
+                    <TextField name='lastName' label="Last Name" required onChange={handleChange} fullWidth />
                 </Grid>
                 <Grid item xs={12}>
                     <SelectMenu
@@ -43,10 +72,11 @@ const AddMemberModal = (props) => {
                         name="memberType"
                         menuItems={memberTypeOptions}
                         handleChange={handleChange}
+                        required={true}
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <TextField name='dayRate' label="Day Rate £" onChange={handleChange} fullWidth type="number" />
+                    <TextField name='dayRate' label="Day Rate £" InputProps={{inputProps: { min: 0 }}} required={true} onChange={handleChange} fullWidth type="number" />
                 </Grid>
 
                 <Grid item xs={12}>
@@ -56,13 +86,15 @@ const AddMemberModal = (props) => {
                         name="skill"
                         menuItems={skillMenuItems}
                         handleChange={handleChange}
+                        required={true}
                     />
                 </Grid>
             </Grid>
 
-            <Button type='submit' variant='contained' fullWidth sx={{ mt: "20px" }}>
-                {isLoading ? <CircularProgress style={{ color: "white" }} /> : "Add Member"}
-            </Button>
+            <Grid container sx={{ justifyContent: "space-between" }}>
+                <Button variant='contained' type="submit" sx={{ mt: "20px", width: { xs: "100%", md: "40%" } }}>{isLoading ? <CircularProgress style={{ color: "white" }} /> : "Save"}</Button>
+                <Button variant='contained' color="warning" sx={{ mt: "20px", width: { xs: "100%", md: "40%" } }} onClick={handleCancelClicked}>Cancel</Button>
+            </Grid>
         </form>
     )
 }
