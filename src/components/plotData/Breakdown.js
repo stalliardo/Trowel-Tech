@@ -42,9 +42,9 @@ const Breakdown = () => {
   const plotData = useSelector(state => state.plotData.singlePlotData);
   const isLoading = useSelector(state => state.plotData.isLoading);
 
-  const initialFormData = { firstLift: "", secondLift: "", thirdLift: "", fourthLift: "", gables: "", other: "", breakdownMethod: "" }
+  const initialFormData = { firstLift: "", secondLift: "", thirdLift: "", fourthLift: "", gables: "", other: "", breakdownMethod: BREAKDOWN_METHOD[0] }
 
-  const [formData, setFormData] = useState(plotData ? plotData.information : initialFormData);
+  const [formData, setFormData] = useState(plotData.information != undefined ? plotData.information : initialFormData);
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [inputsDisabled, setInputsDisabled] = useState(false);
   const [errorText, setErrorText] = useState("");
@@ -102,6 +102,15 @@ const Breakdown = () => {
   }
 
   useEffect(() => {
+    if (plotData.information !== undefined) {
+      setFormData(plotData);
+    } else {
+      setFormData(initialFormData);
+    }
+
+  }, [plotData])
+
+  useEffect(() => {
     if (formData.breakdownMethod === "Calculated") {
       const result = calculateLiftPrices(parseInt(plotData.totalPrice));
       setFormData({ ...formData, firstLift: result.largeLift, secondLift: result.smallLift, thirdLift: result.largeLift, fourthLift: result.smallLift, gables: result.gablesPrice, other: 0 });
@@ -110,7 +119,7 @@ const Breakdown = () => {
     } else {
       setInputsDisabled(false);
     }
-  }, [formData.breakdownMethod])
+  }, [formData])
 
   useEffect(() => {
     buttonDisabledHandler();
@@ -124,7 +133,7 @@ const Breakdown = () => {
           <Grid item xs={12} sm={6} sx={gridItemStyle}>
             <GridLabel text="Breakdown method" />
             <SelectMenu
-              value={formData.breakdownMethod}
+              value={formData.breakdownMethod || BREAKDOWN_METHOD[0]}
               label="Breakdown Method"
               name="breakdownMethod"
               menuItems={BREAKDOWN_METHOD}

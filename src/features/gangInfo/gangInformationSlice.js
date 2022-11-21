@@ -30,7 +30,7 @@ export const gangInformationSlice = createSlice({
             state.id = action.payload.id
         },
             builder.addCase(getData.fulfilled, (state, action) => {
-                state.members = action.payload.members;
+                state.members = action.payload || [];
                 state.isLoading = false;
                 state.creatorId = action.payload.creatorId;
                 state.id = action.payload.id;
@@ -46,8 +46,8 @@ export const gangInformationSlice = createSlice({
             }),
 
             builder.addCase(deleteMember.fulfilled, (state, action) => {
-                const newMembersArray = state.members.filter(item => item.id !== action.payload.row.id);
-                state.members = newMembersArray
+                const newMembersArray = state.members.filter(item => item.id !== action.payload.row.id);                
+                state.members = newMembersArray;
             }),
 
             builder.addCase(editMember.pending, (state) => {

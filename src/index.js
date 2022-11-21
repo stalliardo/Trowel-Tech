@@ -36,7 +36,7 @@ root.render(
             <Route index element={<Home />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/members" element={<GangInformation />} />
-            <Route path="/Plot-Data" element={<PlotData />} >
+            <Route path="/plot-data" element={<PlotData />} >
               <Route index element={<Index/>}/>
               <Route path="edit" element={<Edit/>}>
                 <Route path="information" element={<Information />}>
