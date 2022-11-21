@@ -1,19 +1,15 @@
 import { db } from '../../firebase';
-import { doc, getDoc, setDoc, addDoc, collection, updateDoc, arrayUnion, arrayRemove } from 'firebase/firestore';
+import { doc, getDocs, addDoc, collection, updateDoc, deleteDoc } from 'firebase/firestore';
 
 export const createGangDoc = async (formData) => {
     const { firstName, lastName, memberType, dayRate, skill, creatorId, id } = formData;
+
     const docRef = await addDoc(collection(db, "gangInformation"), {
         creatorId,
-        members: arrayUnion({
-            id,
-            firstName,
-            lastName,
-            memberType,
-            dayRate,
-            skill
-        })
     });
+
+    const membersRef = collection(db, "gangInformation", docRef.id, "members");
+    await addDoc(membersRef, {id, firstName, lastName, memberType, dayRate, skill});
 
     const userRef = doc(db, "users", creatorId);
 
@@ -25,12 +21,12 @@ export const createGangDoc = async (formData) => {
 }
 
 export const updateGangDoc = async (data) => {
-    const gangInformationRef = doc(db, "gangInformation", data.gangId);
+    const ref = collection(db, "gangInformation", data.gangId, "members");
 
-    await updateDoc(gangInformationRef, {
-        members: arrayUnion({...data.formData, id: data.id})
-    })
+    await addDoc(ref, {...data.formData, id: data.id});
 }
+
+// TODO below
 
 export const overwriteMembersArray = async (data) => {
     const gangInformationRef = doc(db, "gangInformation", data.gangId);
@@ -41,18 +37,19 @@ export const overwriteMembersArray = async (data) => {
 }
 
 export const deleteUser = async (data) => {
-    const docRef = doc(db, "gangInformation", data.id);
-
-    await updateDoc(docRef, {
-        members: arrayRemove(data.row)
-    })
+    const ref = doc(db, "gangInformation", data.id, "members", data.row.id);
+    await deleteDoc(ref);
 }
 
 export const getGangData = async (id) => {
-    const docRef = doc(db, "gangInformation", id);
-    const docSnap = await getDoc(docRef);
+    const querySnapshot = await getDocs(collection(db, "gangInformation", id, "members"));
+    const data = [];
 
-    if (docSnap.exists()) {
-        return {...docSnap.data(), id};
+    if (!querySnapshot.empty) {
+        querySnapshot.forEach((doc) => {
+            data.push({ ...doc.data(), id: doc.id });
+        });
     }
+
+    return data;
 }

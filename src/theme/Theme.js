@@ -1,4 +1,4 @@
-import { blue, red, blueGrey } from "@mui/material/colors";
+import { blue, red, blueGrey, lightBlue, grey } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 
 export const theme = createTheme({
@@ -7,14 +7,24 @@ export const theme = createTheme({
         //     main: red[500], // works
         // },
         backDrop: {
-            main: blueGrey[900]
+            main: blueGrey[900],
+            light: lightBlue[50],
+            dark: grey[300]
         },
         text: {
             // main: red[300],
             // secondary: red[400],
             // disabled: red[900],
-            subText: "#c4c4c4"
-        }
+            subText: grey[500],
+            title: {
+                main: grey[700],
+            }
+        },
+        // title: {
+        //     main: grey[700],
+        //     secondary: grey[400],
+            
+        // }
     },
     typography: {
         fontFamily: [
