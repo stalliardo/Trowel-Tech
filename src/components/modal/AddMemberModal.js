@@ -4,17 +4,16 @@ import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-
 import SelectMenu from '../selectMenu/SelectMenu';
+
 import { useDispatch } from 'react-redux';
+
 import { createGangInformationDocument, updateGangInformationDocument } from '../../features/gangInfo/gangInformationSlice';
 import { setGangId } from '../../features/user/userSlice';
-
+import { showToast } from '../../features/notifications/notificationSlice';
 
 const memberTypeOptions = ["Split", "Day Rate"];
 const skillMenuItems = ["Bricklayer", "Hod Carrier"];
-
-
 
 const AddMemberModal = (props) => {
 
@@ -22,38 +21,34 @@ const AddMemberModal = (props) => {
     const [formData, setFormData] = useState(initialFormData);
     const [isLoading, setIsLoading] = useState(false);
 
-
     const dispatch = useDispatch();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        console.log('handle called');
-        
-
+    
         if (props.userDoc.gangId) {
             dispatch(updateGangInformationDocument({ formData, gangId: props.userDoc.gangId })).unwrap().then((response) => {
                 props.modalClosed();
             }).catch((e) => {
-                // TODO
+                dispatch(showToast({ message: `An error occured. Please try again later.`, duration: 3000, alertType: "error" }));
+
             })
         } else {
             dispatch(createGangInformationDocument({ ...formData, creatorId: props.userDoc.id })).unwrap().then((response) => {
                 dispatch(setGangId(response.id));
                 props.modalClosed();
             }).catch((e) => {
-                // TODO
+                dispatch(showToast({ message: `An error occured. Please try again later.`, duration: 3000, alertType: "error" }));
             })
         }
-
     }
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     }
 
     const handleCancelClicked = () => {
-        props.modalClosed()
+        props.modalClosed();
     }
 
     return (

@@ -40,12 +40,8 @@ const GangInformation = () => {
     const [showAddMemberModal, setShowAddMemberModal] = useState(false);
     const [modalData, setModalData] = useState({});
 
-    useEffect(() => {
-        console.log('use effect called for members');
-        
-        if (gangData.members.length) {
-            console.log('members.length called');
-            
+    useEffect(() => {        
+        if (gangData.members.length) {            
             let data = [];
 
             gangData.members.forEach((member) => {
