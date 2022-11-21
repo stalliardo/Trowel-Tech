@@ -5,8 +5,7 @@ import { Container } from '@mui/system'
 const Footer = () => {
 
     const handleFooterLinkClicked = () => {
-        // TODO
-        console.log("footer clciked");
+        
     }
 
     const FooterLink = (props) => {
@@ -33,6 +32,7 @@ const Footer = () => {
             </Container>
 
             <Container maxWidth="lg" sx={{display: "flex", flexDirection: "row", justifyContent: "flex-start"}}>
+                <Typography component='span' sx={{color: "red", mr: "20px"}}>Beta v1.0</Typography>
                 <FooterLink text="Privacy Policy" />
                 <FooterLink text="Terms" />
                 <FooterLink text="Cookie Settings" />

@@ -15,6 +15,10 @@ export const userSlice = createSlice({
 
         noUserFound: (state, action) => {
             state.isLoadingUserData = false;
+        },
+
+        setGangId: (state, action) => {
+            state.currentUser = {...state.currentUser, gangId: action.payload}
         }
     },
     extraReducers: (builder) => {
@@ -31,13 +35,15 @@ export const userSlice = createSlice({
             state.isLoading = false;
         });
 
-        // getUserData....
+        builder.addCase(signIn.rejected, (state) => {
+            state.isLoading = false;
+        });
+
         builder.addCase(getUserData.pending, (state) => {
             state.isLoadingUserData = true;
         });
 
         builder.addCase(getUserData.fulfilled, (state, action) => {
-
             state.isLoadingUserData = false;
             state.currentUser = action.payload;
         });
@@ -46,14 +52,13 @@ export const userSlice = createSlice({
             state.isLoadingUserData = false;
         });
 
-        // log out....
         builder.addCase(logOut.fulfilled, (state) => {
             state.currentUser = null;
         });
     }
 })
 
-export const { setUser, noUserFound } = userSlice.actions;
+export const { setUser, noUserFound, setGangId } = userSlice.actions;
 
 export const signUpUser = createAsyncThunk(
     "user/signUpUser",
@@ -61,8 +66,7 @@ export const signUpUser = createAsyncThunk(
 
         try {
             const credential = await signUpUserWithEmailAndPassword(formData);
-            // TEST -> is this still required?
-            const serializedUser = {
+            const serializedUser = {                
                 name: formData.firstName + " " + formData.lastName,
                 email: formData.email,
                 uid: credential.user.uid
@@ -80,7 +84,6 @@ export const signIn = createAsyncThunk(
     async (formData) => {
         try {
             await signInUserWithEmailAndPassword(formData);
-            console.log("thunk sign in successful");
         } catch (error) {
             throw error;
         }
@@ -92,10 +95,8 @@ export const getUserData = createAsyncThunk(
     async (userId) => {
         try {
             const userData = await getUserDoc(userId);
-            console.log("getting userdata");
             return userData;
         } catch (error) {
-            console.log("get user data failed");
             throw (error);
         }
     }

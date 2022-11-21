@@ -1,10 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit'
-import todoReducer from '../features/todo/todoSlice'
+import gangInformationSlice from '../features/gangInfo/gangInformationSlice';
+import financialsSlice from '../features/financials/financialsSlice';
+import notificationSlice from '../features/notifications/notificationSlice';
+import plotDataSlice from '../features/plotData/plotDataSlice';
 import userSlice from '../features/user/userSlice';
 
 export const store = configureStore({
   reducer: {
-    todo: todoReducer,
-    user: userSlice
+    user: userSlice,
+    gangInformation: gangInformationSlice,
+    plotData: plotDataSlice,
+    notification: notificationSlice,
+    financials: financialsSlice
   },
 });
