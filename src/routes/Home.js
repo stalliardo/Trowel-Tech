@@ -17,10 +17,7 @@ const Home = () => {
     else {
         return (
             <div>
-                <br></br>
-                <br></br>
-                <br></br>
-                <br></br>
+                
                 <br></br>
                 Home Page
             </div>
@@ -31,3 +28,7 @@ const Home = () => {
 }
 
 export default Home;
+
+// TODO...
+// add the hours diary here
+// Add projected earnings here
