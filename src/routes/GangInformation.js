@@ -1,9 +1,7 @@
-import { Avatar, Box, Button, CircularProgress, Grid, Paper, TextField, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, Typography } from '@mui/material'
 
-import GroupAddOutlinedIcon from '@mui/icons-material/GroupAddOutlined';
 import { Container } from '@mui/system'
 import React, { useEffect, useState } from 'react'
-import SelectMenu from '../components/selectMenu/SelectMenu';
 import { useDispatch, useSelector } from 'react-redux';
 import { getData, deleteMember, setIsLoading } from '../features/gangInfo/gangInformationSlice';
 
@@ -43,7 +41,11 @@ const GangInformation = () => {
     const [modalData, setModalData] = useState({});
 
     useEffect(() => {
+        console.log('use effect called for members');
+        
         if (gangData.members.length) {
+            console.log('members.length called');
+            
             let data = [];
 
             gangData.members.forEach((member) => {
@@ -59,10 +61,10 @@ const GangInformation = () => {
             setTableData({ head: tableData.head, rows: data })
 
             tableData.rows = data;
+        } else {
+            tableData.rows = [];
         }
     }, [gangData.members])
-
-
 
     const handleEditMemberClicked = (row) => {
         setShowEditModal(true);
@@ -76,13 +78,14 @@ const GangInformation = () => {
 
     const handleDeleteMember = (row) => {
         const data = { row, id: userDoc.gangId || row.id }
-        dispatch(deleteMember(data)).unwrap().then(() => {
-        }).catch((e) => {
-            // TODO
-        })
+        const confirmation = window.confirm("Are you sure you want to delete this member?");
+        if(confirmation) {
+            dispatch(deleteMember(data)).unwrap().then(() => {
+            }).catch((e) => {
+                // TODO
+            })
+        }
     }
-
-
 
     return (
         isLoading ? <Box sx={{ width: "fit-content", margin: "auto", mt: "100px" }}><CircularProgress size={70} /></Box> : <Container maxWidth="lg" sx={{ mt: "30px", pt: "30px", pb: "100px" }}>

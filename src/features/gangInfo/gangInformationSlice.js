@@ -47,7 +47,9 @@ export const gangInformationSlice = createSlice({
 
             builder.addCase(deleteMember.fulfilled, (state, action) => {
                 const newMembersArray = state.members.filter(item => item.id !== action.payload.row.id);
-                state.members = newMembersArray
+                console.log('new members array = ', newMembersArray);
+                
+                state.members = newMembersArray;
             }),
 
             builder.addCase(editMember.pending, (state) => {
