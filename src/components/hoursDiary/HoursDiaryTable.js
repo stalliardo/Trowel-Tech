@@ -5,6 +5,7 @@ import { getData } from '../../features/gangInfo/gangInformationSlice';
 
 import Typography from '@mui/material/Typography';
 import ExtendableTable from '../table/ExtendableTable'
+import CircularIndicator from '../loadingIndicator/CircularIndicator';
 
 const buildRowsArray = (data) => {
     let tmpArray = [];
@@ -36,15 +37,16 @@ const HoursDiaryTable = () => {
         rows: []
     });
 
-    const members = useSelector(state => state.gangInformation.members);
+    const [dataLoaded, setDataLoaded] = useState(false); // could/should i use the gangInformationSlice.dataLoaded prop to avoid unsightly page rerenders
+
+    const gangInformation = useSelector(state => state.gangInformation);
     const userDoc = useSelector((state) => state.user.currentUser);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
         // Check for members
-        console.log("members = ", members);
-        if (!members.length && userDoc?.gangId) {
+        if (!gangInformation.members.length && userDoc?.gangId) {
             console.log("no members found but gangId found. ", userDoc.gangId);
             // Get the members from the DB
             dispatch(getData(userDoc.gangId)).unwrap().then((data) => {
@@ -65,7 +67,7 @@ const HoursDiaryTable = () => {
 
 
     return (
-        members.length ? <ExtendableTable data={tableData} deleteButton={true} editButton={true} /> : <Typography variant='h5'>No members have been found</Typography>
+        gangInformation.isLoading ? <CircularIndicator /> : gangInformation.members.length ? <ExtendableTable data={tableData} editButton={true} /> : <Typography variant='h5'>No members have been found</Typography>
     )
 }
 

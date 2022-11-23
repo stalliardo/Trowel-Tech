@@ -29,7 +29,11 @@ const HoursDiaryContainer = () => {
                 }
             </Box>
             {
-                weekEnding !== "" && <Button variant='contained' sx={{width: "150px", height: "40px"}} onClick={() => setEditDate(true)}>Edit Date</Button>
+                weekEnding !== "" && 
+                <Box display="inline">
+                    <Button variant='contained' sx={{width: "150px", height: "40px", mr: "20px"}} onClick={() => setEditDate(true)}>Edit Date</Button>
+                    <Button variant='contained' sx={{width: "150px", height: "40px"}} onClick={() => setEditDate(true)}>Save Week</Button>
+                </Box>
             }
         </Box>
     
