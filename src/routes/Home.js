@@ -3,28 +3,27 @@ import { useSelector } from 'react-redux'
 import LandingPage from '../components/landingPage/LandingPage';
 import JoinOrCreatePrompt from '../components/home/JoinOrCreatePrompt';
 
-
 const Home = () => {
     const { currentUser } = useSelector((state) => state.user);
     console.log('current user from home page = ', currentUser);
 
-    if(!currentUser){
+    if (!currentUser) {
         return <LandingPage />
-    } 
-    else if(!currentUser.gangId) {
-        return <JoinOrCreatePrompt/>
+    }
+    else if (!currentUser.gangId) {
+        return <JoinOrCreatePrompt />
     }
     else {
         return (
             <div>
-                
-                <br></br>
-                Home Page
+                Hours diary here,
+                Todo's here,
+                projected earnings here, subject to change
             </div>
-            
+
         )
-    } 
-   
+    }
+
 }
 
 export default Home;
