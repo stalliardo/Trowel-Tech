@@ -12,6 +12,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
 const ExtendableTable = (props) => {    
+  console.log("props = ", props);
   const handleEditClicked = (row) => {
     props.handleEdit(row);
   }

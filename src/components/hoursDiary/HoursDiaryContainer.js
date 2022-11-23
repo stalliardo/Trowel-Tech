@@ -2,8 +2,9 @@ import React, { useEffect, useState} from 'react'
 
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
-import TextField from '@mui/material/TextField'
 import OutlinedInput from '@mui/material/OutlinedInput';
+import Button from '@mui/material/Button';
+import HoursDiaryTable from './HoursDiaryTable';
 
 
 const HoursDiaryContainer = () => {
@@ -12,27 +13,33 @@ const HoursDiaryContainer = () => {
     const [editDate, setEditDate] = useState(weekEnding ? false : true);
 
     const handleDateChange = (e) => {
-        console.log('date = ', e.target.value);
         setWeekEnding(e.target.value);
         setEditDate(false);
-        
     }
 
-    // useEffect(() => {
-    //     setWeekEnding()
-    // })
-
   return (
-    <Box sx={{border: "1px solid green"}}>
-        <Box display="flex">
-           <Box>
-           <Typography textAlign="left" variant='h5'>WeekEnding: </Typography>    
+    <>
+        
+        <Box display="flex" justifyContent="space-between" mb="20px">
+            <Box display="flex" alignItems="flex-end">
+                <Typography textAlign="left" variant='h5'>WeekEnding: &nbsp;</Typography>    
+                {
+                    editDate ? <OutlinedInput variant="outlined" type='date' sx={{height: "40px"}} value={weekEnding} onChange={handleDateChange}/>
+                    : <Typography variant='h5'>{weekEnding}</Typography>
+                }
+            </Box>
             {
-                editDate ? <OutlinedInput variant="outlined" type='date' value={weekEnding} onChange={handleDateChange}/> : weekEnding
+                weekEnding !== "" && <Button variant='contained' sx={{width: "150px", height: "40px"}} onClick={() => setEditDate(true)}>Edit Date</Button>
             }
-           </Box>
         </Box>
-    </Box>
+    
+        {
+            weekEnding === "" ? <Typography variant='h6'>Awaiting week ending date...</Typography> : <HoursDiaryTable />
+        }
+    
+    </>
+
+    
   )
 }
 
@@ -42,6 +49,7 @@ export default HoursDiaryContainer;
     // Week ending date/title show a date picker?
     // Display the weeklyRecords in the extendableTable
     // Need the ability to add a new week
+    // Format the date to a more uk friendly style
 
 // Initial display:
     // hours table NEW:
