@@ -6,12 +6,16 @@ import { getData } from '../../features/gangInfo/gangInformationSlice';
 import Typography from '@mui/material/Typography';
 import ExtendableTable from '../table/ExtendableTable'
 import CircularIndicator from '../loadingIndicator/CircularIndicator';
+import { getWeeks } from '../../features/hoursDiary/hoursDiarySlice';
+import { isObjectEmpty } from '../../utils/dataChecks';
 
 const buildRowsArray = (data) => {
     let tmpArray = [];
 
     // The data will be different depending on whether this is an existing week or a new week.
     // If new, set all the values to 0
+
+    // How will i detect if the form is new or exisiting???
 
     data.forEach((member) => {
         tmpArray.push({
@@ -39,28 +43,49 @@ const HoursDiaryTable = () => {
 
     const [dataLoaded, setDataLoaded] = useState(false); // could/should i use the gangInformationSlice.dataLoaded prop to avoid unsightly page rerenders
 
-    const gangInformation = useSelector(state => state.gangInformation);
     const userDoc = useSelector((state) => state.user.currentUser);
+    const gangInformation = useSelector(state => state.gangInformation);
+    const hoursDiaryData = useSelector(state => state.hoursDiary);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        // Check for members
+
+        // Gonna need to determine if editing or creating via the currentWeek prop
+        // But, how will the current week be determined???
+        // Check if the db has any records
+        // if more than one record
+        // get the latest week via its date
+        // return the only week
+        // No records in the db so must be creating
+        // Only get the members if creating a week as the currentWeek would have that information
+
+
+        // firstly check for an exisiting week....
+        if(isObjectEmpty(hoursDiaryData.currentWeek) && userDoc?.gangId) { // no week found in state...
+            console.log("no current week found. Getting weeks data...");
+            dispatch(getWeeks(userDoc.gangId)).unwrap().then((data) => {
+                console.log("data from get weeks = ", data);
+
+                // if no data found ie [].length == 0, then safe to say that this is a create operation
+
+            }).catch((e) => {
+                console.log("Error getting weeks data = ", e);
+            })
+        }
+
+
         if (!gangInformation.members.length && userDoc?.gangId) {
             console.log("no members found but gangId found. ", userDoc.gangId);
             // Get the members from the DB
             dispatch(getData(userDoc.gangId)).unwrap().then((data) => {
                 // members found. Build the table
-                
+
                 console.log("data = ", data);
 
-                setTableData({head: tableData.head, rows: buildRowsArray(data)})
+                setTableData({ head: tableData.head, rows: buildRowsArray(data) })
 
                 // tableData.rows = buildRowsArray(members)
-
-
-            }).catch((e) => {
-                // TODO return an error instead of the table???
             })
         }
     }, [])

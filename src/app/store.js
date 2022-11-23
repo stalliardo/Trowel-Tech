@@ -4,6 +4,7 @@ import financialsSlice from '../features/financials/financialsSlice';
 import notificationSlice from '../features/notifications/notificationSlice';
 import plotDataSlice from '../features/plotData/plotDataSlice';
 import userSlice from '../features/user/userSlice';
+import hoursDiarySlice from '../features/hoursDiary/hoursDiarySlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     gangInformation: gangInformationSlice,
     plotData: plotDataSlice,
     notification: notificationSlice,
-    financials: financialsSlice
+    financials: financialsSlice,
+    hoursDiary: hoursDiarySlice
   },
 });
