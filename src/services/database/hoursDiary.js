@@ -12,7 +12,7 @@ export const getAllWeeks = async (gangId) => {
 
     let data = [];
 
-    if(!querySnapshot.empty) {
+    if (!querySnapshot.empty) {
         querySnapshot.forEach((doc) => {
             console.log("week.data = ", doc.data());
         })
@@ -22,44 +22,33 @@ export const getAllWeeks = async (gangId) => {
 }
 
 export const addWeek = async (data) => {
-    const {weekId, gangId, weekEnding, dayRate, userId, nonEditedMembers, name, mon, tue, wed, thu, fri, sat, sun} = data;
+    const { weekId, gangId, weekEnding  } = data;
 
-    console.log("data inside service file - ", data);
+    if (!weekId) {
 
-    // gonna need to loop members and for each one create a new sub collection if this is a CREATE
-    // how will UPDATE work?
-        // members will already be present in the subcollection, will just need to find that one by id the set()
-    
+        console.log("\n\nno week id found");
 
-    // if(!weekId) {
+        const weeklyRecordsRef = await addDoc(collection(db, "weeklyRecord"), {
+            gangId,
+            weekEnding,
+        });
 
-    //     console.log("\n\nno week id found");
-       
-    //     const weeklyRecordsRef = await addDoc(collection(db, "weeklyRecord"), {
-    //         gangId,
-    //         weekEnding,
-    //     });
+        const usersRef = collection(db, "weeklyRecord", weeklyRecordsRef.id, "users");
+        const promises = [];
 
-    //     console.log("\nweeklyRecord created. id = ", weeklyRecordsRef.id);
+        data.users.forEach((member) => {
+            promises.push(addDoc(usersRef, {
+                name: member.name, userId: member.id.userId, dayRate: member.id.dayRate, mon: member.mon, tue: member.tue, wed: member.wed, thu: member.thu, fri: member.fri, sat: member.sat, sun: member.sun
+            }))
+        })
+
+        await Promise.all(promises);
+      
+        return {weekId: weeklyRecordsRef.id};
+    } else {
         
-    //     // Now add the user to the subcollection
+        // This is a UPDATE op...
+    }
 
-    //     const usersRef = collection(db, "weeklyRecord", weeklyRecordsRef.id, "users");
-    //     await addDoc(usersRef, {
-    //         name, userId, dayRate, mon, tue, wed, thu, fri, sat, sun
-    //     });
-
-    //     console.log("users subcollection created");
-
-    //     // need to return the new id for the created week and append that to the data passed in here
-
-    //     return {weekId: weeklyRecordsRef.id, weekEnding};
-
-
-
-    // } else {
-    //     // This is a UPDATE op...
-    // }
-    
 }
 

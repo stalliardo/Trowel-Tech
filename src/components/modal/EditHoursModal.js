@@ -18,18 +18,16 @@ const rowData = [
     { name: "sun", label: "Sunday" },
 ];
 
+const GridItem = ({ name, label, value, onChange }) => {
+    console.log("value = ", value);
+    return (
+        <Grid item xs={12}>
+            <TextField  name={name} label={label} value={value} InputProps={{ inputProps: { min: 0 } }} required={true} onChange={onChange} fullWidth type="number" />
+        </Grid>
+    )
+}
+
 const EditHoursModal = ({ data, modalClosed, weekEnding, gangId, membersData }) => {
-
-    console.log("members data passed through = ", membersData);
-    const GridItem = ({ name, label, value, onChange }) => {
-        console.log("value = ", value);
-        return (
-            <Grid item xs={12}>
-                <TextField  name={name} label={label} value={value} InputProps={{ inputProps: { min: 0 } }} required={true} onChange={onChange} fullWidth type="number" />
-            </Grid>
-        )
-    }
-
     const [formData, setFormData] = useState(data);
     const isLoading = useSelector(state => state.hoursDiary.isLoading);
     
@@ -40,37 +38,26 @@ const EditHoursModal = ({ data, modalClosed, weekEnding, gangId, membersData }) 
     }
 
     const handleChange = (e) => {
-        console.log("e.target = ", e.target);
-        console.log("e.value = ", e.target.value);
-
         setFormData({...formData, [e.target.name] : e.target.value});
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-
-        // Going to need to pass all members not just the one being edited
-
         const filteredMembers = membersData.filter(member => member.id.userId !== formData.id.userId);
 
-        console.log("filtered members = ", filteredMembers);
+        const dataObject = {
+            gangId,
+            weekEnding,
+            users: [formData, ...filteredMembers]
+        };
 
-        const dataObject = {...formData, gangId, weekEnding, dayRate: formData.id.dayRate, userId: formData.id.userId, nonEditedMembers: filteredMembers};
-
-        delete dataObject.id;
-
-        console.log("formData = ", formData);
-        console.log("dataObjectc = ", dataObject);
         
         dispatch(saveWeek(dataObject)).unwrap().then((response) => {
             console.log("response = ", response);
         }).catch((e) => {
             console.log("error = ", e);
         })
-
-
-
     }
 
     return (

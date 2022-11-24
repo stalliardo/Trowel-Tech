@@ -38,7 +38,6 @@ export const hoursDiarySlice = createSlice({
         })
         .addCase(saveWeek.fulfilled, (state, action) => {
             console.log("fulfilled called. payload = ", action.payload);
-            // Will then need to update the currentWeek on succussful save
             state.currentWeek = action.payload;
             state.isLoading = false;
         })
@@ -61,10 +60,11 @@ export const getWeeks = createAsyncThunk(
 export const saveWeek = createAsyncThunk(
     "hoursDiary/saveWeek",
     async(data) => {
+        console.log("data from slice = ", data);
         try {
             if(!data.weekId) {
-                const week = await addWeek(data);
-                return {...week, users: {...data}};
+                const weekId = await addWeek(data);
+                return {weekId: weekId, users: data.users};
             } else {
                 await addWeek(data);
                 return data;
