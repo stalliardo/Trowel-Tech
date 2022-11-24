@@ -28,15 +28,14 @@ const buildRowsArray = (data) => {
             sat: 0,
             sun: 0,
             gross: 0,
-            id: member.id
+            id: {userId: member.id, dayRate: member.dayRate}
         });
     });
 
     return tmpArray;
 }
 
-const HoursDiaryTable = () => {
-
+const HoursDiaryTable = ({weekEnding}) => {
     const [tableData, setTableData] = useState({
         head: ["Name", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Gross Pay", "Actions"],
         rows: []
@@ -112,7 +111,7 @@ const HoursDiaryTable = () => {
                     {showEditHoursModal ?
                     <ExtendableModal title={`Edit ${editedRow.name}'s Hours`} modalClosed={handleModalClosed}>
                         {/* <AddMemberModal modalClosed={handleModalClosed} userDoc={userDoc} /> */}
-                        <EditHoursModal modalClosed={handleModalClosed} data={editedRow}/>
+                        <EditHoursModal modalClosed={handleModalClosed} data={editedRow} weekEnding={weekEnding} gangId={userDoc.gangId} membersData={tableData.rows}/>
                     </ExtendableModal>
                     : null
                 }

@@ -38,7 +38,7 @@ const HoursDiaryContainer = () => {
         </Box>
     
         {
-            weekEnding === "" ? <Typography variant='h6'>Awaiting week ending date...</Typography> : <HoursDiaryTable />
+            weekEnding === "" ? <Typography variant='h6'>Awaiting week ending date...</Typography> : <HoursDiaryTable weekEnding={weekEnding}/>
         }
     
     </>
