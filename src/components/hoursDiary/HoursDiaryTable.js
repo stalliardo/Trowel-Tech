@@ -15,7 +15,8 @@ const buildRowsArray = (data) => {
     // The data will be different depending on whether this is an existing week or a new week.
     // If new, set all the values to 0
 
-    // How will i detect if the form is new or exisiting???
+    // How will i detect if this an edit or create operation?
+    // Check the value of the hoursDiary.currentWeek object for emptyness...
 
     data.forEach((member) => {
         tmpArray.push({
@@ -68,15 +69,15 @@ const HoursDiaryTable = () => {
                 console.log("data from get weeks = ", data);
 
                 // if no data found ie [].length == 0, then safe to say that this is a create operation
+                // OR, if data.length build the rows here with the data from the currentWeek
+
+                // TODO -> setTableData({ head: tableData.head, rows: buildRowsArray(data) })
 
             }).catch((e) => {
                 console.log("Error getting weeks data = ", e);
             })
-        }
-
-
-        if (!gangInformation.members.length && userDoc?.gangId) {
-            console.log("no members found but gangId found. ", userDoc.gangId);
+        } else if (!gangInformation.members.length && userDoc?.gangId) { // <- no currentWeek found
+            console.log("no current week and no members found but gangId found. ", userDoc.gangId);
             // Get the members from the DB
             dispatch(getData(userDoc.gangId)).unwrap().then((data) => {
                 // members found. Build the table
@@ -88,6 +89,9 @@ const HoursDiaryTable = () => {
                 // tableData.rows = buildRowsArray(members)
             })
         }
+
+        // only run this if the above is falsy
+        
     }, [])
 
 
