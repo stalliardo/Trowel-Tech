@@ -4,7 +4,7 @@ import { getAllWeeks } from '../../services/database/hoursDiary';
 export const hoursDiarySlice = createSlice({
     name: 'hoursDiary',
     initialState: {
-        isLoading: true,
+        isLoading: false,
         currentWeek: {},
         allWeeks: [],
         allWeeksForUser: [],
