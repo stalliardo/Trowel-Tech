@@ -2,8 +2,6 @@ import { db } from '../../firebase';
 import { addDoc, collection, getDocs, getDoc, query, where, limit } from 'firebase/firestore';
 
 export const getAllWeeks = async (gangId) => {
-
-    // WIll run a query where the docs gangId is equal to the one provided
     const weeklyRecordsRef = collection(db, "weeklyRecord");
 
     const q = query(weeklyRecordsRef, where("gangId", "==", gangId));
@@ -11,23 +9,34 @@ export const getAllWeeks = async (gangId) => {
     const querySnapshot = await getDocs(q);
 
     let data = [];
-    
+
     if (!querySnapshot.empty) {
         querySnapshot.forEach((doc) => {
-            data.push({gangId, weekEnding: doc.data().weekEnding, id: doc.id});
+            data.push({ gangId, weekEnding: doc.data().weekEnding, id: doc.id });
         });
     }
 
     return data;
 }
 
+export const getUsersForWeek = async (weekId) => {
+    const querySnapshot = await getDocs(collection(db, "weeklyRecord", weekId, "users"));
+    const data = [];
+
+    if (!querySnapshot.empty) {
+        querySnapshot.forEach((doc) => {
+            data.push(doc.data());
+        })
+    }
+
+    return data;
+}
+
+
 export const addWeek = async (data) => {
-    const { weekId, gangId, weekEnding  } = data;
+    const { weekId, gangId, weekEnding } = data;
 
     if (!weekId) {
-
-        console.log("\n\nno week id found");
-
         const weeklyRecordsRef = await addDoc(collection(db, "weeklyRecord"), {
             gangId,
             weekEnding,
@@ -43,11 +52,11 @@ export const addWeek = async (data) => {
         })
 
         await Promise.all(promises);
-      
-        return {weekId: weeklyRecordsRef.id};
+
+        return { weekId: weeklyRecordsRef.id };
     } else {
 
-        // This is a UPDATE op...
+        // This is a UPDATE op...TODO
     }
 
 }

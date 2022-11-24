@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { addWeek, getAllWeeks } from '../../services/database/hoursDiary';
+import { addWeek, getAllWeeks, getUsersForWeek } from '../../services/database/hoursDiary';
 import { extractCurrentWeek } from '../../utils/hoursDiaryUtils';
 
 export const hoursDiarySlice = createSlice({
@@ -11,7 +11,7 @@ export const hoursDiarySlice = createSlice({
         allWeeksForUser: [],
     },
     reducers: {
-        
+
     },
 
     extraReducers: (builder) => {
@@ -19,29 +19,37 @@ export const hoursDiarySlice = createSlice({
             state.isLoading = true;
 
         })
-        .addCase(getWeeks.fulfilled, (state, action) => {
-            console.log("fulfilled called. data = ", action.payload);
-            state.isLoading = false;
-            state.allWeeks = action.payload;
+            .addCase(getWeeks.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.allWeeks = action.payload;
 
-            if(action.payload.length) {
-                state.currentWeek = extractCurrentWeek(action.payload);
-            }
-        })
-        .addCase(getWeeks.rejected, (state) => {
-            state.isLoading = false;
-        })
-        .addCase(saveWeek.pending, (state) => {
-            state.isLoading = true;
-        })
-        .addCase(saveWeek.rejected, (state) => {
-            state.isLoading = false;
-        })
-        .addCase(saveWeek.fulfilled, (state, action) => {
-            console.log("fulfilled called. payload = ", action.payload);
-            state.currentWeek = action.payload;
-            state.isLoading = false;
-        })
+                if (action.payload.length) {
+                    state.currentWeek = extractCurrentWeek(action.payload);
+                }
+            })
+            .addCase(getWeeks.rejected, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(saveWeek.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(saveWeek.rejected, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(saveWeek.fulfilled, (state, action) => {
+                state.currentWeek = action.payload;
+                state.isLoading = false;
+            })
+            .addCase(getUsersForCurrentWeek.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(getUsersForCurrentWeek.rejected, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(getUsersForCurrentWeek.fulfilled, (state, action) => {
+                state.currentWeek.users = action.payload;
+                state.isLoading = false;
+            })
     }
 });
 
@@ -49,9 +57,9 @@ export default hoursDiarySlice.reducer;
 
 export const getWeeks = createAsyncThunk(
     "hoursDiary/getWeeks",
-    async(gangId) => {
+    async (gangId) => {
         try {
-           return await getAllWeeks(gangId);
+            return await getAllWeeks(gangId);
         } catch (error) {
             throw error;
         }
@@ -60,18 +68,28 @@ export const getWeeks = createAsyncThunk(
 
 export const saveWeek = createAsyncThunk(
     "hoursDiary/saveWeek",
-    async(data) => {
-        console.log("data from slice = ", data);
+    async (data) => {
         try {
-            if(!data.weekId) {
+            if (!data.weekId) {
                 const weekId = await addWeek(data);
-                return {weekId: weekId, users: data.users};
+                return { weekId: weekId, users: data.users };
             } else {
                 await addWeek(data);
                 return data;
             }
         } catch (error) {
-            console.log("error while saving week = ", error);
+            throw error;
+        }
+    }
+)
+
+export const getUsersForCurrentWeek = createAsyncThunk(
+    "hoursDiary/getUsersForCurrentWeek",
+    async (weekId) => {
+        try {
+            return await getUsersForWeek(weekId);
+        } catch (error) {
+            throw error;
         }
     }
 )

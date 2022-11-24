@@ -51,12 +51,9 @@ const EditHoursModal = ({ data, modalClosed, weekEnding, gangId, membersData }) 
             weekEnding,
             users: [formData, ...filteredMembers]
         };
-
         
-        dispatch(saveWeek(dataObject)).unwrap().then((response) => {
-            console.log("response = ", response);
-        }).catch((e) => {
-            console.log("error = ", e);
+        dispatch(saveWeek(dataObject)).unwrap().catch((e) => {
+            // TODO
         })
     }
 

@@ -12,8 +12,8 @@ export const extractCurrentWeek = (weeks) => {
 
         counter++;
     })
-
-    return weeks.filter((week) => week.weekEnding === highestDate);
+    
+    return weeks.find((week) => week.weekEnding === highestDate);
 }
 
 export const extractWeeksForUser = () => {
