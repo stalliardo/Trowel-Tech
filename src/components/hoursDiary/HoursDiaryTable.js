@@ -43,6 +43,7 @@ const HoursDiaryTable = () => {
     });
 
     const [dataLoaded, setDataLoaded] = useState(false); // could/should i use the gangInformationSlice.dataLoaded prop to avoid unsightly page rerenders
+    const [isLoading, setIsLoading] = useState(true);
 
     const userDoc = useSelector((state) => state.user.currentUser);
     const gangInformation = useSelector(state => state.gangInformation);
@@ -52,51 +53,47 @@ const HoursDiaryTable = () => {
 
     useEffect(() => {
 
-        // Gonna need to determine if editing or creating via the currentWeek prop
-        // But, how will the current week be determined???
-        // Check if the db has any records
-        // if more than one record
-        // get the latest week via its date
-        // return the only week
-        // No records in the db so must be creating
-        // Only get the members if creating a week as the currentWeek would have that information
-
-
         // firstly check for an exisiting week....
-        if(isObjectEmpty(hoursDiaryData.currentWeek) && userDoc?.gangId) { // no week found in state...
+        if (isObjectEmpty(hoursDiaryData.currentWeek) && userDoc?.gangId) { // no week found in state...
             console.log("no current week found. Getting weeks data...");
             dispatch(getWeeks(userDoc.gangId)).unwrap().then((data) => {
                 console.log("data from get weeks = ", data);
 
-                // if no data found ie [].length == 0, then safe to say that this is a create operation
-                // OR, if data.length build the rows here with the data from the currentWeek
+                
+                if(data.length) { // there is a current week...
+                    console.log("\n\nweeks found, returning weeks...");
+                    // TODO -> setTableData({ head: tableData.head, rows: buildRowsArray(data) })
+                    // To avoid an error in the next then call, return the weeks data
+                    return data;
+                }
 
-                // TODO -> setTableData({ head: tableData.head, rows: buildRowsArray(data) })
 
+                // data == [].....
+                if (!data.length && !gangInformation.members.length && userDoc?.gangId) { // <- no currentWeek found
+                    console.log("\n\nno weeks found. Getting the members from the gang information", userDoc.gangId);
+                    // Get the members from the DB
+                    return dispatch(getData(userDoc.gangId)).unwrap();
+                }
+
+                if(!data.length && gangInformation.members.length) {
+                    return gangInformation.members;
+                }
+
+
+            }).then((members) => { // <- will this throw an error if a week is found as there will be no return statement
+                console.log("set data called. Members = ", members);
+                setTableData({ head: tableData.head, rows: buildRowsArray(members) })
             }).catch((e) => {
                 console.log("Error getting weeks data = ", e);
-            })
-        } else if (!gangInformation.members.length && userDoc?.gangId) { // <- no currentWeek found
-            console.log("no current week and no members found but gangId found. ", userDoc.gangId);
-            // Get the members from the DB
-            dispatch(getData(userDoc.gangId)).unwrap().then((data) => {
-                // members found. Build the table
-
-                console.log("data = ", data);
-
-                setTableData({ head: tableData.head, rows: buildRowsArray(data) })
-
-                // tableData.rows = buildRowsArray(members)
+            }).finally(() => {
+                setIsLoading(false);
             })
         }
-
-        // only run this if the above is falsy
-        
     }, [])
 
 
     return (
-        gangInformation.isLoading ? <CircularIndicator /> : gangInformation.members.length ? <ExtendableTable data={tableData} editButton={true} /> : <Typography variant='h5'>No members have been found</Typography>
+        isLoading ? <CircularIndicator /> : gangInformation.members.length ? <ExtendableTable data={tableData} editButton={true} /> : <Typography variant='h5'>No members have been found</Typography>
     )
 }
 
