@@ -19,7 +19,6 @@ const rowData = [
 ];
 
 const GridItem = ({ name, label, value, onChange }) => {
-    console.log("value = ", value);
     return (
         <Grid item xs={12}>
             <TextField  name={name} label={label} value={value} InputProps={{ inputProps: { min: 0 } }} required={true} onChange={onChange} fullWidth type="number" />
@@ -28,6 +27,7 @@ const GridItem = ({ name, label, value, onChange }) => {
 }
 
 const EditHoursModal = ({ data, modalClosed, weekEnding, gangId, membersData }) => {
+
     const [formData, setFormData] = useState(data);
     const isLoading = useSelector(state => state.hoursDiary.isLoading);
     

@@ -1,5 +1,5 @@
 import { db } from '../../firebase';
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
+import { addDoc, collection, getDocs, getDoc, query, where, limit } from 'firebase/firestore';
 
 export const getAllWeeks = async (gangId) => {
 
@@ -11,11 +11,11 @@ export const getAllWeeks = async (gangId) => {
     const querySnapshot = await getDocs(q);
 
     let data = [];
-
+    
     if (!querySnapshot.empty) {
         querySnapshot.forEach((doc) => {
-            console.log("week.data = ", doc.data());
-        })
+            data.push({gangId, weekEnding: doc.data().weekEnding, id: doc.id});
+        });
     }
 
     return data;
@@ -46,7 +46,7 @@ export const addWeek = async (data) => {
       
         return {weekId: weeklyRecordsRef.id};
     } else {
-        
+
         // This is a UPDATE op...
     }
 

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { addWeek, getAllWeeks } from '../../services/database/hoursDiary';
+import { extractCurrentWeek } from '../../utils/hoursDiaryUtils';
 
 export const hoursDiarySlice = createSlice({
     name: 'hoursDiary',
@@ -23,9 +24,9 @@ export const hoursDiarySlice = createSlice({
             state.isLoading = false;
             state.allWeeks = action.payload;
 
-            // TODO gonna need a utility file for extracting a users weeks and the current week, hours calculations etc...
-            // Then when the users weeks is required call the reducer which will load the weeks
-
+            if(action.payload.length) {
+                state.currentWeek = extractCurrentWeek(action.payload);
+            }
         })
         .addCase(getWeeks.rejected, (state) => {
             state.isLoading = false;

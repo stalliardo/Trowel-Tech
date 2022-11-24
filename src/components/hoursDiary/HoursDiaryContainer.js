@@ -14,6 +14,9 @@ const HoursDiaryContainer = () => {
 
     const handleDateChange = (e) => {
         setWeekEnding(e.target.value);
+
+        console.log("weekending = ", weekEnding);
+
         setEditDate(false);
     }
 
@@ -49,17 +52,6 @@ const HoursDiaryContainer = () => {
 
 export default HoursDiaryContainer;
 
-// TODO:
-    // Week ending date/title show a date picker?
-    // Display the weeklyRecords in the extendableTable
-    // Need the ability to add a new week
-    // Format the date to a more uk friendly style
+// TODO
 
-// Initial display:
-    // hours table NEW:
-        // How will the users be loaded 
-        // Will need to get them from the gangInformation state, then populate the table with those users
-
-    // Hours table current:
-        // Will check if there is a currentWeek loaded in state, if not will get the data from the DB and load the state
-
+// this is the comp that should check for a current week, if none load the table
