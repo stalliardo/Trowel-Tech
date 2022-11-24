@@ -4,4 +4,4 @@ export const extractCurrentWeek = () => {
 
 export const extractWeeksForUser = () => {
     // TODO
-}
+}   
