@@ -33,8 +33,6 @@ const HoursDiaryContainer = () => {
         // TODO
     }
 
-    console.log("edit data = ", editDate);
-
     useEffect(() => {
         if (isObjectEmpty(hoursDiaryData.currentWeek) && userDoc?.gangId) {
             dispatch(getWeeks(userDoc.gangId)).unwrap().then((data) => {

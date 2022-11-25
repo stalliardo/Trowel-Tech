@@ -44,7 +44,7 @@ const IndexContainer = (props) => {
     }
 
   return (
-    <Container maxWidth="lg" sx={{ backgroundColor: "backDrop.dark", height: "fit-content", pt: "20px", mt: "20px", pb: "20px", borderRadius: "5px" }}>
+    <Container maxWidth="xl" sx={{ backgroundColor: "backDrop.dark", height: "fit-content", pt: "20px", mt: "20px", pb: "20px", borderRadius: "5px" }}>
         <Box component="div" sx={{display: "flex", justifyContent: "space-between"}}>
             <Typography textAlign="left" variant='h5' mb="15px">Plots</Typography>
             <LinkButton to="edit/information" text="Add Plot"/>
