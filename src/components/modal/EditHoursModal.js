@@ -47,9 +47,6 @@ const EditHoursModal = ({ data, modalClosed, weekEnding, gangId, membersData }) 
 
         let dataObject = {};
 
-        console.log('formData top = ', formData);
-        
-        
         if(isObjectEmpty(hoursDiaryData.currentWeek)) { // <- CREATEING
             const filteredMembers = membersData.filter(member => member.id !== formData.id);
             dataObject = {
@@ -60,14 +57,9 @@ const EditHoursModal = ({ data, modalClosed, weekEnding, gangId, membersData }) 
             dispatch(saveWeek(dataObject)).unwrap().then(() => {
                 modalClosed();
             }).catch((e) => {
-                console.log('error updating user. Error : ', e);
-                
                 // TODO
             })
-        } else { // <- UPDATING
-           console.log('update called');
-           
-
+        } else {
             dataObject = {
                 weekId: hoursDiaryData.currentWeek.id,
                 formData
@@ -77,18 +69,9 @@ const EditHoursModal = ({ data, modalClosed, weekEnding, gangId, membersData }) 
                 modalClosed();
             }).catch((e) => {
                 console.log('error updating user. Error : ', e);
-                
                 // TODO
             })
-            
-        }
-
-        // need to determine if creating or updating, can do this via the weekId
-        // Whatdo i want to do if this is an update???
-            // Well dont need to loop all the members now as they are already in the sub collection
-            // only need to update the record for the edited user via their docID
-        
-        
+        }        
     }
 
     return (
