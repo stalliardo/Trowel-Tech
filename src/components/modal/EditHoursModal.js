@@ -27,14 +27,10 @@ const GridItem = ({ name, label, value, onChange }) => {
     )
 }
 
-const EditHoursModal = ({ data, modalClosed, weekEnding, gangId, membersData }) => {
-
-    console.log('data from modal = ', data);
-    
+const EditHoursModal = ({ data, modalClosed, weekEnding, gangId, membersData }) => {    
     const [formData, setFormData] = useState(data);
     const isLoading = useSelector(state => state.hoursDiary.isLoading); 
     const hoursDiaryData = useSelector(state => state.hoursDiary);
-   
     
     const dispatch = useDispatch();
 
@@ -73,7 +69,7 @@ const EditHoursModal = ({ data, modalClosed, weekEnding, gangId, membersData }) 
            
 
             dataObject = {
-                weekId: hoursDiaryData.currentWeek.weekId,
+                weekId: hoursDiaryData.currentWeek.id,
                 formData
             }
 

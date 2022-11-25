@@ -47,9 +47,10 @@ export const hoursDiarySlice = createSlice({
                 state.isLoading = false;
             })
             .addCase(updateWeek.fulfilled, (state, action) => {
-                console.log('save week fulfilled called. action.p = ', action.payload);
-                
-                state.currentWeek = action.payload;
+                const index = state.currentWeek.users.findIndex(i => i.id === action.payload.formData.id);
+                if(index > -1) {                    
+                    state.currentWeek.users[index] = action.payload.formData;
+                }
                 state.isLoading = false;
             })
             .addCase(getUsersForCurrentWeek.pending, (state) => {
@@ -94,8 +95,6 @@ export const updateWeek = createAsyncThunk(
     "hoursDiary/updateWeek",
     async (data) => {
         try {
-            console.log('else called from slice. data = ', data);
-
             await editWeek(data);
             return data;
         } catch (error) {
