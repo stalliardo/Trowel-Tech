@@ -7,10 +7,12 @@ import HoursDiaryContainer from '../components/hoursDiary/HoursDiaryContainer'
 
 const HoursDiary = () => {
   return (
-    <Container sx={{border: "1px solid red", mt: "30px"}} maxWidth="lg">
-        <PageTitle title="Hours Dairy"/>
+    <>
+      <PageTitle title="Hours Dairy" />
+      <Container sx={{ mt: "30px", backgroundColor: "backDrop.dark", padding: "20px", borderRadius: "5px" }} maxWidth="lg">
         <HoursDiaryContainer />
-    </Container>
+      </Container>
+    </>
   )
 }
 
