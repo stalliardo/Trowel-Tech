@@ -29,6 +29,10 @@ const HoursDiaryContainer = () => {
         setEditDate(false);
     }
 
+    const onNewWeekClicked = () => {
+        // TODO
+    }
+
     useEffect(() => {
         if (isObjectEmpty(hoursDiaryData.currentWeek) && userDoc?.gangId) {
             dispatch(getWeeks(userDoc.gangId)).unwrap().then((data) => {
@@ -72,7 +76,7 @@ const HoursDiaryContainer = () => {
                         weekEnding !== "" &&
                         <Box display="inline">
                             <Button variant='contained' sx={{ width: "150px", height: "40px", mr: "20px" }} onClick={() => setEditDate(true)}>Edit Date</Button>
-                            <Button variant='contained' sx={{ width: "150px", height: "40px" }} onClick={() => setEditDate(true)}>Save Week</Button>
+                            <Button variant='contained' sx={{ width: "150px", height: "40px" }} onClick={onNewWeekClicked}>New Week</Button>
                         </Box>
                     }
                 </Box>

@@ -47,7 +47,7 @@ const EditHoursModal = ({ data, modalClosed, weekEnding, gangId, membersData }) 
 
         let dataObject = {};
 
-        if(isObjectEmpty(hoursDiaryData.currentWeek)) { // <- CREATEING
+        if(isObjectEmpty(hoursDiaryData.currentWeek)) {            
             const filteredMembers = membersData.filter(member => member.id !== formData.id);
             dataObject = {
                 gangId,

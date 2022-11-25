@@ -13,10 +13,13 @@ import EditIcon from '@mui/icons-material/Edit';
 
 const allowRowToRender = (key, disallowedKeys) => {
   let canRender = true;
-  disallowedKeys.forEach((k) => {
-    if(key === k) canRender = false;
-    if(key === "id") canRender = false;
-  })
+  if(disallowedKeys?.length) {
+    disallowedKeys.forEach((k) => {
+      if(key === k) canRender = false;
+    })
+  }
+
+  if(key === "id") canRender = false;
 
   return canRender;
 }
@@ -31,9 +34,9 @@ const ExtendableTable = (props) => {
   }
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead sx={{ backgroundColor: "darkgray" }}>
+    <TableContainer component={Paper} elevation={8}>
+      <Table sx={{ minWidth: 650, "td, th": {color: "black", fontWeight: "bold", letterSpacing: "1px"} }} aria-label="simple table">
+        <TableHead sx={{ backgroundColor: "lightgrey" }}>
           <TableRow>
             {props.data.head.map((item, index) => (
               <TableCell key={index + "31"} align="left">{item}</TableCell>
