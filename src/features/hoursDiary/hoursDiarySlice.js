@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { addWeek, getAllWeeks, getUsersForWeek } from '../../services/database/hoursDiary';
+import { addWeek, editWeek, getAllWeeks, getUsersForWeek } from '../../services/database/hoursDiary';
 import { extractCurrentWeek } from '../../utils/hoursDiaryUtils';
 
 export const hoursDiarySlice = createSlice({
@@ -40,6 +40,18 @@ export const hoursDiarySlice = createSlice({
                 state.currentWeek = action.payload;
                 state.isLoading = false;
             })
+            .addCase(updateWeek.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(updateWeek.rejected, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(updateWeek.fulfilled, (state, action) => {
+                console.log('save week fulfilled called. action.p = ', action.payload);
+                
+                state.currentWeek = action.payload;
+                state.isLoading = false;
+            })
             .addCase(getUsersForCurrentWeek.pending, (state) => {
                 state.isLoading = true;
             })
@@ -70,13 +82,22 @@ export const saveWeek = createAsyncThunk(
     "hoursDiary/saveWeek",
     async (data) => {
         try {
-            if (!data.weekId) {
-                const weekId = await addWeek(data);
-                return { weekId: weekId, users: data.users };
-            } else {
-                await addWeek(data);
-                return data;
-            }
+            const weekId = await addWeek(data);
+            return { weekId, users: data.users };
+        } catch (error) {
+            throw error;
+        }
+    }
+)
+
+export const updateWeek = createAsyncThunk(
+    "hoursDiary/updateWeek",
+    async (data) => {
+        try {
+            console.log('else called from slice. data = ', data);
+
+            await editWeek(data);
+            return data;
         } catch (error) {
             throw error;
         }

@@ -8,11 +8,14 @@ import CircularIndicator from '../loadingIndicator/CircularIndicator';
 import ExtendableModal from '../modal/extendableModal/ExtendableModal';
 import EditHoursModal from '../modal/EditHoursModal';
 
-const buildRowsArray = (data) => {
-    let tmpArray = [];
+const buildRowsArray = (members) => {
+    let rowData = [];
+    let dataArray = [];
 
-    data.forEach((member) => {
-        tmpArray.push({
+    console.log('data passed into buildRowsArray = ', members);
+
+    members.forEach((member) => {
+        rowData.push({
             name: member.firstName ? member.firstName + " " + member.lastName : member.name,
             mon: member.mon || 0,
             tue: member.tue || 0,
@@ -22,17 +25,24 @@ const buildRowsArray = (data) => {
             sat: member.sat || 0,
             sun: member.sun || 0,
             gross: member.gross || 0,
-            id: { userId: member.id, dayRate: member.dayRate }
+            id: member.id
         });
     });
 
-    return tmpArray;
+    members.forEach((member) => {
+        dataArray.push(
+            {dayRate: member.dayRate}
+        )
+    });
+
+    return {rowData, dataArray};
 }
 
 const HoursDiaryTable = ({ weekEnding }) => {
     const [tableData, setTableData] = useState({
         head: ["Name", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Gross Pay", "Actions"],
-        rows: []
+        rows: [],
+        otherData: [],
     });
     const [isLoading, setIsLoading] = useState(true);
     const [showEditHoursModal, setShowEditHoursModal] = useState(false);
@@ -44,18 +54,18 @@ const HoursDiaryTable = ({ weekEnding }) => {
 
     useEffect(() => {
         if (hoursDiaryData.currentWeek.users?.length) {
-            setTableData({ head: tableData.head, rows: buildRowsArray(hoursDiaryData.currentWeek.users) });
+            setTableData({ head: tableData.head, rows: buildRowsArray(hoursDiaryData.currentWeek.users).rowData, otherData: buildRowsArray(hoursDiaryData.currentWeek.users).dataArray });
             setIsLoading(false);
         } else if (gangInformation.members.length && !hoursDiaryData.isLoading) {
             setIsLoading(false);
-            setTableData({ head: tableData.head, rows: buildRowsArray(gangInformation.members) });
+            setTableData({ head: tableData.head, rows: buildRowsArray(gangInformation.members).rowData, otherData: buildRowsArray(gangInformation.members).dataArray });
         }
 
     }, [hoursDiaryData.currentWeek.users]);
 
     useEffect(() => {
         if (hoursDiaryData.currentWeek.users) {
-            setTableData({ head: tableData.head, rows: buildRowsArray(hoursDiaryData.currentWeek.users) });
+            setTableData({ head: tableData.head, rows: buildRowsArray(hoursDiaryData.currentWeek.users), otherData: buildRowsArray(gangInformation.members).dataArray });
         }
     }, [hoursDiaryData.currentWeek.users]);
 
@@ -75,7 +85,7 @@ const HoursDiaryTable = ({ weekEnding }) => {
                     <ExtendableTable data={tableData} editButton={true} handleEdit={handleEditHours} />
                     {showEditHoursModal ?
                         <ExtendableModal title={`Edit ${editedRow.name}'s Hours`} modalClosed={handleModalClosed}>
-                            <EditHoursModal modalClosed={handleModalClosed} data={editedRow} weekEnding={weekEnding} gangId={userDoc.gangId} membersData={tableData.rows} />
+                            <EditHoursModal modalClosed={handleModalClosed} data={editedRow} weekEnding={weekEnding} gangId={userDoc.gangId} membersData={tableData.rows}/>
                         </ExtendableModal>
                         : null
                     }

@@ -11,9 +11,22 @@ import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
-const ExtendableTable = (props) => {      
-  const handleEditClicked = (row) => {
-    props.handleEdit(row);
+// need a function that checks if there is any data in the otherData array
+// if so add to the row but flag as notInclusive
+
+
+
+
+
+
+
+const ExtendableTable = (props) => {        
+  const handleEditClicked = (row, data) => {
+    if(data) {
+      props.handleEdit({...row, ...data});
+    } else {
+      props.handleEdit(row)
+    }
   }
 
   const handleDeleteClicked = (row) => {
@@ -44,7 +57,7 @@ const ExtendableTable = (props) => {
 
               {(props.deleteButton || props.editButton) &&
                 <TableCell sx={{ width: "100px" }}>
-                  {props.editButton && <IconButton color="primary" onClick={() => handleEditClicked(row)}><EditIcon /></IconButton>}
+                  {props.editButton && <IconButton color="primary" onClick={() => handleEditClicked(row, props.data.otherData?.[index])}><EditIcon /></IconButton>}
                   {props.deleteButton && <IconButton color='error' onClick={() => handleDeleteClicked(row)}> <DeleteIcon /> </IconButton>}
                 </TableCell>
               }

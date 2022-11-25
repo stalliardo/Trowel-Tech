@@ -6,7 +6,8 @@ import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import CircularProgress from '@mui/material/CircularProgress'
-import { saveWeek } from '../../features/hoursDiary/hoursDiarySlice'
+import { saveWeek, updateWeek } from '../../features/hoursDiary/hoursDiarySlice'
+import { isObjectEmpty } from '../../utils/dataChecks'
 
 const rowData = [
     { name: "mon", label: "Monday" },
@@ -28,8 +29,12 @@ const GridItem = ({ name, label, value, onChange }) => {
 
 const EditHoursModal = ({ data, modalClosed, weekEnding, gangId, membersData }) => {
 
+    console.log('data from modal = ', data);
+    
     const [formData, setFormData] = useState(data);
-    const isLoading = useSelector(state => state.hoursDiary.isLoading);
+    const isLoading = useSelector(state => state.hoursDiary.isLoading); 
+    const hoursDiaryData = useSelector(state => state.hoursDiary);
+   
     
     const dispatch = useDispatch();
 
@@ -44,17 +49,50 @@ const EditHoursModal = ({ data, modalClosed, weekEnding, gangId, membersData }) 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const filteredMembers = membersData.filter(member => member.id.userId !== formData.id.userId);
+        let dataObject = {};
 
-        const dataObject = {
-            gangId,
-            weekEnding,
-            users: [formData, ...filteredMembers]
-        };
+        console.log('formData top = ', formData);
         
-        dispatch(saveWeek(dataObject)).unwrap().catch((e) => {
-            // TODO
-        })
+        
+        if(isObjectEmpty(hoursDiaryData.currentWeek)) { // <- CREATEING
+            const filteredMembers = membersData.filter(member => member.id !== formData.id);
+            dataObject = {
+                gangId,
+                weekEnding,
+                users: [formData, ...filteredMembers]
+            };
+            dispatch(saveWeek(dataObject)).unwrap().then(() => {
+                modalClosed();
+            }).catch((e) => {
+                console.log('error updating user. Error : ', e);
+                
+                // TODO
+            })
+        } else { // <- UPDATING
+           console.log('update called');
+           
+
+            dataObject = {
+                weekId: hoursDiaryData.currentWeek.weekId,
+                formData
+            }
+
+            dispatch(updateWeek(dataObject)).unwrap().then(() => {
+                modalClosed();
+            }).catch((e) => {
+                console.log('error updating user. Error : ', e);
+                
+                // TODO
+            })
+            
+        }
+
+        // need to determine if creating or updating, can do this via the weekId
+        // Whatdo i want to do if this is an update???
+            // Well dont need to loop all the members now as they are already in the sub collection
+            // only need to update the record for the edited user via their docID
+        
+        
     }
 
     return (
