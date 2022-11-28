@@ -1,5 +1,6 @@
 import { db } from '../../firebase';
 import { addDoc, collection, getDocs, setDoc, getDoc, query, where, limit, doc, updateDoc } from 'firebase/firestore';
+import { getWeekTotals } from '../../utils/hoursDiaryUtils';
 
 export const getAllWeeks = async (gangId) => {
     const weeklyRecordsRef = collection(db, "weeklyRecord");
@@ -48,7 +49,9 @@ export const addWeek = async (data) => {
             thu: member.thu,
             fri: member.fri,
             sat: member.sat,
-            sun: member.sun
+            sun: member.sun,
+            // need to save the gross here and onEdit
+            gross: getWeekTotals(member).gross // TODO TEST
         }))
     })
 
@@ -59,7 +62,9 @@ export const addWeek = async (data) => {
 
 export const editWeek = async (data) => {
     const userId = data.formData.id;
-
+    
+    data.formData.gross = getWeekTotals(data.formData).gross;
+    
     if (userId) {
         const usersRef = doc(db, "weeklyRecord", data.weekId, "users", userId);
         await updateDoc(usersRef, data.formData);

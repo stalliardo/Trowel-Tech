@@ -13,6 +13,11 @@ import { getData } from '../../features/gangInfo/gangInformationSlice';
 import { getUsersForCurrentWeek, getWeeks } from '../../features/hoursDiary/hoursDiarySlice';
 import CircularIndicator from '../loadingIndicator/CircularIndicator';
 
+// TODOS:
+    // Add a delete week button,
+    // Change the buttons to display an icon instead of text to save space
+    // Will maybe remove the hours-dairy route and just display all the data on the homepage for extra content
+
 const HoursDiaryContainer = () => {
     const [weekEnding, setWeekEnding] = useState("");
     const [editDate, setEditDate] = useState(weekEnding === "");

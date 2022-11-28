@@ -7,6 +7,7 @@ import CircularIndicator from '../loadingIndicator/CircularIndicator';
 
 import ExtendableModal from '../modal/extendableModal/ExtendableModal';
 import EditHoursModal from '../modal/EditHoursModal';
+import { useWeekData } from '../../custom-hooks/hoursDiaryHooks';
 
 const buildRowsArray = (members) => {
     let rowData = [];
@@ -42,6 +43,8 @@ const HoursDiaryTable = ({ weekEnding }) => {
     const gangInformation = useSelector(state => state.gangInformation);
     const hoursDiaryData = useSelector(state => state.hoursDiary);
 
+    const weekData = useWeekData(hoursDiaryData.currentWeek.users);
+
     useEffect(() => {
         if (hoursDiaryData.currentWeek.users?.length) {
             setTableData({ head: tableData.head, rows: buildRowsArray(hoursDiaryData.currentWeek.users) });
@@ -73,6 +76,7 @@ const HoursDiaryTable = ({ weekEnding }) => {
             tableData.rows.length ?
                 <>
                     <ExtendableTable data={tableData} editButton={true} handleEdit={handleEditHours} disallowedKeys={["dayRate", "id"]}/>
+                    {/* <Typography>REMOVE ME {weekData.grossTotal}</Typography> TODO */}
                     {showEditHoursModal ?
                         <ExtendableModal title={`Edit ${editedRow.name}'s Hours`} modalClosed={handleModalClosed}>
                             <EditHoursModal modalClosed={handleModalClosed} data={editedRow} weekEnding={weekEnding} gangId={userDoc.gangId} membersData={tableData.rows}/>

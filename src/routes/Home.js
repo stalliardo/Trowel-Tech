@@ -1,7 +1,9 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
+
 import LandingPage from '../components/landingPage/LandingPage';
 import JoinOrCreatePrompt from '../components/home/JoinOrCreatePrompt';
+import HoursDiaryContainer from '../components/hoursDiary/HoursDiaryContainer';
 
 const Home = () => {
     const { currentUser } = useSelector((state) => state.user);
@@ -15,11 +17,14 @@ const Home = () => {
     }
     else {
         return (
-            <div>
-                Hours diary here,
-                Todo's here,
-                projected earnings here, subject to change
-            </div>
+                <div>
+                    Hours diary here,
+                    Todo's here,
+                    projected earnings here, subject to change
+                </div>
+
+            // <HoursDiaryContainer />
+
 
         )
     }
