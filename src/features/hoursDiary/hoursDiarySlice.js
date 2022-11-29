@@ -12,6 +12,10 @@ export const hoursDiarySlice = createSlice({
     },
     reducers: {
 
+        clearCurrentWeek: (state) => {
+            state.currentWeek = {};
+        }
+
     },
 
     extraReducers: (builder) => {
@@ -65,6 +69,8 @@ export const hoursDiarySlice = createSlice({
             })
     }
 });
+
+export const {clearCurrentWeek} = hoursDiarySlice.actions;
 
 export default hoursDiarySlice.reducer;
 

@@ -19,7 +19,7 @@ import { isObjectEmpty } from '../../utils/dataChecks';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getData } from '../../features/gangInfo/gangInformationSlice';
-import { getUsersForCurrentWeek, getWeeks } from '../../features/hoursDiary/hoursDiarySlice';
+import { clearCurrentWeek, getUsersForCurrentWeek, getWeeks } from '../../features/hoursDiary/hoursDiarySlice';
 import CircularIndicator from '../loadingIndicator/CircularIndicator';
 
 import { useWeekData } from '../../custom-hooks/hoursDiaryHooks';
@@ -32,14 +32,14 @@ import { useWeekData } from '../../custom-hooks/hoursDiaryHooks';
     // Theres currently no way of saving the new date...
 
 const HoursDiaryContainer = () => {
-    const [weekEnding, setWeekEnding] = useState("");
-    const [editDate, setEditDate] = useState(weekEnding === "");
-    const [isLoading, setIsLoading] = useState(true);
-
     const userDoc = useSelector((state) => state.user.currentUser);
     const gangInformation = useSelector(state => state.gangInformation);
     const hoursDiaryData = useSelector(state => state.hoursDiary);
 
+    const [weekEnding, setWeekEnding] = useState(hoursDiaryData.currentWeek.weekEnding);
+    const [editDate, setEditDate] = useState(weekEnding === "");
+    const [isLoading, setIsLoading] = useState(true);
+    
     const weekData = useWeekData(hoursDiaryData.currentWeek.users);
 
     const dispatch = useDispatch();
@@ -51,6 +51,12 @@ const HoursDiaryContainer = () => {
 
     const handleAddNewWeek = () => {
         // TODO
+        // Need to wipe the currentWeek
+        dispatch(clearCurrentWeek());
+
+        // What about cancelling the add week operation so the user can go back to the current week
+        // Is there an efficient way of getting the previous currentWeek state??? could useRef() solve this.
+        // The reason for this is to prevent an additonal/unneeded call to the db
     }
 
     const handleDeleteWeek = () => {
@@ -72,13 +78,22 @@ const HoursDiaryContainer = () => {
     }, []);
 
     useEffect(() => {
+        console.log('useEffect called');
+        
         if (hoursDiaryData.currentWeek.weekEnding) {
             setWeekEnding(hoursDiaryData.currentWeek.weekEnding);
             setEditDate(false);
         }
-    }, [hoursDiaryData])
+
+        if(isObjectEmpty(hoursDiaryData.currentWeek)) {
+            setWeekEnding("");
+            setEditDate(true);
+        }
+    }, [hoursDiaryData.currentWeek]) // TEST -> go through the process of adding/editing weeks etc, and check for an issues
 
     useEffect(() => {
+        console.log('week id useEeffect called');
+        
         if (hoursDiaryData.currentWeek.id) {
             dispatch(getUsersForCurrentWeek(hoursDiaryData.currentWeek.id)).finally(() => {
                 setIsLoading(false)
