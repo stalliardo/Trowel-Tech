@@ -4,6 +4,15 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import Tooltip from '@mui/material/Tooltip';
+
+
+import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
+
 import HoursDiaryTable from './HoursDiaryTable';
 
 import { isObjectEmpty } from '../../utils/dataChecks';
@@ -13,10 +22,14 @@ import { getData } from '../../features/gangInfo/gangInformationSlice';
 import { getUsersForCurrentWeek, getWeeks } from '../../features/hoursDiary/hoursDiarySlice';
 import CircularIndicator from '../loadingIndicator/CircularIndicator';
 
+import { useWeekData } from '../../custom-hooks/hoursDiaryHooks';
+
 // TODOS:
-    // Add a delete week button,
-    // Change the buttons to display an icon instead of text to save space
-    // Will maybe remove the hours-dairy route and just display all the data on the homepage for extra content
+// Add a delete week button - DONE
+// Change the buttons to display an icon instead of text to save space - DONE
+// Will maybe remove the hours-dairy route and just display all the data on the homepage for extra content
+// What happens when a user changes the date on an existing week?
+    // Theres currently no way of saving the new date...
 
 const HoursDiaryContainer = () => {
     const [weekEnding, setWeekEnding] = useState("");
@@ -27,6 +40,8 @@ const HoursDiaryContainer = () => {
     const gangInformation = useSelector(state => state.gangInformation);
     const hoursDiaryData = useSelector(state => state.hoursDiary);
 
+    const weekData = useWeekData(hoursDiaryData.currentWeek.users);
+
     const dispatch = useDispatch();
 
     const handleDateChange = (e) => {
@@ -34,7 +49,11 @@ const HoursDiaryContainer = () => {
         setEditDate(false);
     }
 
-    const onNewWeekClicked = () => {
+    const handleAddNewWeek = () => {
+        // TODO
+    }
+
+    const handleDeleteWeek = () => {
         // TODO
     }
 
@@ -70,19 +89,32 @@ const HoursDiaryContainer = () => {
     return (
         isLoading ? <CircularIndicator /> :
             <>
-                <Box display="flex" justifyContent="space-between" mb="20px">
+                <Box display="flex" justifyContent="space-between" mb="20px" alignItems="flex-end">
                     <Box display="flex" alignItems="flex-end">
-                        <Typography textAlign="left" variant='h5'>WeekEnding: &nbsp;</Typography>
+                        <Typography textAlign="left" variant='h5'>Week Ending: &nbsp;</Typography>
                         {
                             editDate ? <OutlinedInput variant="outlined" type='date' sx={{ height: "40px" }} value={weekEnding} onChange={handleDateChange} />
-                                : <Typography variant='h5'>{weekEnding}</Typography>
+                                :
+                                <>
+                                    <Typography variant='h5'>{weekEnding}</Typography> <Tooltip title="Edit Date">
+                                        <IconButton color='primary' onClick={() => setEditDate(true)}><EditIcon /></IconButton>
+                                    </Tooltip>
+                                </>
                         }
                     </Box>
                     {
+                        // TEST
+                        !isObjectEmpty(hoursDiaryData.currentWeek) && <Typography mt="20px" textAlign="left" variant="h5">Total gross for all members: £{weekData.grossTotal}</Typography>
+                    }
+                    {
                         weekEnding !== "" &&
                         <Box display="inline">
-                            <Button variant='contained' sx={{ width: "150px", height: "40px", mr: "20px" }} onClick={() => setEditDate(true)}>Edit Date</Button>
-                            <Button variant='contained' sx={{ width: "150px", height: "40px" }} onClick={onNewWeekClicked}>New Week</Button>
+                            <Tooltip title="New week">
+                                <IconButton color='primary' onClick={handleAddNewWeek}><AddCircleOutlinedIcon /></IconButton>
+                            </Tooltip>
+                            <Tooltip title="Delete week">
+                                <IconButton color='error' onClick={handleDeleteWeek}><DeleteIcon /></IconButton>
+                            </Tooltip>
                         </Box>
                     }
                 </Box>

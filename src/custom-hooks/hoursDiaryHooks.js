@@ -6,12 +6,10 @@ export const useWeekData = (users) => {
 
     let grossTotal = 0;
     let hoursTotal = 0;
-
     let totals = {};
 
     useEffect(() => {
         if (users) {
-            
             users.forEach((user) => {
                 totals = getWeekTotals(user);
 

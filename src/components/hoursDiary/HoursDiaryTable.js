@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+
 import ExtendableTable from '../table/ExtendableTable'
 import CircularIndicator from '../loadingIndicator/CircularIndicator';
 
 import ExtendableModal from '../modal/extendableModal/ExtendableModal';
 import EditHoursModal from '../modal/EditHoursModal';
-import { useWeekData } from '../../custom-hooks/hoursDiaryHooks';
 
 const buildRowsArray = (members) => {
     let rowData = [];
@@ -43,7 +44,7 @@ const HoursDiaryTable = ({ weekEnding }) => {
     const gangInformation = useSelector(state => state.gangInformation);
     const hoursDiaryData = useSelector(state => state.hoursDiary);
 
-    const weekData = useWeekData(hoursDiaryData.currentWeek.users);
+    // const weekData = useWeekData(hoursDiaryData.currentWeek.users);
 
     useEffect(() => {
         if (hoursDiaryData.currentWeek.users?.length) {
@@ -75,11 +76,11 @@ const HoursDiaryTable = ({ weekEnding }) => {
         isLoading ? <CircularIndicator /> :
             tableData.rows.length ?
                 <>
-                    <ExtendableTable data={tableData} editButton={true} handleEdit={handleEditHours} disallowedKeys={["dayRate", "id"]}/>
-                    {/* <Typography>REMOVE ME {weekData.grossTotal}</Typography> TODO */}
+                    {/* TODO - need a pounc sign prefix on the gross pay */}
+                    <ExtendableTable data={tableData} editButton={true} handleEdit={handleEditHours} disallowedKeys={["dayRate", "id"]} />
                     {showEditHoursModal ?
                         <ExtendableModal title={`Edit ${editedRow.name}'s Hours`} modalClosed={handleModalClosed}>
-                            <EditHoursModal modalClosed={handleModalClosed} data={editedRow} weekEnding={weekEnding} gangId={userDoc.gangId} membersData={tableData.rows}/>
+                            <EditHoursModal modalClosed={handleModalClosed} data={editedRow} weekEnding={weekEnding} gangId={userDoc.gangId} membersData={tableData.rows} />
                         </ExtendableModal>
                         : null
                     }

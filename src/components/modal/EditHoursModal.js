@@ -90,3 +90,5 @@ const EditHoursModal = ({ data, modalClosed, weekEnding, gangId, membersData }) 
 }
 
 export default EditHoursModal
+
+// TEST -> what happens to the title if the users name is large? Will it wrap?
