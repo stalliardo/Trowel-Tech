@@ -50,8 +50,7 @@ export const addWeek = async (data) => {
             fri: member.fri,
             sat: member.sat,
             sun: member.sun,
-            // need to save the gross here and onEdit
-            gross: getWeekTotals(member).gross // TODO TEST
+            gross: member.gross
         }))
     })
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
@@ -23,13 +23,14 @@ import { clearCurrentWeek, getUsersForCurrentWeek, getWeeks } from '../../featur
 import CircularIndicator from '../loadingIndicator/CircularIndicator';
 
 import { useWeekData } from '../../custom-hooks/hoursDiaryHooks';
+import AddWeekPrompt from './AddWeekPrompt';
 
 // TODOS:
 // Add a delete week button - DONE
 // Change the buttons to display an icon instead of text to save space - DONE
 // Will maybe remove the hours-dairy route and just display all the data on the homepage for extra content
 // What happens when a user changes the date on an existing week?
-    // Theres currently no way of saving the new date...
+// Theres currently no way of saving the new date...
 
 const HoursDiaryContainer = () => {
     const userDoc = useSelector((state) => state.user.currentUser);
@@ -39,8 +40,12 @@ const HoursDiaryContainer = () => {
     const [weekEnding, setWeekEnding] = useState(hoursDiaryData.currentWeek.weekEnding);
     const [editDate, setEditDate] = useState(weekEnding === "");
     const [isLoading, setIsLoading] = useState(true);
-    
+    const [showAddWeek, setShowAddWeek] = useState(false);
+    const [isEditingWeek, setIsEditingWeek] = useState(false);
+
     const weekData = useWeekData(hoursDiaryData.currentWeek.users);
+
+    const previousWeek = useRef();
 
     const dispatch = useDispatch();
 
@@ -52,15 +57,25 @@ const HoursDiaryContainer = () => {
     const handleAddNewWeek = () => {
         // TODO
         // Need to wipe the currentWeek
+        console.log('setting previous week...');
+        previousWeek.current = hoursDiaryData.currentWeek;
+
         dispatch(clearCurrentWeek());
 
-        // What about cancelling the add week operation so the user can go back to the current week
-        // Is there an efficient way of getting the previous currentWeek state??? could useRef() solve this.
-        // The reason for this is to prevent an additonal/unneeded call to the db
+        setIsEditingWeek(true);
+
+        console.log('previous week after currentWeek cleared = ', previousWeek);
+
     }
 
     const handleDeleteWeek = () => {
         // TODO
+    }
+
+    const onAddWeek = () => {
+        console.log('add week clciked');
+
+        setShowAddWeek(true);
     }
 
     useEffect(() => {
@@ -78,14 +93,12 @@ const HoursDiaryContainer = () => {
     }, []);
 
     useEffect(() => {
-        console.log('useEffect called');
-        
         if (hoursDiaryData.currentWeek.weekEnding) {
             setWeekEnding(hoursDiaryData.currentWeek.weekEnding);
             setEditDate(false);
         }
 
-        if(isObjectEmpty(hoursDiaryData.currentWeek)) {
+        if (isObjectEmpty(hoursDiaryData.currentWeek)) {
             setWeekEnding("");
             setEditDate(true);
         }
@@ -93,7 +106,7 @@ const HoursDiaryContainer = () => {
 
     useEffect(() => {
         console.log('week id useEeffect called');
-        
+
         if (hoursDiaryData.currentWeek.id) {
             dispatch(getUsersForCurrentWeek(hoursDiaryData.currentWeek.id)).finally(() => {
                 setIsLoading(false)
@@ -101,14 +114,19 @@ const HoursDiaryContainer = () => {
         }
     }, [hoursDiaryData.currentWeek.id])
 
-    return (
-        isLoading ? <CircularIndicator /> :
+    if (isLoading) return <CircularIndicator />;
+    if (isObjectEmpty(hoursDiaryData.currentWeek) && !showAddWeek && isObjectEmpty(previousWeek.current)) {
+        return <AddWeekPrompt addWeekClicked={onAddWeek} />;
+    } else if (showAddWeek || (!isObjectEmpty(hoursDiaryData.currentWeek) || !isObjectEmpty(previousWeek.current))) {
+        return (
             <>
                 <Box display="flex" justifyContent="space-between" mb="20px" alignItems="flex-end">
                     <Box display="flex" alignItems="flex-end">
                         <Typography textAlign="left" variant='h5'>Week Ending: &nbsp;</Typography>
+
                         {
-                            editDate ? <OutlinedInput variant="outlined" type='date' sx={{ height: "40px" }} value={weekEnding} onChange={handleDateChange} />
+                            editDate ?
+                                <OutlinedInput variant="outlined" type='date' sx={{ height: "40px" }} value={weekEnding} onChange={handleDateChange} />
                                 :
                                 <>
                                     <Typography variant='h5'>{weekEnding}</Typography> <Tooltip title="Edit Date">
@@ -123,7 +141,8 @@ const HoursDiaryContainer = () => {
                     }
                     {
                         weekEnding !== "" &&
-                        <Box display="inline">
+                        <Box display="flex" alignItems="flex-end">
+                            {isObjectEmpty(hoursDiaryData.currentWeek) && <Box sx={{mb: "8px"}}><Typography variant='subtitle' color="red">Not Saved</Typography></Box>}
                             <Tooltip title="New week">
                                 <IconButton color='primary' onClick={handleAddNewWeek}><AddCircleOutlinedIcon /></IconButton>
                             </Tooltip>
@@ -135,10 +154,16 @@ const HoursDiaryContainer = () => {
                 </Box>
 
                 {
-                    weekEnding === "" ? <Typography variant='h6'>Awaiting week ending date...</Typography> : <HoursDiaryTable weekEnding={weekEnding} />
+                    weekEnding === "" ? <Typography textAlign="left" variant='h6'>Awaiting week ending date...</Typography> : <HoursDiaryTable weekEnding={weekEnding} isEditing={isEditingWeek}/>
                 }
             </>
-    )
+        )
+    }
 }
 
 export default HoursDiaryContainer;
+
+
+// 1 - if no week show prompt
+// 2 - if week show week
+// 3 - Click add new week, clear current and show the default form

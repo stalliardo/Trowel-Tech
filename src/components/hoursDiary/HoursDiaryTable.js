@@ -9,6 +9,7 @@ import CircularIndicator from '../loadingIndicator/CircularIndicator';
 
 import ExtendableModal from '../modal/extendableModal/ExtendableModal';
 import EditHoursModal from '../modal/EditHoursModal';
+import { getData } from '../../features/gangInfo/gangInformationSlice';
 
 const buildRowsArray = (members) => {
     let rowData = [];
@@ -31,7 +32,7 @@ const buildRowsArray = (members) => {
     return rowData;
 }
 
-const HoursDiaryTable = ({ weekEnding }) => {
+const HoursDiaryTable = ({ weekEnding, isEditing }) => {
     const [tableData, setTableData] = useState({
         head: ["Name", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", "Gross Pay", "Actions"],
         rows: [],
@@ -44,6 +45,8 @@ const HoursDiaryTable = ({ weekEnding }) => {
     const gangInformation = useSelector(state => state.gangInformation);
     const hoursDiaryData = useSelector(state => state.hoursDiary);
 
+    const dispatch = useDispatch();
+
     // const weekData = useWeekData(hoursDiaryData.currentWeek.users);
 
     useEffect(() => {
@@ -53,6 +56,14 @@ const HoursDiaryTable = ({ weekEnding }) => {
         } else if (gangInformation.members.length && !hoursDiaryData.isLoading) {
             setIsLoading(false);
             setTableData({ head: tableData.head, rows: buildRowsArray(gangInformation.members) });
+        } else if(isEditing) {
+            console.log('another else called');
+            if(!gangInformation.members.length) {
+                dispatch(getData(userDoc.gangId)).finally(() => {
+                    setIsLoading(false);
+                })
+            }
+            
         }
 
     }, [hoursDiaryData.currentWeek.users]);
