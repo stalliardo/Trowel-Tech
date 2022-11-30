@@ -19,7 +19,7 @@ import { isObjectEmpty } from '../../utils/dataChecks';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getData } from '../../features/gangInfo/gangInformationSlice';
-import { clearCurrentWeek, getUsersForCurrentWeek, getWeeks } from '../../features/hoursDiary/hoursDiarySlice';
+import { clearCurrentWeek, deleteWeek, getUsersForCurrentWeek, getWeeks } from '../../features/hoursDiary/hoursDiarySlice';
 import CircularIndicator from '../loadingIndicator/CircularIndicator';
 
 import { useWeekData } from '../../custom-hooks/hoursDiaryHooks';
@@ -29,8 +29,6 @@ import AddWeekPrompt from './AddWeekPrompt';
 // Add a delete week button - DONE
 // Change the buttons to display an icon instead of text to save space - DONE
 // Will maybe remove the hours-dairy route and just display all the data on the homepage for extra content
-// What happens when a user changes the date on an existing week?
-// Theres currently no way of saving the new date...
 
 const HoursDiaryContainer = () => {
     const userDoc = useSelector((state) => state.user.currentUser);
@@ -70,6 +68,7 @@ const HoursDiaryContainer = () => {
 
     const handleDeleteWeek = () => {
         // TODO
+        dispatch(deleteWeek(hoursDiaryData.currentWeek.id));
     }
 
     const onAddWeek = () => {
@@ -129,20 +128,20 @@ const HoursDiaryContainer = () => {
                                 <OutlinedInput variant="outlined" type='date' sx={{ height: "40px" }} value={weekEnding} onChange={handleDateChange} />
                                 :
                                 <>
-                                    <Typography variant='h5'>{weekEnding}</Typography> <Tooltip title="Edit Date">
+                                    <Typography variant='h5'>{weekEnding}</Typography>
+                                    {/* <Tooltip title="Edit Date"> TODO <- should this be enabled
                                         <IconButton color='primary' onClick={() => setEditDate(true)}><EditIcon /></IconButton>
-                                    </Tooltip>
+                                    </Tooltip> */}
                                 </>
                         }
                     </Box>
                     {
-                        // TEST
                         !isObjectEmpty(hoursDiaryData.currentWeek) && <Typography mt="20px" textAlign="left" variant="h5">Total gross for all members: £{weekData.grossTotal}</Typography>
                     }
                     {
                         weekEnding !== "" &&
                         <Box display="flex" alignItems="flex-end">
-                            {isObjectEmpty(hoursDiaryData.currentWeek) && <Box sx={{mb: "8px"}}><Typography variant='subtitle' color="red">Not Saved</Typography></Box>}
+                            {isObjectEmpty(hoursDiaryData.currentWeek) && <Box sx={{ mb: "8px" }}><Typography variant='subtitle' color="red">Not Saved</Typography></Box>}
                             <Tooltip title="New week">
                                 <IconButton color='primary' onClick={handleAddNewWeek}><AddCircleOutlinedIcon /></IconButton>
                             </Tooltip>
@@ -154,7 +153,7 @@ const HoursDiaryContainer = () => {
                 </Box>
 
                 {
-                    weekEnding === "" ? <Typography textAlign="left" variant='h6'>Awaiting week ending date...</Typography> : <HoursDiaryTable weekEnding={weekEnding} isEditing={isEditingWeek}/>
+                    weekEnding === "" ? <Typography textAlign="left" variant='h6'>Awaiting week ending date...</Typography> : <HoursDiaryTable weekEnding={weekEnding} isEditing={isEditingWeek} />
                 }
             </>
         )
@@ -162,8 +161,3 @@ const HoursDiaryContainer = () => {
 }
 
 export default HoursDiaryContainer;
-
-
-// 1 - if no week show prompt
-// 2 - if week show week
-// 3 - Click add new week, clear current and show the default form

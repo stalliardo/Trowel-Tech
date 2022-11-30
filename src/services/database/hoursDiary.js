@@ -1,5 +1,5 @@
 import { db } from '../../firebase';
-import { addDoc, collection, getDocs, setDoc, getDoc, query, where, limit, doc, updateDoc } from 'firebase/firestore';
+import { addDoc, collection, getDocs, setDoc, getDoc, query, where, limit, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { getWeekTotals } from '../../utils/hoursDiaryUtils';
 
 export const getAllWeeks = async (gangId) => {
@@ -68,4 +68,8 @@ export const editWeek = async (data) => {
         const usersRef = doc(db, "weeklyRecord", data.weekId, "users", userId);
         await updateDoc(usersRef, data.formData);
     }
+}
+
+export const deleteWeekDoc = async(weekId) => {
+    await deleteDoc(doc(db, "weeklyRecord", weekId));
 }

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { addWeek, editWeek, getAllWeeks, getUsersForWeek } from '../../services/database/hoursDiary';
+import { addWeek, deleteWeekDoc, editWeek, getAllWeeks, getUsersForWeek } from '../../services/database/hoursDiary';
 import { extractCurrentWeek } from '../../utils/hoursDiaryUtils';
 
 export const hoursDiarySlice = createSlice({
@@ -67,6 +67,17 @@ export const hoursDiarySlice = createSlice({
                 state.currentWeek.users = action.payload;
                 state.isLoading = false;
             })
+            .addCase(deleteWeek.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(deleteWeek.rejected, (state) => {
+                state.isLoading = false;
+            })
+            .addCase(deleteWeek.fulfilled, (state, action) => {
+                state.allWeeks = state.allWeeks.filter(w => w.id !== action.payload)
+                state.currentWeek = extractCurrentWeek(state.allWeeks);
+                state.isLoading = false;
+            })
     }
 });
 
@@ -114,6 +125,18 @@ export const getUsersForCurrentWeek = createAsyncThunk(
     async (weekId) => {
         try {
             return await getUsersForWeek(weekId);
+        } catch (error) {
+            throw error;
+        }
+    }
+)
+
+export const deleteWeek = createAsyncThunk(
+    "hoursDiary/deleteWeek",
+    async (weekId) => {
+        try {
+            await deleteWeekDoc(weekId);
+            return weekId;
         } catch (error) {
             throw error;
         }
