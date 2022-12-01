@@ -104,9 +104,9 @@ const HoursDiaryContainer = () => {
     } else if (showAddWeek || (!isObjectEmpty(hoursDiaryData.currentWeek) || !isObjectEmpty(previousWeek.current))) {
         return (
             <>
-                <Box display="flex" justifyContent="space-between" mb="20px" alignItems="flex-end">
+                <Box display="flex" justifyContent="space-between" mb="20px" alignItems={{ xs: "flex-start", md: "flex-end" }} flexDirection={{ xs: "column", md: "row" }}>
                     <Box display="flex" alignItems="flex-end">
-                        <Typography textAlign="left" variant='h5'>Week Ending: &nbsp;</Typography>
+                        <Typography textAlign="left" variant='h5' >Week Ending: &nbsp;</Typography>
                         {
                             editDate ?
                                 <OutlinedInput variant="outlined" type='date' sx={{ height: "40px" }} value={weekEnding} onChange={handleDateChange} />
