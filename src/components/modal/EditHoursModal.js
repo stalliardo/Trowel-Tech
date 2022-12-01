@@ -48,7 +48,6 @@ const EditHoursModal = ({ data, modalClosed, weekEnding, gangId, membersData }) 
 
         let dataObject = {};
 
-
         if (isObjectEmpty(hoursDiaryData.currentWeek)) {
             const filteredMembers = membersData.filter(member => member.id !== formData.id);
             formData.gross = getWeekTotals(formData).gross;
@@ -72,7 +71,6 @@ const EditHoursModal = ({ data, modalClosed, weekEnding, gangId, membersData }) 
             dispatch(updateWeek(dataObject)).unwrap().then(() => {
                 modalClosed();
             }).catch((e) => {
-                console.log('error updating user. Error : ', e);
                 // TODO
             })
         }

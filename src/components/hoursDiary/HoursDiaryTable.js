@@ -57,7 +57,6 @@ const HoursDiaryTable = ({ weekEnding, isEditing }) => {
             setIsLoading(false);
             setTableData({ head: tableData.head, rows: buildRowsArray(gangInformation.members) });
         } else if(isEditing) {
-            console.log('another else called');
             if(!gangInformation.members.length) {
                 dispatch(getData(userDoc.gangId)).finally(() => {
                     setIsLoading(false);
