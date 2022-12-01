@@ -3,48 +3,36 @@ import React, { useEffect, useRef, useState } from 'react'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import OutlinedInput from '@mui/material/OutlinedInput';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Tooltip from '@mui/material/Tooltip';
-
-
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
+import CircularIndicator from '../loadingIndicator/CircularIndicator';
 
 import HoursDiaryTable from './HoursDiaryTable';
 
 import { isObjectEmpty } from '../../utils/dataChecks';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { getData } from '../../features/gangInfo/gangInformationSlice';
-import { clearCurrentWeek, deleteWeek, getUsersForCurrentWeek, getWeeks } from '../../features/hoursDiary/hoursDiarySlice';
-import CircularIndicator from '../loadingIndicator/CircularIndicator';
+import { clearCurrentWeek, deleteWeek, getUsersForCurrentWeek, getWeeks, loadCurrentWeek } from '../../features/hoursDiary/hoursDiarySlice';
 
 import { useWeekData } from '../../custom-hooks/hoursDiaryHooks';
 import AddWeekPrompt from './AddWeekPrompt';
-
-// TODOS:
-// Add a delete week button - DONE
-// Change the buttons to display an icon instead of text to save space - DONE
-// Will maybe remove the hours-dairy route and just display all the data on the homepage for extra content
 
 const HoursDiaryContainer = () => {
     const userDoc = useSelector((state) => state.user.currentUser);
     const gangInformation = useSelector(state => state.gangInformation);
     const hoursDiaryData = useSelector(state => state.hoursDiary);
 
-    const [weekEnding, setWeekEnding] = useState(hoursDiaryData.currentWeek.weekEnding);
+    const [weekEnding, setWeekEnding] = useState(hoursDiaryData.currentWeek?.weekEnding);
     const [editDate, setEditDate] = useState(weekEnding === "");
     const [isLoading, setIsLoading] = useState(true);
     const [showAddWeek, setShowAddWeek] = useState(false);
     const [isEditingWeek, setIsEditingWeek] = useState(false);
 
-    const weekData = useWeekData(hoursDiaryData.currentWeek.users);
-
+    const weekData = useWeekData(hoursDiaryData.currentWeek?.users);
     const previousWeek = useRef();
-
     const dispatch = useDispatch();
 
     const handleDateChange = (e) => {
@@ -53,28 +41,26 @@ const HoursDiaryContainer = () => {
     }
 
     const handleAddNewWeek = () => {
-        // TODO
-        // Need to wipe the currentWeek
-        console.log('setting previous week...');
         previousWeek.current = hoursDiaryData.currentWeek;
-
         dispatch(clearCurrentWeek());
-
         setIsEditingWeek(true);
-
-        console.log('previous week after currentWeek cleared = ', previousWeek);
-
     }
 
     const handleDeleteWeek = () => {
-        // TODO
-        dispatch(deleteWeek(hoursDiaryData.currentWeek.id));
+        previousWeek.current = {};
+        const confirmation = window.confirm("Are you sure you want to delete this week?");
+
+        if (confirmation) {
+            dispatch(deleteWeek({ weekId: hoursDiaryData.currentWeek.id || hoursDiaryData.currentWeek.weekId, users: hoursDiaryData.currentWeek.users }));
+        }
     }
 
     const onAddWeek = () => {
-        console.log('add week clciked');
-
         setShowAddWeek(true);
+    }
+
+    const handleGoBack = () => {
+        dispatch(loadCurrentWeek(previousWeek.current));
     }
 
     useEffect(() => {
@@ -92,6 +78,7 @@ const HoursDiaryContainer = () => {
     }, []);
 
     useEffect(() => {
+        setShowAddWeek(false);
         if (hoursDiaryData.currentWeek.weekEnding) {
             setWeekEnding(hoursDiaryData.currentWeek.weekEnding);
             setEditDate(false);
@@ -101,19 +88,17 @@ const HoursDiaryContainer = () => {
             setWeekEnding("");
             setEditDate(true);
         }
-    }, [hoursDiaryData.currentWeek]) // TEST -> go through the process of adding/editing weeks etc, and check for an issues
+    }, [hoursDiaryData.currentWeek]);
 
     useEffect(() => {
-        console.log('week id useEeffect called');
-
         if (hoursDiaryData.currentWeek.id) {
             dispatch(getUsersForCurrentWeek(hoursDiaryData.currentWeek.id)).finally(() => {
                 setIsLoading(false)
             })
         }
-    }, [hoursDiaryData.currentWeek.id])
+    }, [hoursDiaryData.currentWeek?.id]);
 
-    if (isLoading) return <CircularIndicator />;
+    if (isLoading || hoursDiaryData.isLoading) return <CircularIndicator />;
     if (isObjectEmpty(hoursDiaryData.currentWeek) && !showAddWeek && isObjectEmpty(previousWeek.current)) {
         return <AddWeekPrompt addWeekClicked={onAddWeek} />;
     } else if (showAddWeek || (!isObjectEmpty(hoursDiaryData.currentWeek) || !isObjectEmpty(previousWeek.current))) {
@@ -122,17 +107,11 @@ const HoursDiaryContainer = () => {
                 <Box display="flex" justifyContent="space-between" mb="20px" alignItems="flex-end">
                     <Box display="flex" alignItems="flex-end">
                         <Typography textAlign="left" variant='h5'>Week Ending: &nbsp;</Typography>
-
                         {
                             editDate ?
                                 <OutlinedInput variant="outlined" type='date' sx={{ height: "40px" }} value={weekEnding} onChange={handleDateChange} />
                                 :
-                                <>
-                                    <Typography variant='h5'>{weekEnding}</Typography>
-                                    {/* <Tooltip title="Edit Date"> TODO <- should this be enabled
-                                        <IconButton color='primary' onClick={() => setEditDate(true)}><EditIcon /></IconButton>
-                                    </Tooltip> */}
-                                </>
+                                <Typography variant='h5'>{weekEnding}</Typography>
                         }
                     </Box>
                     {
@@ -142,16 +121,24 @@ const HoursDiaryContainer = () => {
                         weekEnding !== "" &&
                         <Box display="flex" alignItems="flex-end">
                             {isObjectEmpty(hoursDiaryData.currentWeek) && <Box sx={{ mb: "8px" }}><Typography variant='subtitle' color="red">Not Saved</Typography></Box>}
-                            <Tooltip title="New week">
-                                <IconButton color='primary' onClick={handleAddNewWeek}><AddCircleOutlinedIcon /></IconButton>
-                            </Tooltip>
-                            <Tooltip title="Delete week">
-                                <IconButton color='error' onClick={handleDeleteWeek}><DeleteIcon /></IconButton>
-                            </Tooltip>
+                            {
+                                !isObjectEmpty(hoursDiaryData.currentWeek) ?
+                                    <>
+                                        <Tooltip title="New Week">
+                                            <IconButton color='primary' onClick={handleAddNewWeek}><AddCircleOutlinedIcon /></IconButton>
+                                        </Tooltip>
+                                        <Tooltip title="Delete Week">
+                                            <IconButton color='error' onClick={handleDeleteWeek}><DeleteIcon /></IconButton>
+                                        </Tooltip>
+                                    </>
+                                    :
+                                    <Tooltip title="Go Back">
+                                        <IconButton color='primary' onClick={handleGoBack}><ArrowBackIcon /></IconButton>
+                                    </Tooltip>
+                            }
                         </Box>
                     }
                 </Box>
-
                 {
                     weekEnding === "" ? <Typography textAlign="left" variant='h6'>Awaiting week ending date...</Typography> : <HoursDiaryTable weekEnding={weekEnding} isEditing={isEditingWeek} />
                 }

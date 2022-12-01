@@ -11,11 +11,13 @@ export const hoursDiarySlice = createSlice({
         allWeeksForUser: [],
     },
     reducers: {
-
         clearCurrentWeek: (state) => {
             state.currentWeek = {};
-        }
+        },
 
+        loadCurrentWeek: (state, action) => {
+            state.currentWeek = action.payload;
+        }
     },
 
     extraReducers: (builder) => {
@@ -42,6 +44,7 @@ export const hoursDiarySlice = createSlice({
             })
             .addCase(saveWeek.fulfilled, (state, action) => {
                 state.currentWeek = action.payload;
+                state.allWeeks.push(action.payload);
                 state.isLoading = false;
             })
             .addCase(updateWeek.pending, (state) => {
@@ -74,14 +77,20 @@ export const hoursDiarySlice = createSlice({
                 state.isLoading = false;
             })
             .addCase(deleteWeek.fulfilled, (state, action) => {
-                state.allWeeks = state.allWeeks.filter(w => w.id !== action.payload)
-                state.currentWeek = extractCurrentWeek(state.allWeeks);
+                state.allWeeks = state.allWeeks.filter(w => w.id !== action.payload);
+
+                if(state.allWeeks.length) {
+                    state.currentWeek = extractCurrentWeek(state.allWeeks);
+                } else {
+                    state.currentWeek = {};
+                    state.allWeeks = [];
+                }
                 state.isLoading = false;
             })
     }
 });
 
-export const {clearCurrentWeek} = hoursDiarySlice.actions;
+export const {clearCurrentWeek, loadCurrentWeek} = hoursDiarySlice.actions;
 
 export default hoursDiarySlice.reducer;
 
@@ -101,7 +110,7 @@ export const saveWeek = createAsyncThunk(
     async (data) => {
         try {
             const weekId = await addWeek(data);
-            return { weekId, users: data.users };
+            return { id: weekId, gangId: data.gangId, weekEnding: data.weekEnding, users: data.users };
         } catch (error) {
             throw error;
         }
@@ -133,10 +142,10 @@ export const getUsersForCurrentWeek = createAsyncThunk(
 
 export const deleteWeek = createAsyncThunk(
     "hoursDiary/deleteWeek",
-    async (weekId) => {
+    async (data) => {
         try {
-            await deleteWeekDoc(weekId);
-            return weekId;
+            await deleteWeekDoc(data);
+            return data.weekId;
         } catch (error) {
             throw error;
         }

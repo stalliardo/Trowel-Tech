@@ -52,10 +52,9 @@ export const addWeek = async (data) => {
             sun: member.sun,
             gross: member.gross
         }))
-    })
+    });
 
     await Promise.all(promises);
-
     return weeklyRecordsRef.id;
 }
 
@@ -70,6 +69,13 @@ export const editWeek = async (data) => {
     }
 }
 
-export const deleteWeekDoc = async(weekId) => {
-    await deleteDoc(doc(db, "weeklyRecord", weekId));
+export const deleteWeekDoc = async(data) => {
+    const usersPromises = [];
+
+    data.users.forEach((user) => {
+        usersPromises.push(deleteDoc(doc(db, "weeklyRecord", data.weekId, "users", user.id)));
+    });
+
+    await Promise.all(usersPromises);
+    await deleteDoc(doc(db, "weeklyRecord", data.weekId));
 }
