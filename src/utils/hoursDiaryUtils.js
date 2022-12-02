@@ -16,6 +16,10 @@ export const extractCurrentWeek = (weeks) => {
     return weeks.find((week) => week.weekEnding === highestDate);
 }
 
+export const extractLastSixWeeks = (weeks) => {
+    // TODO
+}
+
 export const extractWeeksForUser = () => {
     // TODO
 }   

@@ -23,7 +23,7 @@ const rowData = [
 const GridItem = ({ name, label, value, onChange }) => {
     return (
         <Grid item xs={12}>
-            <TextField name={name} label={label} value={value} InputProps={{ inputProps: { min: 0 } }} required={true} onChange={onChange} fullWidth type="number" />
+            <TextField name={name} label={label} value={value} InputProps={{ inputProps: { min: 0, step: 0.01 } }} required={true} onChange={onChange} fullWidth type="number" />
         </Grid>
     )
 }

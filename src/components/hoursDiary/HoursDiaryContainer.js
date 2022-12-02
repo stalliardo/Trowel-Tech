@@ -20,6 +20,10 @@ import { clearCurrentWeek, deleteWeek, getUsersForCurrentWeek, getWeeks, loadCur
 import { useWeekData } from '../../custom-hooks/hoursDiaryHooks';
 import AddWeekPrompt from './AddWeekPrompt';
 
+// TODO
+    // Download CSV icon
+    // Change the date format to a more uk friendly one
+
 const HoursDiaryContainer = () => {
     const userDoc = useSelector((state) => state.user.currentUser);
     const gangInformation = useSelector(state => state.gangInformation);
