@@ -6,6 +6,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import DoneIcon from '@mui/icons-material/Done';
 import Tooltip from '@mui/material/Tooltip';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import CircularIndicator from '../loadingIndicator/CircularIndicator';
@@ -41,9 +42,16 @@ const HoursDiaryContainer = () => {
     const dispatch = useDispatch();
 
     const handleDateChange = (e) => {
-        setWeekEnding(formatDate(e.target.value));
+
+
+        // setWeekEnding(formatDate(e.target.value));
+        setWeekEnding(e.target.value);
+    }
+
+    const handleWeekEndingAdded = () => {
         setEditDate(false);
     }
+
 
     const handleAddNewWeek = () => {
         previousWeek.current = hoursDiaryData.currentWeek;
@@ -114,16 +122,24 @@ const HoursDiaryContainer = () => {
                         <Typography textAlign="left" variant='h5' >Week Ending: &nbsp;</Typography>
                         {
                             editDate ?
-                                <OutlinedInput variant="outlined" type='date' sx={{ height: "40px" }} value={weekEnding} onChange={handleDateChange} />
+                                <>
+                                    <OutlinedInput variant="outlined" type='date' sx={{ height: "40px" }} value={weekEnding} onChange={handleDateChange} />
+                                    {
+                                        weekEnding && <Tooltip title="Add Week Ending">
+                                            <IconButton color='primary' onClick={handleWeekEndingAdded}><DoneIcon /></IconButton>
+                                        </Tooltip>
+                                    }
+
+                                </>
                                 :
-                                <Typography variant='h5'>{weekEnding}</Typography>
+                                <Typography variant='h5'>{formatDate(weekEnding)}</Typography>
                         }
                     </Box>
                     {
                         !isObjectEmpty(hoursDiaryData.currentWeek) && <Typography mt="20px" textAlign="left" variant="h5">Total gross for all members: £{weekData.grossTotal}</Typography>
                     }
                     {
-                        weekEnding !== "" &&
+                        !editDate &&
                         <Box display="flex" alignItems="flex-end">
                             {isObjectEmpty(hoursDiaryData.currentWeek) && <Box sx={{ mb: "8px" }}><Typography variant='subtitle' color="red">Not Saved</Typography></Box>}
                             {
@@ -145,7 +161,7 @@ const HoursDiaryContainer = () => {
                     }
                 </Box>
                 {
-                    weekEnding === "" ? <Typography textAlign="left" variant='h6'>Awaiting week ending date...</Typography> : <HoursDiaryTable weekEnding={weekEnding} isEditing={isEditingWeek} />
+                    editDate ? <Typography textAlign="left" variant='h6'>Awaiting week ending date...</Typography> : <HoursDiaryTable weekEnding={weekEnding} isEditing={isEditingWeek} />
                 }
             </>
         )

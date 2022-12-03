@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useSelector } from 'react-redux';
 
@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import WeekCard from './WeekCard';
 import moment from 'moment/moment';
 import { formatDate } from '../../utils/dateUtils';
+import { extractLastSixWeeks } from '../../utils/hoursDiaryUtils';
 
 const dummyData = [
     {
@@ -45,12 +46,22 @@ const dummyData = [
 const DisplayPreviousWeeks = () => {
 
     const allWeeks = useSelector(state => state.hoursDiary.allWeeks);
+    const [lastSixWeeks, setLastSixWeeks] = useState([]);
+
+    // 1 - If only one week, display message "There is only week available and this is being displayed in the table above"
+    // 2 - allWeeks.length > 1 then display those weeks in the grid
+    // 3 - no weeks at all message: "No weeks found! As you save weeks the previous six will be displayed here"
 
     useEffect(() => {
 
-        if(allWeeks.length) {
-           
-            console.log("todays date = ", new Date(), " Formattetd = ", formatDate(new Date()));
+        if (allWeeks.length > 1) {
+
+            // console.log("todays date = ", new Date(), " Formattetd = ", formatDate(new Date()));
+            // console.log("all weeks = ", allWeeks);
+
+            const lastSix = extractLastSixWeeks(allWeeks);
+
+            // need to loop and extract the last 6 weeks here and then set the lastSixWeeks array
         }
 
     }, [allWeeks]);
@@ -60,11 +71,16 @@ const DisplayPreviousWeeks = () => {
         <Box>
             <Typography variant="h5">Previous Six Weeks</Typography>
 
-            <Box sx={{display: "flex", justifyContent: "space-between", flexBasis: "33%", flexWrap: "wrap"}}>
-                {
-                    dummyData.map((data, index) => {
+            <Box sx={{ display: "flex", justifyContent: "space-between", flexBasis: "33%", flexWrap: "wrap" }}>
+                {allWeeks.length > 0 &&
+                    allWeeks.length === 1 ?
+                    <Box>
+                        <Typography variant='subtitle'>There was only one week found! That week is being displayed in the table above.</Typography>
+                    </Box>
+                    :
+                    allWeeks.map((data, index) => {
                         return (
-                            <WeekCard key={index} weekEnding={data.weekEnding} hours={data.totalHours} gross={data.totalGross}/>
+                            <WeekCard key={index} weekEnding={data.weekEnding} hours={data.totalHours} gross={data.totalGross} />
                         )
                     })
                 }
