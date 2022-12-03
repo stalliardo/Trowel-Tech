@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
+import { useSelector } from 'react-redux';
+
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 import WeekCard from './WeekCard';
+import moment from 'moment/moment';
+import { formatDate } from '../../utils/dateUtils';
 
 const dummyData = [
     {
@@ -39,6 +43,19 @@ const dummyData = [
 ]
 
 const DisplayPreviousWeeks = () => {
+
+    const allWeeks = useSelector(state => state.hoursDiary.allWeeks);
+
+    useEffect(() => {
+
+        if(allWeeks.length) {
+           
+            console.log("todays date = ", new Date(), " Formattetd = ", formatDate(new Date()));
+        }
+
+    }, [allWeeks]);
+
+
     return (
         <Box>
             <Typography variant="h5">Previous Six Weeks</Typography>

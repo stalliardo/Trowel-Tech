@@ -24,11 +24,20 @@ const paperStyles = {
 
 
 const WeekCard = (props) => {
+
+    // WIll need to pass in the real data from the allweeks/last 6 weeks array.
+    // When clicked can then add this card to the currentWeek Object
+
+    const handleCardClicked = () => {
+        console.log("CLicked");
+    }
+
+
     return (
-        <Paper elevation={3} sx={paperStyles}>
+        <Paper elevation={3} sx={paperStyles} onClick={handleCardClicked}>
            <CardItem title="Week Ending" value={props.weekEnding}/>
            <CardItem title="Total Hours" value={props.hours}/>
-           <CardItem title="Total Gross" value={props.gross}/>
+           <CardItem title="Total Gross" value={`£${props.gross}`}/>
         </Paper>
     )
 }

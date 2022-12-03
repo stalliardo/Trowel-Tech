@@ -19,10 +19,11 @@ import { clearCurrentWeek, deleteWeek, getUsersForCurrentWeek, getWeeks, loadCur
 
 import { useWeekData } from '../../custom-hooks/hoursDiaryHooks';
 import AddWeekPrompt from './AddWeekPrompt';
+import { formatDate } from '../../utils/dateUtils';
 
 // TODO
-    // Download CSV icon
-    // Change the date format to a more uk friendly one
+// Download CSV icon
+// Change the date format to a more uk friendly one
 
 const HoursDiaryContainer = () => {
     const userDoc = useSelector((state) => state.user.currentUser);
@@ -40,7 +41,7 @@ const HoursDiaryContainer = () => {
     const dispatch = useDispatch();
 
     const handleDateChange = (e) => {
-        setWeekEnding(e.target.value);
+        setWeekEnding(formatDate(e.target.value));
         setEditDate(false);
     }
 
