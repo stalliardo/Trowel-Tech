@@ -18,14 +18,14 @@ const paperStyles = {
     height: "80px", 
     margin: "none", 
     padding: "6px 10px", 
-    mt: "20px", 
+    mt: "10px", 
     "&:hover": {cursor: "pointer", backgroundColor: "lightGrey"}
 }
 
 
 const WeekCard = (props) => {
     return (
-        <Paper elevation={12} sx={paperStyles}>
+        <Paper elevation={3} sx={paperStyles}>
            <CardItem title="Week Ending" value={props.weekEnding}/>
            <CardItem title="Total Hours" value={props.hours}/>
            <CardItem title="Total Gross" value={props.gross}/>

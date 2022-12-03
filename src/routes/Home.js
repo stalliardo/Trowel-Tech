@@ -25,7 +25,7 @@ const Home = () => {
                 {/* <Container sx={{ mt: "30px", backgroundColor: "backDrop.dark", padding: "20px", borderRadius: "5px" }} maxWidth="xl"> TODO decide if using backgdrop or not*/}
                 <HoursDiaryContainer />
 
-                <Box mt="30px" textAlign="left">
+                <Box mt="40px" textAlign="left">
                     <DisplayPreviousWeeks />
                 </Box>
             </Container>
