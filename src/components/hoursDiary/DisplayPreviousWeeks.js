@@ -28,7 +28,7 @@ const DisplayPreviousWeeks = () => {
             <Box>
                 <Typography variant="h5">Previous Weeks</Typography>
 
-                <Box sx={{ display: "flex", justifyContent: "space-between", flexBasis: "33%", flexWrap: "wrap" }}>
+                <Box sx={{ display: "flex", flexDirection: {sm: "column", md: "row"}, justifyContent: "flex-start", flexBasis: "33%", flexWrap: "wrap" }}>
                     {hoursDiaryData.allWeeks.length > 0 &&
                         hoursDiaryData.allWeeks.length === 1 ?
                         <Box>

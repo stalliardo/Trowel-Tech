@@ -21,7 +21,7 @@ const Home = () => {
     }
     else {
         return (
-            <Container sx={{ mt: "30px", padding: "20px", borderRadius: "5px" }} maxWidth="xl">
+            <Container sx={{ mt: "30px", padding: "20px", borderRadius: "5px" }} maxWidth="xl" disableGutters={true}>
                 {/* <Container sx={{ mt: "30px", backgroundColor: "backDrop.dark", padding: "20px", borderRadius: "5px" }} maxWidth="xl"> TODO decide if using backgdrop or not*/}
                 <HoursDiaryContainer />
 
