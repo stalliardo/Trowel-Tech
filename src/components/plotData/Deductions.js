@@ -16,9 +16,12 @@ import { addDeduction } from '../../services/database/liftDeductions';
 import { addToDeductionArray } from '../../features/financials/financialsSlice';
 
 const extractFullName = (membersArray) => {
-  return membersArray.map((member) => {
-    return `${member.firstName} ${member.lastName}`;
-  });
+  if(membersArray.length) {
+    return membersArray.map((member) => {
+      return `${member.firstName} ${member.lastName}`;
+    });
+  }
+  return null;
 }
 
 const DeductionRow = ({ title, memberValue, members, hoursValue, handleChange, handleClick, buttonDisabled }) => {

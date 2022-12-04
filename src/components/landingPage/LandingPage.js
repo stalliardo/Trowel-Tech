@@ -88,9 +88,9 @@ const LandingPage = () => {
           </Grid>
           <Grid item md={8}>
             <Typography variant='h4' fontWeight="500" textAlign="center" sx={{ paddingTop: "1rem" }}>Price gangs. It's more than work. It's a way of working quicker, smarter and ultimately, more economically.</Typography>
-            <Typography variant="subtitle1" fontSize="20px" mt="20px">Start by creating your gang, add members either day work or price work. Record hours, lift prices, performance charts and more. Let's move building into the 21st century.</Typography>
+            <Typography fontFamily="'Linden Hill'" variant="subtitle1" fontSize="20px" mt="20px">Start by creating your gang, add members either day work or price work. Record hours, lift prices, performance charts and more. Let's move building into the 21st century.</Typography>
             <Container>
-              <Button variant='contained' sx={{ mt: "20px" }} onClick={onGoToSignUp}>Let's go baby</Button>
+              <Button variant='contained' sx={{ mt: "20px" }} onClick={onGoToSignUp}>Let's go</Button>
             </Container>
           </Grid>
         </Grid>
@@ -98,7 +98,7 @@ const LandingPage = () => {
         <Grid container sx={{ paddingX: { sm: "20px", md: "40px" }, flexDirection: { xs: "column-reverse", md: "row" } }} justifyContent="space-between">
           <Grid item md={8}>
             <Typography variant='h4' fontWeight="500" textAlign="center" sx={{ paddingTop: "1rem" }}>Individuals. Log your hours and make sure you're getting the correct pay. </Typography>
-            <Typography variant="subtitle1" fontSize="20px" mt="20px">Register for your free account, enter some salary information and calculate your earnings as you go. No more guessing what you're going to be paid.</Typography>
+            <Typography fontFamily="'Linden Hill'" variant="subtitle1" fontSize="20px" mt="20px">Register for your free account, enter some salary information and calculate your earnings as you go. No more guessing what you're going to be paid.</Typography>
             <Container>
               <Button variant='contained' sx={{ mt: "20px" }} onClick={onGoToSignUp}>Sign me up</Button>
             </Container>
@@ -111,7 +111,7 @@ const LandingPage = () => {
           <Container sx={{ background: "linear-gradient(131deg, rgba(1,179,217,1) 0%, rgba(3,2,74,1) 100%)", height: "fit-content", paddingY: "30px" }}>
             <Typography variant="h1" fontFamily="Russo One" sx={{ color: "white" }}>Trowel Tech</Typography>
             <Typography variant="subtitle1" sx={{ color: "white", fontSize: "20px", letterSpacing: "4px", mt: "20px" }}>Sign up and modernize your work flow</Typography>
-            <Button variant='outlined' sx={{color: "white", mt: "20px"}}>Join us</Button>
+            <Button variant='outlined' sx={{color: "white", mt: "20px"}} onClick={onGoToSignUp}>Join us</Button>
           </Container>
       </Container>
     </div>

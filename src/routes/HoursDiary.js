@@ -14,8 +14,8 @@ const HoursDiary = () => {
         {/* TODO Are we keeping page titles? */}
         <PageTitle title="Hours Dairy"/>
       </Box>
-      <Container sx={{ mt: "30px", padding: "20px", borderRadius: "5px" }} maxWidth="xl">
-      {/* <Container sx={{ mt: "30px", backgroundColor: "backDrop.dark", padding: "20px", borderRadius: "5px" }} maxWidth="xl"> TODO decide if using backgdrop or not*/}
+      {/* <Container sx={{ mt: "30px", padding: "20px", borderRadius: "5px" }} maxWidth="xl"> */}
+      <Container sx={{ mt: "30px", backgroundColor: "backDrop.dark", padding: "20px", borderRadius: "5px" }} maxWidth="xl"> 
         <HoursDiaryContainer />
       </Container>
     </>

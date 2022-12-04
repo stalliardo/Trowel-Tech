@@ -42,12 +42,10 @@ const Financials = () => {
         if (!plotData) {
             navigate("/plot-data");
         } else if (!deductionData.length && plotData) {
-            console.log("\n dispatch called");
             dispatch(getAllDeductions(plotData.id)).catch((e) => {
                 // TODO
             })
         } else {
-            console.log("ELSE CALLED");
             loadCalculations();
         }
     }, [])

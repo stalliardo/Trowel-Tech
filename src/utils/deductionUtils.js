@@ -1,10 +1,16 @@
 export const extractTotalForLift = (deductionsArray, liftType) => {
     const filteredDeductions = deductionsArray.filter(element => element.lift === liftType);
+    const total = extractTotal(filteredDeductions);
+
+    return extractTotal(filteredDeductions);
+}
+
+export const extractTotal = (deductionsArray) => {
     let total = 0;
 
-    filteredDeductions.forEach((element) => {
-        total += element.hourlyRate * parseInt(element.hours);
-    });
+    deductionsArray.forEach((deduction) => {
+        total += deduction.hourlyRate * parseFloat(deduction.hours);
+    })
 
     return total;
 }

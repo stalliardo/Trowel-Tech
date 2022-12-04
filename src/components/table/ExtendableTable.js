@@ -25,7 +25,7 @@ const allowRowToRender = (key, disallowedKeys) => {
   return canRender;
 }
 
-const ExtendableTable = (props) => {        
+const ExtendableTable = (props) => {
   const handleEditClicked = (row) => {
     props.handleEdit(row);
   }
