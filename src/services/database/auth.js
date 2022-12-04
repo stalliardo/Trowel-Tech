@@ -32,5 +32,6 @@ export const getUserDoc = async (userId) => {
 }
 
 export const logUserOut = () => {
+    // need to dispathc this as i need to clear all the states back to their defaults
     return signOut(auth);
 }
