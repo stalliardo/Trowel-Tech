@@ -15,13 +15,15 @@ import AddMemberModal from '../components/modal/AddMemberModal';
 const GangInformation = () => {
 
     const [tableData, setTableData] = useState({
-        head: ["Name", "Member Type", "Day Rate", "Skill", "Actions"],
+        head: ["First Name", "Last Name", "Member Type", "Day Rate", "Skill", "Actions"],
         rows: []
     })
 
     const dispatch = useDispatch();
 
     const userDoc = useSelector((state) => state.user.currentUser);
+    const gangData = useSelector((state) => state.gangInformation);
+    const isLoading = useSelector((state) => state.gangInformation.isLoading)
 
     useEffect(() => {
         if (userDoc && userDoc.gangId) {
@@ -33,8 +35,6 @@ const GangInformation = () => {
         }
     }, [userDoc])
 
-    const gangData = useSelector((state) => state.gangInformation);
-    const isLoading = useSelector((state) => state.gangInformation.isLoading)
 
     const [showEditModal, setShowEditModal] = useState(false);
     const [showAddMemberModal, setShowAddMemberModal] = useState(false);
@@ -42,11 +42,13 @@ const GangInformation = () => {
 
     useEffect(() => {
         if (gangData.members.length) {
+
             let data = [];
 
             gangData.members.forEach((member) => {
                 data.push({
-                    name: member.firstName + " " + member.lastName,
+                    firstName: member.firstName, 
+                    lastName: member.lastName,
                     memberType: member.memberType,
                     dayRate: member.dayRate,
                     skill: member.skill,
@@ -58,7 +60,7 @@ const GangInformation = () => {
 
             tableData.rows = data;
         } else {
-            tableData.rows = [];
+           setTableData({head: tableData.head, rows: []});
         }
     }, [gangData.members])
 
@@ -73,7 +75,7 @@ const GangInformation = () => {
     }
 
     const handleDeleteMember = (row) => {
-        const data = { row, id: userDoc.gangId || row.id }
+        const data = { gangId: userDoc.gangId, userId: row.id }
         const confirmation = window.confirm("Are you sure you want to delete this member?");
         if (confirmation) {
             dispatch(deleteMember(data)).unwrap().then(() => {
@@ -84,12 +86,12 @@ const GangInformation = () => {
     }
 
     return (
-        isLoading ? <Box sx={{ width: "fit-content", margin: "auto", mt: "100px" }}><CircularProgress size={70} /></Box> : <Container maxWidth="xl" sx={{ mt: "30px", padding: "20px", backgroundColor: "backDrop.dark", borderRadius: "5px" }}>
+        isLoading ? <Box sx={{ width: "fit-content", margin: "auto", mt: "100px" }}><CircularProgress size={70} /></Box> : <Container maxWidth="xl" sx={{ mt: "30px", padding: "20px", backgroundColor: tableData.rows.length && "backDrop.dark", borderRadius: "5px" }}>
         {/* isLoading ? <Box sx={{ width: "fit-content", margin: "auto", mt: "100px" }}><CircularProgress size={70} /></Box> : <Container maxWidth="xl" sx={{ mt: "30px", padding: "20px" }}> */}
             {
                 tableData.rows.length ?
                     <>
-                        <Typography variant='h5' textAlign="left" >Members:</Typography>
+                        <Typography variant='h5' textAlign="left" mb="10px">Members:</Typography>
                         <ExtendableTable data={tableData} deleteButton={true} editButton={true} handleDelete={handleDeleteMember} handleEdit={handleEditMemberClicked} />
                     </>
                     :
@@ -97,8 +99,8 @@ const GangInformation = () => {
                         <PageTitle title="Add Gang Members" />
                         <br />
                         <Box sx={{ textAlign: "left" }}>
-                            <Typography variant='p' color="text.subText">
-                                You haven't added any gang members. Once added you will be able to view, edit and delete a member. There data will then be used
+                            <Typography variant='p'>
+                                You haven't added any gang members. We would recommend adding yourself first, then the other members. Once added you will be able to view, edit and delete a member. There data will then be used
                                 in the other sections of the site, such as lift deductions, hours diary etc.
                             </Typography>
                         </Box>
@@ -113,6 +115,7 @@ const GangInformation = () => {
                     modalClosed={handleModalClosed}
                     rowData={modalData}
                     gangData={gangData}
+                    userDoc={userDoc}
                 />
                 : null
             }
