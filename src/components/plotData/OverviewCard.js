@@ -18,10 +18,11 @@ const loadSymbol = (value, hasColor) => {
 const OverviewCard = ({header, value, variantSmall, variantLarge, hasColor, showPoundSymbol=true}) => {
 
   return (
-    <Box sx={{ height: "90px", textAlign: "left"}}>
-        <Typography variant={variantSmall} color="text.subText">{header}</Typography>
+    <Box sx={{ height: {xs: "30px", sm: "90px"}, textAlign: "left"}}>
+        <Typography variant={variantSmall} color="text.subText" sx={{fontSize: {xs: "10px", md: "30px"}}}>{header}</Typography>
         <Typography variant={variantLarge}
           color={hasColor ? loadColor(value) : "text.title.main"}
+          sx={{fontSize: {xs: "20px", md: "40px"}}}
         >
           {`${loadSymbol(value, hasColor)}${showPoundSymbol ? `£` : ""}${value < 0 ? value * -1 : value}`}
         </Typography>
