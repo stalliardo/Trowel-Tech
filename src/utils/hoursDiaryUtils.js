@@ -66,3 +66,7 @@ export const getGrossTotal = (users) => {
 
     return grossTotal;
 }
+
+export const isWeekEndingUnique = (weeks, weekEnding) => {
+    return !weeks.find(week => week.weekEnding === weekEnding);
+}

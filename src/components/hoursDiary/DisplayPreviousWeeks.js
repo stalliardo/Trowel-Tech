@@ -18,17 +18,21 @@ const DisplayPreviousWeeks = () => {
             const filteredWeeks = hoursDiaryData.allWeeks.filter(week => week.id !== hoursDiaryData.currentWeek.id);
             const sortedWeeks = sortWeeks(filteredWeeks);
 
+            sortedWeeks.forEach((week) => {
+                delete week.formattedDate;
+            })
+
             setAllWeeks(sortedWeeks);
         }
 
     }, [hoursDiaryData.allWeeks, hoursDiaryData.currentWeek]);
 
-    if (!hoursDiaryData.isLoading) {
+    if (!hoursDiaryData.isLoading && hoursDiaryData.allWeeks.length) {
         return (
             <Box>
                 <Typography variant="h5">Previous Weeks</Typography>
 
-                <Box sx={{ display: "flex", flexDirection: {sm: "column", md: "row"}, justifyContent: "flex-start", flexBasis: "33%", flexWrap: "wrap" }}>
+                <Box sx={{ display: "flex", flexDirection: {sm: "column", md: "row"}, justifyContent: "flex-start", flexBasis: "33%", flexWrap: "wrap", maxHeight: "350px", overflowY: "scroll" }}>
                     {hoursDiaryData.allWeeks.length > 0 &&
                         hoursDiaryData.allWeeks.length === 1 ?
                         <Box>

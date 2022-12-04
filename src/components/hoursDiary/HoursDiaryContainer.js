@@ -21,6 +21,7 @@ import { clearCurrentWeek, deleteWeek, getUsersForCurrentWeek, getWeeks, loadCur
 import { useWeekData } from '../../custom-hooks/hoursDiaryHooks';
 import AddWeekPrompt from './AddWeekPrompt';
 import { formatDate } from '../../utils/dateUtils';
+import { isWeekEndingUnique } from '../../utils/hoursDiaryUtils';
 
 // TODO
 // Download CSV icon
@@ -36,12 +37,20 @@ const HoursDiaryContainer = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [showAddWeek, setShowAddWeek] = useState(false);
     const [isEditingWeek, setIsEditingWeek] = useState(false);
+    const [weekEndingisUnique, setWeekEndingIsUnique] = useState(false);
 
     const weekData = useWeekData(hoursDiaryData.currentWeek?.users);
     const previousWeek = useRef();
     const dispatch = useDispatch();
 
     const handleDateChange = (e) => {
+
+        // need to check here against the array of weeks thta this weekEnding is  unique
+
+        setWeekEndingIsUnique(isWeekEndingUnique(hoursDiaryData.allWeeks, e.target.value));
+
+        // enable the tick only if uniuqe
+
         setWeekEnding(e.target.value);
     }
 
@@ -69,7 +78,11 @@ const HoursDiaryContainer = () => {
     }
 
     const handleGoBack = () => {
-        dispatch(loadCurrentWeek(previousWeek.current));
+        if(previousWeek.current) {
+            dispatch(loadCurrentWeek(previousWeek.current));
+        } else {
+            dispatch(loadCurrentWeek({}));
+        }
     }
 
     useEffect(() => {
@@ -121,9 +134,14 @@ const HoursDiaryContainer = () => {
                                 <>
                                     <OutlinedInput variant="outlined" type='date' sx={{ height: "40px" }} value={weekEnding} onChange={handleDateChange} />
                                     {
-                                        weekEnding && <Tooltip title="Add Week Ending">
-                                            <IconButton color='primary' onClick={handleWeekEndingAdded}><DoneIcon /></IconButton>
+                                        weekEnding && weekEndingisUnique ?
+                                        <Tooltip title="Add Week Ending">
+                                             <IconButton color='primary' onClick={handleWeekEndingAdded}><DoneIcon /></IconButton> 
                                         </Tooltip>
+                                        : weekEnding && 
+                                            <Box ml="30px">
+                                                <Typography variant='h6' color="error">That date has already been used. Please choose another.</Typography>
+                                            </Box>
                                     }
                                 </>
                                 :
@@ -135,8 +153,8 @@ const HoursDiaryContainer = () => {
                     }
                     {
                         !editDate &&
-                        <Box display="flex" alignItems="flex-end">
-                            {isObjectEmpty(hoursDiaryData.currentWeek) && <Box sx={{ mb: "8px" }}><Typography variant='subtitle' color="red">Not Saved</Typography></Box>}
+                        <Box display="flex" alignItems="flex-end" textAlign="left">
+                            {isObjectEmpty(hoursDiaryData.currentWeek) && <Box sx={{ mb: "8px" }}><Typography variant='subtitle' color="error">Not yet saved. Enter a users hours to save this week.</Typography></Box>}
                             {
                                 !isObjectEmpty(hoursDiaryData.currentWeek) ?
                                     <>
