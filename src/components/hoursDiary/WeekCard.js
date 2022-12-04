@@ -1,8 +1,12 @@
 import React from 'react'
 
+import { useDispatch } from 'react-redux';
+
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Paper from '@mui/material/Paper';
+import { loadCurrentWeek } from '../../features/hoursDiary/hoursDiarySlice';
+import { formatDate } from '../../utils/dateUtils';
 
 const CardItem = (data) => {
     return (
@@ -15,29 +19,25 @@ const CardItem = (data) => {
 
 const paperStyles = {
     width: "30%",
-    height: "80px", 
-    margin: "none", 
-    padding: "6px 10px", 
-    mt: "10px", 
-    "&:hover": {cursor: "pointer", backgroundColor: "lightGrey"}
+    height: "80px",
+    margin: "none",
+    padding: "6px 10px",
+    mt: "10px",
+    "&:hover": { cursor: "pointer", backgroundColor: "lightGrey" }
 }
 
-
-const WeekCard = (props) => {
-
-    // WIll need to pass in the real data from the allweeks/last 6 weeks array.
-    // When clicked can then add this card to the currentWeek Object
+const WeekCard = ({data}) => {
+    const dispatch = useDispatch();
 
     const handleCardClicked = () => {
-        console.log("CLicked");
+        dispatch(loadCurrentWeek(data));
     }
-
 
     return (
         <Paper elevation={3} sx={paperStyles} onClick={handleCardClicked}>
-           <CardItem title="Week Ending" value={props.weekEnding}/>
-           <CardItem title="Total Hours" value={props.hours}/>
-           <CardItem title="Total Gross" value={`£${props.gross}`}/>
+            <CardItem title="Week Ending" value={formatDate(data.weekEnding)} />
+            <CardItem title="Total Hours" value={data.hours} />
+            <CardItem title="Total Gross" value={`£${data.gross}`} />
         </Paper>
     )
 }

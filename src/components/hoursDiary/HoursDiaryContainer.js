@@ -42,16 +42,12 @@ const HoursDiaryContainer = () => {
     const dispatch = useDispatch();
 
     const handleDateChange = (e) => {
-
-
-        // setWeekEnding(formatDate(e.target.value));
         setWeekEnding(e.target.value);
     }
 
     const handleWeekEndingAdded = () => {
         setEditDate(false);
     }
-
 
     const handleAddNewWeek = () => {
         previousWeek.current = hoursDiaryData.currentWeek;

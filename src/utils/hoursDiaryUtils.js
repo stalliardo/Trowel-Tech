@@ -18,30 +18,19 @@ export const extractCurrentWeek = (weeks) => {
     return weeks.find((week) => week.weekEnding === highestDate);
 }
 
-export const extractLastSixWeeks = (weeks) => {
-
-    console.log("weeks = ", weeks);
-
-    const testDate = "12-12-2022";
-    const formattedTestDate = moment(testDate, ["DDMMYYYY", "MMDDYYYY"]).format(); // Will need to do this to each of the dates in the weeks array to get correct calculations
-
+export const extractLastSixWeeks = (weeks, currentWeekId) => {
     const dateSevenWeeksAgo = moment().subtract(7, "weeks").toDate(); // KEEP
-    const formattedDateSevenWeeksAgo = moment(dateSevenWeeksAgo).format("DD-MM-YYYY");
+    const formattedDateSevenWeeksAgo = moment(dateSevenWeeksAgo).format("YYYY-MM-DD");
+    const validWeeks = [];
 
+    weeks.forEach((week) => {
+        if( week.weekEnding >= formattedDateSevenWeeksAgo) {
+            validWeeks.push(week);
+        }
+    })
 
-    // Ive got the date 7 weeks ago from today,
-    // Now use this to loop the weeks and check which dates are greater than or equal to this date
-    // valid weeks will then be pushed into an the validWeeks array
-
-
-
-
-    
-
-
-    
-
-
+    // Do they need to be returned in order??? TODO
+    return validWeeks.filter(week => week.id !== currentWeekId);
 }
 
 export const extractWeeksForUser = () => {
