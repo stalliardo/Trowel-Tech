@@ -73,14 +73,14 @@ const Financials = () => {
 
 
     useEffect(() => {
-        if (plotData) loadCalculations();
+        if (plotData && deductionData.length) loadCalculations();
     }, [deductionData])
 
     useEffect(() => {
         const deductionTotal = extractTotalForLift(deductionData, selectedLift);
         setTotalDeductions(deductionTotal);
 
-        if (plotData) loadCalculations();
+        if (plotData && deductionData.length) loadCalculations();
 
         if (deductionData) {
             const filteredDeductionsArray = filterDeductionArray(deductionData, selectedLift);
@@ -105,16 +105,24 @@ const Financials = () => {
         }
     }
 
-   
+
     const handleDelete = (row) => {
         const confirmation = window.confirm(`Are you sure you want to delete the deduction for ${row.member}?`);
-        if(confirmation) {
-            dispatch(deleteOneDeduction({deductionId: row.id, plotId: plotData.id})).unwrap().then((response) => {
+        if (confirmation) {
+            dispatch(deleteOneDeduction({ deductionId: row.id, plotId: plotData.id })).unwrap().then((response) => {
                 // TODO
             }).catch((e) => {
                 // TODO
             })
         }
+    }
+
+    if (!deductionData.length){
+        return (
+            <Box mt="30px">
+                <Typography variant="h4" textAlign="center" sx={{fontSize: {xs: "20px", md: "30px"}}}>Financial information cannot be displayed until deduction data has been entered!</Typography>
+            </Box>
+        )
     }
 
     return (

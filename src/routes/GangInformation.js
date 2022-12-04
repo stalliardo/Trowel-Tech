@@ -85,6 +85,7 @@ const GangInformation = () => {
 
     return (
         isLoading ? <Box sx={{ width: "fit-content", margin: "auto", mt: "100px" }}><CircularProgress size={70} /></Box> : <Container maxWidth="xl" sx={{ mt: "30px", padding: "20px", backgroundColor: "backDrop.dark", borderRadius: "5px" }}>
+        {/* isLoading ? <Box sx={{ width: "fit-content", margin: "auto", mt: "100px" }}><CircularProgress size={70} /></Box> : <Container maxWidth="xl" sx={{ mt: "30px", padding: "20px" }}> */}
             {
                 tableData.rows.length ?
                     <>
