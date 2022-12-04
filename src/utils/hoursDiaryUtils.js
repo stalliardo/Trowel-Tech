@@ -9,7 +9,6 @@ export const extractCurrentWeek = (weeks) => {
         currentDate = week.weekEnding;
 
         if (counter === 0) highestDate = currentDate;
-
         if (currentDate > highestDate) highestDate = currentDate;
 
         counter++;
@@ -29,8 +28,15 @@ export const extractLastSixWeeks = (weeks, currentWeekId) => {
         }
     })
 
-    // Do they need to be returned in order??? TODO
     return validWeeks.filter(week => week.id !== currentWeekId);
+}
+
+export const sortWeeks = (weeks) => {
+    const formattedWeekEndingValues = weeks.map((week) => {
+        return { formattedDate: new Date(week.weekEnding), ...week }
+    });
+
+    return formattedWeekEndingValues.sort((week1, week2) => week1.formattedDate - week2.formattedDate);
 }
 
 export const extractWeeksForUser = () => {

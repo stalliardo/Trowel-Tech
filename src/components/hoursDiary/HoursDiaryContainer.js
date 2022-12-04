@@ -125,7 +125,6 @@ const HoursDiaryContainer = () => {
                                             <IconButton color='primary' onClick={handleWeekEndingAdded}><DoneIcon /></IconButton>
                                         </Tooltip>
                                     }
-
                                 </>
                                 :
                                 <Typography variant='h5'>{formatDate(weekEnding)}</Typography>
