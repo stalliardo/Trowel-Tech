@@ -22,7 +22,6 @@ import Breakdown from './components/plotData/Breakdown';
 import Deductions from './components/plotData/Deductions';
 import Financials from './components/plotData/Financials';
 import Toast from './components/notifications/Toast';
-import HoursDiary from './routes/HoursDiary';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -36,7 +35,6 @@ root.render(
           <Route path="/" element={<App />}>
             <Route index element={<Home />} />
             <Route path="/auth" element={<Auth />} />
-            <Route path="/hours-diary" element={<HoursDiary />} />
             <Route path="/members" element={<GangInformation />} />
             <Route path="/plot-data" element={<PlotData />} >
               <Route index element={<Index/>}/>

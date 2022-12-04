@@ -16,7 +16,6 @@ export const hoursDiarySlice = createSlice({
         },
 
         loadCurrentWeek: (state, action) => {
-            console.log("current wek .payload = ", action.payload);
             state.currentWeek = action.payload;
         }
     },

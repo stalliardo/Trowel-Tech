@@ -44,13 +44,7 @@ const HoursDiaryContainer = () => {
     const dispatch = useDispatch();
 
     const handleDateChange = (e) => {
-
-        // need to check here against the array of weeks thta this weekEnding is  unique
-
         setWeekEndingIsUnique(isWeekEndingUnique(hoursDiaryData.allWeeks, e.target.value));
-
-        // enable the tick only if uniuqe
-
         setWeekEnding(e.target.value);
     }
 

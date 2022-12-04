@@ -35,7 +35,3 @@ const Home = () => {
 }
 
 export default Home;
-
-// TODO...
-// add the hours diary here
-// Add projected earnings here

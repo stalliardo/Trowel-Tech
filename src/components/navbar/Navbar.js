@@ -7,8 +7,8 @@ import { Avatar, Menu, MenuItem, Tooltip, AppBar, Box, Divider, Drawer, IconButt
 import MenuIcon from '@mui/icons-material/Menu';
 
 const drawerWidth = 280;
-const navItemsMobile = ['Home', 'Hours Diary', 'Members', 'Plot Data', 'About', 'Contact', 'Profile', 'Settings', 'Sign Out'];
-const navItemsDesktop = ['Home', 'Hours Diary', 'Members', 'Plot Data', 'About', 'Contact'];
+const navItemsMobile = ['Home', 'Members', 'Plot Data', 'About', 'Contact', 'Profile', 'Settings', 'Sign Out'];
+const navItemsDesktop = ['Home', 'Members', 'Plot Data', 'About', 'Contact'];
 const settings = ['Profile', 'Settings', 'Sign Out'];
 
 const Navbar = (props) => {
@@ -55,9 +55,6 @@ const Navbar = (props) => {
     if (link === "Plot Data") {
       navigate("plot-data");
     }
-    else if (link === "Hours Diary") {
-      navigate("hours-diary");
-    } 
     else if (link === "Home") {
       navigate("/");
     } else {
