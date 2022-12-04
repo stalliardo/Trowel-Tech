@@ -43,7 +43,7 @@ const renderer = ({ days, hours, minutes, seconds }) => {
 const CountDownTimer = () => {
     return (
         <Countdown
-            date='2022-12-01T18:00:00'
+            date='2022-12-17T18:00:00'
             renderer={renderer}
         />
     )
