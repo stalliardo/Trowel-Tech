@@ -40,8 +40,8 @@ const GangInformation = () => {
     const [showAddMemberModal, setShowAddMemberModal] = useState(false);
     const [modalData, setModalData] = useState({});
 
-    useEffect(() => {        
-        if (gangData.members.length) {            
+    useEffect(() => {
+        if (gangData.members.length) {
             let data = [];
 
             gangData.members.forEach((member) => {
@@ -75,7 +75,7 @@ const GangInformation = () => {
     const handleDeleteMember = (row) => {
         const data = { row, id: userDoc.gangId || row.id }
         const confirmation = window.confirm("Are you sure you want to delete this member?");
-        if(confirmation) {
+        if (confirmation) {
             dispatch(deleteMember(data)).unwrap().then(() => {
             }).catch((e) => {
                 // TODO
@@ -84,56 +84,46 @@ const GangInformation = () => {
     }
 
     return (
-        isLoading ? <Box sx={{ width: "fit-content", margin: "auto", mt: "100px" }}><CircularProgress size={70} /></Box> : <Container maxWidth="lg" sx={{ mt: "30px", pt: "30px", pb: "100px" }}>
-            <Container sx={{ mt: "20px" }} >
-
-                {
-                    tableData.rows.length ?
-                        <>
-                            <Typography variant='h5' textAlign="left" >Members:</Typography>
-                            <Box sx={{ width: "100%" }}>
-                                <ExtendableTable data={tableData} deleteButton={true} editButton={true} handleDelete={handleDeleteMember} handleEdit={handleEditMemberClicked} />
-                            </Box>
-                        </>
-                        :
-                        <>
-                            <PageTitle title="Add Gang Members" />
-                            <br />
-                            <Box sx={{ textAlign: "left" }}>
-                                <Typography variant='p' color="text.subText">
-                                    You haven't added any gang members. Once added you will be able to view, edit and delete a member. There data will then be used
-                                    in the other sections of the site, such as lift deductions, hours diary etc.
-                                </Typography>
-                            </Box>
-                        </>
-                }
-                <Button variant='contained' onClick={() => setShowAddMemberModal(true)} sx={{ mt: "20px", display: "block" }}>Add Member</Button>
+        isLoading ? <Box sx={{ width: "fit-content", margin: "auto", mt: "100px" }}><CircularProgress size={70} /></Box> : <Container maxWidth="xl" sx={{ mt: "30px", padding: "20px", backgroundColor: "backDrop.dark", borderRadius: "5px" }}>
+            {
+                tableData.rows.length ?
+                    <>
+                        <Typography variant='h5' textAlign="left" >Members:</Typography>
+                        <ExtendableTable data={tableData} deleteButton={true} editButton={true} handleDelete={handleDeleteMember} handleEdit={handleEditMemberClicked} />
+                    </>
+                    :
+                    <>
+                        <PageTitle title="Add Gang Members" />
+                        <br />
+                        <Box sx={{ textAlign: "left" }}>
+                            <Typography variant='p' color="text.subText">
+                                You haven't added any gang members. Once added you will be able to view, edit and delete a member. There data will then be used
+                                in the other sections of the site, such as lift deductions, hours diary etc.
+                            </Typography>
+                        </Box>
+                    </>
+            }
+            <Button variant='contained' onClick={() => setShowAddMemberModal(true)} sx={{ mt: "20px", display: "block" }}>Add Member</Button>
 
 
-                {showEditModal ?
-                    <EditMemberModal
-                        modalOpened={showEditModal}
-                        modalClosed={handleModalClosed}
-                        rowData={modalData}
-                        gangData={gangData}
-                    />
-                    : null
-                }
+            {showEditModal ?
+                <EditMemberModal
+                    modalOpened={showEditModal}
+                    modalClosed={handleModalClosed}
+                    rowData={modalData}
+                    gangData={gangData}
+                />
+                : null
+            }
 
-                {showAddMemberModal ?
-                    <ExtendableModal title="Add Member" modalClosed={handleModalClosed}>
-                        <AddMemberModal modalClosed={handleModalClosed} userDoc={userDoc} />
-                    </ExtendableModal>
-                    : null
-                }
-
-            </Container>
+            {showAddMemberModal ?
+                <ExtendableModal title="Add Member" modalClosed={handleModalClosed}>
+                    <AddMemberModal modalClosed={handleModalClosed} userDoc={userDoc} />
+                </ExtendableModal>
+                : null
+            }
         </Container>
     )
 }
 
 export default GangInformation;
-
-// TODO
-// The save button should be disabled if any of the fields are empty
-// The add member form would look better as a modal

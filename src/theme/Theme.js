@@ -9,7 +9,7 @@ export const theme = createTheme({
         backDrop: {
             main: blueGrey[900],
             light: lightBlue[50],
-            dark: grey[300]
+            dark: grey[400]
         },
         text: {
             // main: red[300],

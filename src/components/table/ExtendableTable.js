@@ -7,11 +7,25 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { IconButton } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
-const ExtendableTable = (props) => {    
+const allowRowToRender = (key, disallowedKeys) => {
+  let canRender = true;
+  if(disallowedKeys?.length) {
+    disallowedKeys.forEach((k) => {
+      if(key === k) canRender = false;
+    })
+  }
+
+  if(key === "id") canRender = false;
+
+  return canRender;
+}
+
+const ExtendableTable = (props) => {        
   const handleEditClicked = (row) => {
     props.handleEdit(row);
   }
@@ -21,9 +35,9 @@ const ExtendableTable = (props) => {
   }
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead sx={{ backgroundColor: "darkgray" }}>
+    <TableContainer component={Paper} elevation={8}>
+      <Table sx={{ minWidth: 650, "td, th": {color: "black", fontWeight: "bold", letterSpacing: "1px"} }} aria-label="simple table">
+        <TableHead sx={{ backgroundColor: "lightgrey" }}>
           <TableRow>
             {props.data.head.map((item, index) => (
               <TableCell key={index + "31"} align="left">{item}</TableCell>
@@ -38,7 +52,7 @@ const ExtendableTable = (props) => {
             >
               {Object.keys(row).map((r, inx) => {
                 return (
-                  r !== "id" && <TableCell key={inx + "41"}>{row[r]}</TableCell>
+                 allowRowToRender(r, props.disallowedKeys) ? <TableCell key={inx + "41"}>{row[r]}</TableCell> : null
                 )
               })}
 

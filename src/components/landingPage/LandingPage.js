@@ -42,7 +42,7 @@ const LandingPage = () => {
 
   return (
     <div>
-      <Container maxWidth="lg" sx={{mt: "20px"}}>
+      <Container maxWidth="xl" sx={{mt: "20px"}}>
       <img src={trowelTechLogoCover} width="100%" alt="meeting.jpg" style={{ marginTop: "0px" }}/>
         <Grid container sx={{ paddingX: { xs: "20px", md: "40px" }, flexDirection: { xs: "column-reverse", md: "row" } }}>
           <Grid item container md={8}>
