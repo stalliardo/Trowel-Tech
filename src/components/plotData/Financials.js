@@ -42,10 +42,12 @@ const Financials = () => {
         if (!plotData) {
             navigate("/plot-data");
         } else if (!deductionData.length && plotData) {
+            console.log("\n dispatch called");
             dispatch(getAllDeductions(plotData.id)).catch((e) => {
                 // TODO
             })
         } else {
+            console.log("ELSE CALLED");
             loadCalculations();
         }
     }, [])
@@ -73,14 +75,14 @@ const Financials = () => {
 
 
     useEffect(() => {
-        if (plotData) loadCalculations();
+        if (plotData && deductionData.length) loadCalculations();
     }, [deductionData])
 
     useEffect(() => {
         const deductionTotal = extractTotalForLift(deductionData, selectedLift);
         setTotalDeductions(deductionTotal);
 
-        if (plotData) loadCalculations();
+        if (plotData && deductionData.length) loadCalculations();
 
         if (deductionData) {
             const filteredDeductionsArray = filterDeductionArray(deductionData, selectedLift);
