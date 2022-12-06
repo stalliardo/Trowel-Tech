@@ -24,9 +24,3 @@ yarn-error.log*
 
 # private
 private/
-
-# firebase
-firestore.rules
-gittest.txt
-
-*.rules
