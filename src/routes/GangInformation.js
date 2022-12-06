@@ -35,7 +35,6 @@ const GangInformation = () => {
         }
     }, [userDoc])
 
-
     const [showEditModal, setShowEditModal] = useState(false);
     const [showAddMemberModal, setShowAddMemberModal] = useState(false);
     const [modalData, setModalData] = useState({});
@@ -57,7 +56,6 @@ const GangInformation = () => {
             });
 
             setTableData({ head: tableData.head, rows: data })
-
             tableData.rows = data;
         } else {
            setTableData({head: tableData.head, rows: []});
@@ -96,10 +94,10 @@ const GangInformation = () => {
                     </>
                     :
                     <>
-                        <PageTitle title="Add Gang Members" />
+                        <PageTitle title=" Create Gang" textAlign="left"/>
                         <br />
                         <Box sx={{ textAlign: "left" }}>
-                            <Typography variant='p'>
+                            <Typography variant='p' fontSize="20px">
                                 You haven't added any gang members. We would recommend adding yourself first, then the other members. Once added you will be able to view, edit and delete a member. There data will then be used
                                 in the other sections of the site, such as lift deductions, hours diary etc.
                             </Typography>
