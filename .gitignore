@@ -27,3 +27,6 @@ private/
 
 # firebase
 firestore.rules
+gittest.txt
+
+*.rules
