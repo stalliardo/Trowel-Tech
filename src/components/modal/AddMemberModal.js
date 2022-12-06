@@ -20,7 +20,7 @@ const AddMemberModal = (props) => {
     const initialFormData = { firstName: "", lastName: "", memberType: "", dayRate: "0", skill: "" };
     const [formData, setFormData] = useState(initialFormData);
     const [isLoading, setIsLoading] = useState(false);
-
+    
     const dispatch = useDispatch();
 
     const handleSubmit = (e) => {
@@ -35,7 +35,7 @@ const AddMemberModal = (props) => {
             })
         } else {
             dispatch(createGangInformationDocument({ ...formData, creatorId: props.userDoc.id })).unwrap().then((response) => {
-                dispatch(setGangId(response.id));
+                dispatch(setGangId(response.gangId));
                 props.modalClosed();
             }).catch((e) => {
                 dispatch(showToast({ message: `An error occured. Please try again later.`, duration: 3000, alertType: "error" }));

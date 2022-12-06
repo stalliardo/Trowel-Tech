@@ -2,42 +2,46 @@ import { db } from '../../firebase';
 import { doc, getDocs, addDoc, collection, updateDoc, deleteDoc } from 'firebase/firestore';
 
 export const createGangDoc = async (formData) => {
-    const { firstName, lastName, memberType, dayRate, skill, creatorId, id } = formData;
+    const { firstName, lastName, memberType, dayRate, skill, creatorId } = formData;
 
-    const docRef = await addDoc(collection(db, "gangInformation"), {
+    const gangRef = await addDoc(collection(db, "gangInformation"), {
         creatorId,
     });
 
-    const membersRef = collection(db, "gangInformation", docRef.id, "members");
-    await addDoc(membersRef, {id, firstName, lastName, memberType, dayRate, skill});
+    const membersRef = collection(db, "gangInformation", gangRef.id, "members");
+    const memberData = await addDoc(membersRef, {firstName, lastName, memberType, dayRate, skill});
 
     const userRef = doc(db, "users", creatorId);
 
     await updateDoc(userRef, {
-        gangId: docRef.id
+        gangId: gangRef.id
     });
 
-    return docRef.id;
+    return {gangId: gangRef.id, userId: memberData.id};
 }
 
 export const updateGangDoc = async (data) => {
     const ref = collection(db, "gangInformation", data.gangId, "members");
 
-    await addDoc(ref, {...data.formData, id: data.id});
+    const memberData = await addDoc(ref, { ...data.formData });
+
+    return memberData.id;
 }
 
-// TODO below
+export const editMemberDoc = async (data) => {
+    const memberRef = doc(db, "gangInformation", data.gangId, "members", data.id);
 
-export const overwriteMembersArray = async (data) => {
-    const gangInformationRef = doc(db, "gangInformation", data.gangId);
-
-    await updateDoc(gangInformationRef, {
-        members: data.membersArray
+    await updateDoc(memberRef, {
+        dayRate: data.dayRate,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        memberType: data.memberType,
+        skill: data.skill
     })
 }
 
 export const deleteUser = async (data) => {
-    const ref = doc(db, "gangInformation", data.id, "members", data.row.id);
+    const ref = doc(db, "gangInformation", data.gangId, "members", data.userId);
     await deleteDoc(ref);
 }
 

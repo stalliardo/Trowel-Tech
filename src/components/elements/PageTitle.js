@@ -1,9 +1,9 @@
 import { Typography } from '@mui/material'
 import React from 'react'
 
-const PageTitle = ({title}) => {
+const PageTitle = ({title, textAlign}) => {
   return (
-    <Typography variant='h3' color="text.title.main">{title}</Typography>
+    <Typography variant='h3' textAlign={textAlign} color="text.title.main">{title}</Typography>
   )
 }
 

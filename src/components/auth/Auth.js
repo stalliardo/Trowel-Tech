@@ -12,7 +12,9 @@ const Auth = () => {
     const { isLoading } = useSelector((state) => state.user);
     const navigate = useNavigate();
 
-    const initialState = { firstName: "", lastName: "", email: "", password: "", confirmPassword: "" };
+    const initialState = { firstName: "", lastName: "", username: "", email: "", password: "", confirmPassword: "" };
+
+    const userState = useSelector(state => state.user);
 
     const [formData, setFormData] = useState(initialState);
     const [errorText, setErrorText] = useState("");
@@ -22,8 +24,9 @@ const Auth = () => {
     useEffect(() => {
         if(isSignUp){
             if (
-                formData.firstName.length > 0 &&
-                formData.lastName.length > 0 &&
+                formData.firstName.length > 1 &&
+                formData.lastName.length > 1 &&
+                formData.username.length > 2 &&
                 formData.email.length > 0 &&
                 formData.password.length > 0 &&
                 formData.confirmPassword.length > 0 && 
@@ -54,7 +57,7 @@ const Auth = () => {
             dispatch(signUpUser(formData)).unwrap().then(() => {
                 navigate("/");
               }).catch((error) => {
-                setErrorText("An error occured. Please try again.")
+                setErrorText(error.message);
             })
         } else {
             dispatch(signIn(formData)).unwrap().then(() => {
@@ -88,23 +91,26 @@ const Auth = () => {
                         {isSignUp && (
                             <>
                                 <Grid item xs={12} sm={6}>
-                                    <TextField name='firstName' label="First Name" onChange={handleChange} autoFocus fullWidth />
-
+                                    <TextField name='firstName' required label="First Name" onChange={handleChange} autoFocus fullWidth />
                                 </Grid>
+                                
                                 <Grid item xs={12} sm={6}>
-                                    <TextField name='lastName' label="Last Name" onChange={handleChange} fullWidth />
+                                    <TextField name='lastName' required label="Last Name" onChange={handleChange} fullWidth />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField name='username' required label="Username" onChange={handleChange} fullWidth />
                                 </Grid>
                             </>
                         )}
                         <Grid item xs={12}>
-                            <TextField name='email' label="Email" onChange={handleChange} type="email" fullWidth />
+                            <TextField name='email' label="Email" required onChange={handleChange} type="email" fullWidth />
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField name='password' label="Password" onChange={handleChange} type="password" fullWidth />
+                            <TextField name='password' label="Password" required onChange={handleChange} type="password" fullWidth />
                         </Grid>
                         {isSignUp &&
                             <Grid item xs={12}>
-                                <TextField name='confirmPassword' label="Confirm Password" onChange={handleChange} type="password" fullWidth />
+                                <TextField name='confirmPassword' required label="Confirm Password" onChange={handleChange} type="password" fullWidth />
                             </Grid>
                         }
                     </Grid>
@@ -131,3 +137,6 @@ const Auth = () => {
 }
 
 export default Auth;
+
+// TODO -> add username field, when the user clicks save will need to check if the username is unique or not if not display a message saying so
+// TODO -> names should not contain spaces, create a regex that tests for bad inputs, and check if firebase handles this automatically
