@@ -31,7 +31,7 @@ export const userSlice = createSlice({
             state.currentUser = action.payload;
         });
 
-        builder.addCase(signUpUser.rejected, (state) => {
+        builder.addCase(signUpUser.rejected, (state, action) => {
             state.isLoading = false;
         });
 
@@ -68,6 +68,7 @@ export const signUpUser = createAsyncThunk(
             const credential = await signUpUserWithEmailAndPassword(formData);
             const serializedUser = {                
                 name: formData.firstName + " " + formData.lastName,
+                username: formData.username,
                 email: formData.email,
                 uid: credential.user.uid
             }
