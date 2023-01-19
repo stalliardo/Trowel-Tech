@@ -7,8 +7,8 @@ import TextField from '@mui/material/TextField'
 import Paper from '@mui/material/Paper'
 import Button from '@mui/material/Button'
 
-import { useDispatch } from 'react-redux'
-import { searchUsernames } from '../../features/gangInfo/gangInformationSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { inviteUser, searchUsernames } from '../../features/gangInfo/gangInformationSlice'
 
 const InviteMemberForm = () => {
 
@@ -16,6 +16,8 @@ const InviteMemberForm = () => {
     const [searchValue, setSearchValue] = useState("");
     const [searchResult, setSearchResult] = useState([]);
     const [noUserFoundText, setNoUserFoundText] = useState("");
+
+    const { currentUser } = useSelector((state) => state.user);
 
     const dispatch = useDispatch();
 
@@ -31,11 +33,34 @@ const InviteMemberForm = () => {
 
     const onSearch = () => {
         dispatch(searchUsernames(searchValue)).unwrap().then((result) => {
+            console.log("result = ", result);
+            
             setSearchResult(result);
             if (!result.length) setNoUserFoundText("No member was found with that username!");
         }).catch((e) => {
             console.log("an error occured while getting the usernames. Error: ", e);
         })
+    }
+
+    const onInvite = () => {
+        // before continuing prmopt user they want to actually do this
+
+        // Then, dispatch "inviteMember(searchResult)"
+        // This will add an invitation doc in the gang collection via a subcollection or do i use an array, bearing in mind, arrays are a pain to work wth but so are sub collections
+        // either way will add to the gang doc and the invited users doc will set a 
+
+
+        const confirmation = window.confirm(`Are you sure you want to invite ${searchResult[0]} to your gang?`);
+
+        if(confirmation) {
+            console.log("CONFIREMED");
+            console.log("userDoc.gangID = ", currentUser.gangId);
+            // need to return the users id when performing the search not just the username
+            dispatch(inviteUser({recipientId: searchResult[0].userId, username: searchResult[0].username, gangId: currentUser.gangId}));
+        } else {
+        }
+
+
     }
 
     return (
@@ -50,8 +75,8 @@ const InviteMemberForm = () => {
                     {
                         searchResult.length ?
                             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0px 20px 20px", width: "29%" }}>
-                                <Typography variant='h5'>{searchResult[0]}</Typography>
-                                <Button variant="contained" disabled={searchButtonDisabled} onClick={onSearch} sx={{ height: "40px" }}>Invite</Button>
+                                <Typography variant='h5'>{searchResult[0].username}</Typography>
+                                <Button variant="contained" disabled={searchButtonDisabled} onClick={onInvite} sx={{ height: "40px" }}>Invite</Button>
                             </Box>
                             : <Box sx={{ padding: "0px 20px 20px" }}>
                                 <Typography variant='h5'>{noUserFoundText}</Typography>

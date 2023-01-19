@@ -21,7 +21,8 @@ export const signUpUserWithEmailAndPassword = async (formData) => {
 
         await addDoc(collection(db, "usernames"), {
             username,
-            lowerCaseUsername: username.toLowerCase()
+            lowerCaseUsername: username.toLowerCase(),
+            userId: credential.user.uid
         });
 
         return credential;

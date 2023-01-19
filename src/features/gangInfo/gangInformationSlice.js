@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { createGangDoc, updateGangDoc, getGangData, deleteUser, editMemberDoc, search } from "../../services/database/gangInformation";
+import { createGangDoc, updateGangDoc, getGangData, deleteUser, editMemberDoc, search, addInvitation } from "../../services/database/gangInformation";
 
 export const gangInformationSlice = createSlice({
     name: "gangInformation",
@@ -67,6 +67,9 @@ export const gangInformationSlice = createSlice({
             builder.addCase(editMember.rejected, (state) => {
                 state.isEditing = false;
             }),
+            builder.addCase(inviteUser.fulfilled, (state, action) => {
+                console.log("fulfilled called. Action.payload = ", action.payload);
+            })
         )
     }
 })
@@ -141,6 +144,21 @@ export const searchUsernames = createAsyncThunk(
             const data = await search(searchTerm);
             return data;
         } catch (error) {
+            throw error;
+        }
+    }
+)
+
+export const inviteUser = createAsyncThunk(
+    "gangInformation/inviteUser",
+    // data = recipientId, username, gangId
+    async (data) => {
+        try {
+            console.log("try called");
+            const result = await addInvitation(data.recipientId, data.username, data.gangId);
+            return result;
+        } catch (error) {
+            console.log("error called. Error = ", error);
             throw error;
         }
     }
