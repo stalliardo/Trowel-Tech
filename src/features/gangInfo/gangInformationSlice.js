@@ -30,6 +30,7 @@ export const gangInformationSlice = createSlice({
             state.id = action.payload.gangId
         },
             builder.addCase(getData.fulfilled, (state, action) => {
+                console.log("getData called");
                 state.members = action.payload || [];
                 state.isLoading = false;
                 state.creatorId = action.payload.creatorId;
