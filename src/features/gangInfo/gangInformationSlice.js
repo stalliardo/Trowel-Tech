@@ -66,10 +66,6 @@ export const gangInformationSlice = createSlice({
             builder.addCase(editMember.rejected, (state) => {
                 state.isEditing = false;
             }),
-
-            // builder.addCase(searchUsernames.fulfilled, (state, action) => {
-            //     state.isLoading = false;
-            // })
         )
     }
 })

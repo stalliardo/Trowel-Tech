@@ -14,12 +14,10 @@ const InviteMemberForm = () => {
 
     const [searchButtonDisabled, setSearchButtonDisabled] = useState(true);
     const [searchValue, setSearchValue] = useState("");
-    const [selectedMember, setSelectedMember] = useState("");
     const [searchResult, setSearchResult] = useState([]);
     const [noUserFoundText, setNoUserFoundText] = useState("");
 
     const dispatch = useDispatch();
-    // const [searchResults, setSearchResults] = useState([]);
 
     const handleChange = (e) => {
         if (e.target.value.length > 2) {
@@ -34,11 +32,10 @@ const InviteMemberForm = () => {
     const onSearch = () => {
         dispatch(searchUsernames(searchValue)).unwrap().then((result) => {
             setSearchResult(result);
-            if(!result.length) setNoUserFoundText("No member was found with that username!");
+            if (!result.length) setNoUserFoundText("No member was found with that username!");
         }).catch((e) => {
             console.log("an error occured while getting the usernames. Error: ", e);
         })
-
     }
 
     return (
@@ -46,17 +43,17 @@ const InviteMemberForm = () => {
             <Box textAlign="left">
                 <Typography variant='h5' textAlign="left" mb="10px">Invite Members</Typography>
                 <Paper elevation={4}>
-                    <Box sx={{ display: "flex", justifyContent: "space-between", padding: "20px" }}>
+                    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px" }}>
                         <TextField label="Members Username" onChange={handleChange} sx={{ width: "30%" }} />
                         <Button variant="contained" disabled={searchButtonDisabled} onClick={onSearch} sx={{ height: "40px" }}>Search</Button>
                     </Box>
                     {
                         searchResult.length ?
-                            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0px 20px 20px", width: "29%"}}>
+                            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0px 20px 20px", width: "29%" }}>
                                 <Typography variant='h5'>{searchResult[0]}</Typography>
                                 <Button variant="contained" disabled={searchButtonDisabled} onClick={onSearch} sx={{ height: "40px" }}>Invite</Button>
                             </Box>
-                            : <Box sx={{padding: "0px 20px 20px"}}>
+                            : <Box sx={{ padding: "0px 20px 20px" }}>
                                 <Typography variant='h5'>{noUserFoundText}</Typography>
                             </Box>
                     }
