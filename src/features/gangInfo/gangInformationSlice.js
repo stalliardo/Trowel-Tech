@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { createGangDoc, updateGangDoc, getGangData, deleteUser, editMemberDoc } from "../../services/database/gangInformation";
+import { createGangDoc, updateGangDoc, getGangData, deleteUser, editMemberDoc, search } from "../../services/database/gangInformation";
 
 export const gangInformationSlice = createSlice({
     name: "gangInformation",
@@ -7,8 +7,8 @@ export const gangInformationSlice = createSlice({
         id: "",
         creatorId: "",
         members: [],
-        isLoading: true,
-        isEditing: false
+        isEditing: false,
+        usernameSearchResults: []
     },
 
     reducers: {
@@ -66,6 +66,10 @@ export const gangInformationSlice = createSlice({
             builder.addCase(editMember.rejected, (state) => {
                 state.isEditing = false;
             }),
+
+            // builder.addCase(searchUsernames.fulfilled, (state, action) => {
+            //     state.isLoading = false;
+            // })
         )
     }
 })
@@ -132,5 +136,19 @@ export const getData = createAsyncThunk(
         }
     }
 )
+
+export const searchUsernames = createAsyncThunk(
+    "gangInformation/searchUsernames",
+    async (searchTerm) => {
+        try {
+            const data = await search(searchTerm);
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    }
+)
+
+
 
 export default gangInformationSlice.reducer;

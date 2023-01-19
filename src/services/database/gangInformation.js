@@ -1,5 +1,5 @@
 import { db } from '../../firebase';
-import { doc, getDocs, addDoc, collection, updateDoc, deleteDoc } from 'firebase/firestore';
+import { doc, getDocs, addDoc, collection, updateDoc, deleteDoc, query, where } from 'firebase/firestore';
 
 export const createGangDoc = async (formData) => {
     const { firstName, lastName, memberType, dayRate, skill, creatorId } = formData;
@@ -57,3 +57,18 @@ export const getGangData = async (id) => {
 
     return data;
 }
+
+export const search = async (searchTerm) => {
+    const usernameRef = collection(db, "usernames");
+    const searchQuery = query(usernameRef, where("lowerCaseUsername", "==", searchTerm.toLowerCase()));
+    const usernames = [];
+    const querySnapshot = await getDocs(searchQuery);
+
+    if(!querySnapshot.empty){
+        querySnapshot.forEach((doc) => {
+            console.log("doc.data() = ", doc.data());
+            usernames.push(doc.data().username);
+        })
+    }
+    return usernames;
+} 
