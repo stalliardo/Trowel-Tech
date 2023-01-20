@@ -9,7 +9,6 @@ const SelectMenu = ({value, label, name, handleChange, menuItems, defaultValue =
             <FormControl fullWidth>
                 <InputLabel>{label}</InputLabel>
                 <Select
-                
                     defaultValue={defaultValue}
                     value={value}
                     label={label}
@@ -18,7 +17,9 @@ const SelectMenu = ({value, label, name, handleChange, menuItems, defaultValue =
                     required={required}
                 >
                     {menuItems.map((item, index) => (
-                        <MenuItem value={item} key={index}>{item}</MenuItem>
+                        <MenuItem value={item} key={index} sx={{"&:hover": {backgroundColor: "lightgrey"}}}>
+                            {item}
+                        </MenuItem>
                     ))}
                 </Select>
             </FormControl>

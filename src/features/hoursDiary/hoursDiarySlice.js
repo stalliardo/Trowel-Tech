@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { addWeek, deleteWeekDoc, editWeek, getAllWeeks, getUsersForWeek } from '../../services/database/hoursDiary';
 import { extractCurrentWeek } from '../../utils/hoursDiaryUtils';
+import { handlePendingAndRejected } from '../../utils/reduxUtils';
 
 export const hoursDiarySlice = createSlice({
     name: 'hoursDiary',
@@ -21,10 +22,7 @@ export const hoursDiarySlice = createSlice({
     },
 
     extraReducers: (builder) => {
-        builder.addCase(getWeeks.pending, (state) => {
-            state.isLoading = true;
-
-        })
+        builder.addCase(getWeeks.pending, (state, action) => handlePendingAndRejected(state, action))
             .addCase(getWeeks.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.allWeeks = action.payload;
@@ -33,26 +31,16 @@ export const hoursDiarySlice = createSlice({
                     state.currentWeek = extractCurrentWeek(action.payload);
                 }
             })
-            .addCase(getWeeks.rejected, (state) => {
-                state.isLoading = false;
-            })
-            .addCase(saveWeek.pending, (state) => {
-                state.isLoading = true;
-            })
-            .addCase(saveWeek.rejected, (state) => {
-                state.isLoading = false;
-            })
+            .addCase(getWeeks.rejected, (state, action) => handlePendingAndRejected(state, action))
+            .addCase(saveWeek.pending, (state, action) => handlePendingAndRejected(state, action))
+            .addCase(saveWeek.rejected, (state, action) => handlePendingAndRejected(state, action))
             .addCase(saveWeek.fulfilled, (state, action) => {
                 state.currentWeek = action.payload;
                 state.allWeeks.push(action.payload);
                 state.isLoading = false;
             })
-            .addCase(updateWeek.pending, (state) => {
-                state.isLoading = true;
-            })
-            .addCase(updateWeek.rejected, (state) => {
-                state.isLoading = false;
-            })
+            .addCase(updateWeek.pending, (state, action) => handlePendingAndRejected(state, action))
+            .addCase(updateWeek.rejected, (state, action) => handlePendingAndRejected(state, action))
             .addCase(updateWeek.fulfilled, (state, action) => {
                 const index = state.currentWeek.users.findIndex(i => i.id === action.payload.formData.id);
                 if(index > -1) {                    
@@ -60,22 +48,14 @@ export const hoursDiarySlice = createSlice({
                 }
                 state.isLoading = false;
             })
-            .addCase(getUsersForCurrentWeek.pending, (state) => {
-                state.isLoading = true;
-            })
-            .addCase(getUsersForCurrentWeek.rejected, (state) => {
-                state.isLoading = false;
-            })
+            .addCase(getUsersForCurrentWeek.pending, (state, action) => handlePendingAndRejected(state, action))
+            .addCase(getUsersForCurrentWeek.rejected, (state, action) => handlePendingAndRejected(state, action))
             .addCase(getUsersForCurrentWeek.fulfilled, (state, action) => {
                 state.currentWeek.users = action.payload;
                 state.isLoading = false;
             })
-            .addCase(deleteWeek.pending, (state) => {
-                state.isLoading = true;
-            })
-            .addCase(deleteWeek.rejected, (state) => {
-                state.isLoading = false;
-            })
+            .addCase(deleteWeek.pending, (state, action) => handlePendingAndRejected(state, action))
+            .addCase(deleteWeek.rejected, (state, action) => handlePendingAndRejected(state, action))
             .addCase(deleteWeek.fulfilled, (state, action) => {
                 state.allWeeks = state.allWeeks.filter(w => w.id !== action.payload);
 

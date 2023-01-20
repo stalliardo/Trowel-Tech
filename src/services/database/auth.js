@@ -19,7 +19,11 @@ export const signUpUserWithEmailAndPassword = async (formData) => {
             username
         });
 
-        await addDoc(collection(db, "usernames"), {username});
+        await addDoc(collection(db, "usernames"), {
+            username,
+            lowerCaseUsername: username.toLowerCase(),
+            userId: credential.user.uid
+        });
 
         return credential;
     }
