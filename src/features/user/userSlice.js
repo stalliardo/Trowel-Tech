@@ -118,13 +118,11 @@ export const logOut = createAsyncThunk(
 
 export const getInvitations = createAsyncThunk(
     "user/getInvitations",
-    // TODO -> when adding notifications to the users dropdown
     async (id) => {
         try {
             const result = await checkInvitations(id);
             return result;
         } catch (error) {
-            console.log("error called. Error = ", error);
             throw error;
         }
     }

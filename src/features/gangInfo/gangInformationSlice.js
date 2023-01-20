@@ -18,7 +18,6 @@ export const gangInformationSlice = createSlice({
         },
 
         filterInvitations(state, action) {
-            console.log("action = ", action.payload);
             state.invitations = state.invitations.filter(invitation => invitation.id !== action.payload);
         }
     },
@@ -32,11 +31,10 @@ export const gangInformationSlice = createSlice({
                 dayRate: action.payload.dayRate,
                 skill: action.payload.skill,
                 id: action.payload.userId
-            })
-            state.id = action.payload.gangId
+            });
+            state.id = action.payload.gangId;
         },
             builder.addCase(getData.fulfilled, (state, action) => {
-                console.log("getData called");
                 state.members = action.payload || [];
                 state.isLoading = false;
                 state.creatorId = action.payload.creatorId;
@@ -79,7 +77,6 @@ export const gangInformationSlice = createSlice({
             }),
 
             builder.addCase(getInvitations.fulfilled, (state, action) => {
-                console.log("action.payload = ", action.payload);
                 state.invitations = action.payload;
             })
         )

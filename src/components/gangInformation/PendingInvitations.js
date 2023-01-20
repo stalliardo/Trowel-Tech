@@ -6,11 +6,11 @@ import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import ExtendableTable from '../table/ExtendableTable'
+
 import { deleteInvitation } from '../../services/database/gangInformation'
 import { filterInvitations } from '../../features/gangInfo/gangInformationSlice'
 
 const PendingInvitations = ({ invitations }) => {
-
     const [tableData, setTableData] = useState({
         head: ["Recipient Name", "Senders Name", "Status", "Actions"],
         rows: [{ name: "Jamie Gibbs", sender: "Darren Stallard", status: "Pending" }]
@@ -35,14 +35,14 @@ const PendingInvitations = ({ invitations }) => {
 
         setFormattedData(data);
 
-    }, [invitations])
+    }, [invitations]);
 
     useEffect(() => {
         setTableData({
             head: tableData.head,
             rows: formattedData
         });
-    }, [formattedData])
+    }, [formattedData]);
 
     const handleDelete = (row) => {
         const confirmation = window.confirm("Are you sure you want to delete this invite? The recipient will no longer see your invitation!");
@@ -64,4 +64,4 @@ const PendingInvitations = ({ invitations }) => {
     )
 }
 
-export default PendingInvitations
+export default PendingInvitations;

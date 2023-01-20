@@ -88,7 +88,6 @@ export const addInvitation = async (recipientId, username, senderData) => {
 }
 
 export const checkInvitations = async (gangId) => {
-
     const q = query(collection(db, "invitations"), where("gangId", "==", gangId));
     const querySnapshot = await getDocs(q);
 
@@ -97,7 +96,7 @@ export const checkInvitations = async (gangId) => {
     if(!querySnapshot.empty) {
         querySnapshot.forEach((doc) => {
             invitations.push({...doc.data(), id: doc.id});
-        })
+        });
     }
 
     return invitations;
