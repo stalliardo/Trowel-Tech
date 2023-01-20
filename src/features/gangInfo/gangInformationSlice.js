@@ -67,6 +67,8 @@ export const gangInformationSlice = createSlice({
             builder.addCase(editMember.rejected, (state) => {
                 state.isEditing = false;
             }),
+
+            // TODO - is this needed?
             builder.addCase(inviteUser.fulfilled, (state, action) => {
                 console.log("fulfilled called. Action.payload = ", action.payload);
             })
@@ -154,8 +156,7 @@ export const inviteUser = createAsyncThunk(
     // data = recipientId, username, gangId
     async (data) => {
         try {
-            console.log("try called");
-            const result = await addInvitation(data.recipientId, data.username, data.gangId);
+            const result = await addInvitation(data.recipientId, data.username, data.senderData);
             return result;
         } catch (error) {
             console.log("error called. Error = ", error);

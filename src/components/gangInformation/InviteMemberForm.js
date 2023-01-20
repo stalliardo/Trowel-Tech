@@ -43,24 +43,15 @@ const InviteMemberForm = () => {
     }
 
     const onInvite = () => {
-        // before continuing prmopt user they want to actually do this
-
-        // Then, dispatch "inviteMember(searchResult)"
-        // This will add an invitation doc in the gang collection via a subcollection or do i use an array, bearing in mind, arrays are a pain to work wth but so are sub collections
-        // either way will add to the gang doc and the invited users doc will set a 
-
-
-        const confirmation = window.confirm(`Are you sure you want to invite ${searchResult[0]} to your gang?`);
+        const confirmation = window.confirm(`Are you sure you want to invite "${searchResult[0].username}" to your gang?`);
 
         if(confirmation) {
-            console.log("CONFIREMED");
-            console.log("userDoc.gangID = ", currentUser.gangId);
-            // need to return the users id when performing the search not just the username
-            dispatch(inviteUser({recipientId: searchResult[0].userId, username: searchResult[0].username, gangId: currentUser.gangId}));
-        } else {
+            dispatch(inviteUser({recipientId: searchResult[0].userId, username: searchResult[0].username, senderData: currentUser})).unwrap().then((res) => {
+                console.log("res called + data = ", res);
+            }).catch((e) => {
+                console.log("Error sending invite, Error: ", e);
+            })
         }
-
-
     }
 
     return (

@@ -78,7 +78,7 @@ export const search = async (searchTerm) => {
 // 1 - first created the sentIviations subcollection on the gang doc
 // 2 - Once created successfully, get the generated id as this needs to be added to the recipients invitations array
 
-export const addInvitation = async (recipientId, username, gangId) => {
+export const addInvitation = async (recipientId, username, senderData) => {
     // const inviteRef = collection(db, "gangInformation", gangId, "invitations");
 
     // const senderData = {
@@ -99,15 +99,9 @@ export const addInvitation = async (recipientId, username, gangId) => {
     //     status: "Pending"
 
     // }
-
-
-    console.log("data from service = ", gangId);
-
-    // FIX: FirebaseError: Missing or insufficient permissions.
-
     const data = {
-        gangId,
-        sendersName: "Darren",
+        gangId: senderData.gangId,
+        sendersName: senderData.name,
         recipientsName: username,
         recipientId,
         status: "Pending"
