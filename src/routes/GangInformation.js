@@ -1,41 +1,31 @@
 import React, { useEffect } from 'react'
 
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import Box from '@mui/material/Box'
 
 import MembersContainer from '../components/gangInformation/MembersContainer'
 import InviteMemberForm from '../components/gangInformation/InviteMemberForm'
 import PendingInvitations from '../components/gangInformation/PendingInvitations'
-
-// Check for invitations in the store
-// If none check the db
-// if found pass down into pending invite
-// if none at all don't display the pending invites comp
-
-
-
-
+import { getInvitations } from '../features/gangInfo/gangInformationSlice'
 
 const GangInformation = () => {
   const invitations = useSelector(state => state.gangInformation.invitations);
+  const {currentUser} = useSelector(state => state.user);
 
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    // Check for invites in the store...
-    if(!invitations) {
-      // dispatch the getInvitations action
+    if(currentUser.gangId && !invitations.length) {
+      dispatch(getInvitations(currentUser.gangId));
     }
-
   }, []);
 
-
-  console.log("invitations = ", invitations);
   return (
     <Box>
         <MembersContainer />
         <InviteMemberForm />
-        <PendingInvitations />
+        <PendingInvitations invitations={invitations}/>
     </Box>
   )
 }

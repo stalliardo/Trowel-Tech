@@ -73,32 +73,7 @@ export const search = async (searchTerm) => {
     return usernames;
 }
 
-// will need to perform to updates one on the sender doc and one on the gang doc
-
-// 1 - first created the sentIviations subcollection on the gang doc
-// 2 - Once created successfully, get the generated id as this needs to be added to the recipients invitations array
-
 export const addInvitation = async (recipientId, username, senderData) => {
-    // const inviteRef = collection(db, "gangInformation", gangId, "invitations");
-
-    // const senderData = {
-    //     to: username,
-    //     status: "Pending"
-    // };
-
-    // const inviteResult = await addDoc(ref, senderData);
-
-    // // save this ^ id in the recipients doc
-
-    // const userRef = collection(db, "users", recipientId, "invitations");
-
-    // const recipientData = {
-    //     from: "Darren",
-    //     gangId,
-    //     inviteId: inviteResult.id,
-    //     status: "Pending"
-
-    // }
     const data = {
         gangId: senderData.gangId,
         sendersName: senderData.name,
@@ -109,22 +84,21 @@ export const addInvitation = async (recipientId, username, senderData) => {
 
     const invitationRef = await addDoc(collection(db, "invitations"), data);
 
-    // once created use the state engine to set the invitations in the gangSlice and the user slice
-
     return { ...data, inviteId: invitationRef.id };
-
 }
 
-export const checkInvitations = async (gangId, recipientId) => {
-    // If no gangId just return the received invites if any 
+export const checkInvitations = async (gangId) => {
 
-
-    const q = query(collection(db, "invitations"), where("gangId", "==", gangId)); // if gangId passed
+    const q = query(collection(db, "invitations"), where("gangId", "==", gangId));
     const querySnapshot = await getDocs(q);
+
+    const invitations = [];
 
     if(!querySnapshot.empty) {
         querySnapshot.forEach((doc) => {
-            console.log("doc = ", doc.data());
+            invitations.push({...doc.data(), id: doc.id});
         })
     }
+
+    return invitations;
 }

@@ -118,8 +118,7 @@ export const logOut = createAsyncThunk(
 
 export const getInvitations = createAsyncThunk(
     "user/getInvitations",
-    // Will need the gandId, and the user id so i can call this only once, once for the user and once for the gang...
-    // If a gangid is present check for sent invites if not just get recieved invites
+    // TODO -> when adding notifications to the users dropdown
     async (id) => {
         try {
             const result = await checkInvitations(id);

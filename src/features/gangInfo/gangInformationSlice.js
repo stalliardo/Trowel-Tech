@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { createGangDoc, updateGangDoc, getGangData, deleteUser, editMemberDoc, search, addInvitation } from "../../services/database/gangInformation";
+import { createGangDoc, updateGangDoc, getGangData, deleteUser, editMemberDoc, search, addInvitation, checkInvitations } from "../../services/database/gangInformation";
 
 export const gangInformationSlice = createSlice({
     name: "gangInformation",
@@ -9,7 +9,7 @@ export const gangInformationSlice = createSlice({
         members: [],
         isEditing: false,
         usernameSearchResults: [],
-        invitations: ["one"],
+        invitations: [],
     },
 
     reducers: {
@@ -69,9 +69,13 @@ export const gangInformationSlice = createSlice({
                 state.isEditing = false;
             }),
 
-            // TODO - is this needed?
             builder.addCase(inviteUser.fulfilled, (state, action) => {
-                console.log("fulfilled called. Action.payload = ", action.payload);
+                state.invitations.push(action.payload);
+            }),
+
+            builder.addCase(getInvitations.fulfilled, (state, action) => {
+                console.log("action.payload = ", action.payload);
+                state.invitations = action.payload;
             })
         )
     }
@@ -159,10 +163,20 @@ export const inviteUser = createAsyncThunk(
             const result = await addInvitation(data.recipientId, data.username, data.senderData);
             return result;
         } catch (error) {
-            console.log("error called. Error = ", error);
             throw error;
         }
     }
 )
 
+export const getInvitations = createAsyncThunk(
+    "gangInformation/getInvitations",
+    async (gangId) => {
+        try {
+            const result = await checkInvitations(gangId);
+            return result;
+        } catch (error) {
+            throw error;
+        }
+    }
+)
 export default gangInformationSlice.reducer;
