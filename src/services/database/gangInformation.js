@@ -102,3 +102,7 @@ export const checkInvitations = async (gangId) => {
 
     return invitations;
 }
+
+export const deleteInvitation = async(invitationId) => {
+    await deleteDoc(doc(db, "invitations", invitationId));
+}

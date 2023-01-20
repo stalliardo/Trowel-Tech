@@ -15,6 +15,11 @@ export const gangInformationSlice = createSlice({
     reducers: {
         setIsLoading(state, action) {
             state.isLoading = action.payload;
+        },
+
+        filterInvitations(state, action) {
+            console.log("action = ", action.payload);
+            state.invitations = state.invitations.filter(invitation => invitation.id !== action.payload);
         }
     },
 
@@ -81,7 +86,7 @@ export const gangInformationSlice = createSlice({
     }
 })
 
-export const { setIsLoading } = gangInformationSlice.actions;
+export const { setIsLoading, filterInvitations } = gangInformationSlice.actions;
 
 export const createGangInformationDocument = createAsyncThunk(
     "gangInformation/createGangInformationDocument",
