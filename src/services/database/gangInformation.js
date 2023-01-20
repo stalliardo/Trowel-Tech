@@ -9,7 +9,7 @@ export const createGangDoc = async (formData) => {
     });
 
     const membersRef = collection(db, "gangInformation", gangRef.id, "members");
-    const memberData = await addDoc(membersRef, {firstName, lastName, memberType, dayRate, skill});
+    const memberData = await addDoc(membersRef, { firstName, lastName, memberType, dayRate, skill });
 
     const userRef = doc(db, "users", creatorId);
 
@@ -17,7 +17,7 @@ export const createGangDoc = async (formData) => {
         gangId: gangRef.id
     });
 
-    return {gangId: gangRef.id, userId: memberData.id};
+    return { gangId: gangRef.id, userId: memberData.id };
 }
 
 export const updateGangDoc = async (data) => {
@@ -64,14 +64,14 @@ export const search = async (searchTerm) => {
     const usernames = [];
     const querySnapshot = await getDocs(searchQuery);
 
-    if(!querySnapshot.empty){
+    if (!querySnapshot.empty) {
         querySnapshot.forEach((doc) => {
             console.log("doc.data() = ", doc.data());
             usernames.push(doc.data());
         })
     }
     return usernames;
-} 
+}
 
 // will need to perform to updates one on the sender doc and one on the gang doc
 
@@ -111,6 +111,20 @@ export const addInvitation = async (recipientId, username, senderData) => {
 
     // once created use the state engine to set the invitations in the gangSlice and the user slice
 
-    return {...data, inviteId: invitationRef.id };
+    return { ...data, inviteId: invitationRef.id };
 
+}
+
+export const checkInvitations = async (gangId, recipientId) => {
+    // If no gangId just return the received invites if any 
+
+
+    const q = query(collection(db, "invitations"), where("gangId", "==", gangId)); // if gangId passed
+    const querySnapshot = await getDocs(q);
+
+    if(!querySnapshot.empty) {
+        querySnapshot.forEach((doc) => {
+            console.log("doc = ", doc.data());
+        })
+    }
 }

@@ -3,12 +3,7 @@ import React, { useState} from 'react'
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import TextField from '@mui/material/TextField'
-import Paper from '@mui/material/Paper'
-import Button from '@mui/material/Button'
 import ExtendableTable from '../table/ExtendableTable'
-
-
 
 const PendingInvitations = () => {
     const [tableData, setTableData] = useState({

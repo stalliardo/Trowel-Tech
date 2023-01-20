@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logOut } from '../../features/user/userSlice'
+import { getInvitations, logOut } from '../../features/user/userSlice'
 
 import { Avatar, Menu, MenuItem, Tooltip, AppBar, Box, Divider, Drawer, IconButton, List, ListItem, ListItemText, ListItemButton, Toolbar, Typography, Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -18,6 +18,20 @@ const Navbar = (props) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const invitations = useSelector(state => state.user.invitations);
+
+  useEffect(() => {
+    // Check here for invitations, get them if none found
+    
+    if(userDoc && !invitations.length) {
+      console.log("NOT called");
+      dispatch(getInvitations(userDoc.id)).unwrap().then((res) => {
+        console.log("res from getting invites for a user = ", res);
+      }).catch((e) => {
+        console.log("error getting a users invites. Error: ", e);
+      })
+    }
+  }, [userDoc])
 
   const extractInitials = (name) => {
     const names = name.split(" ");

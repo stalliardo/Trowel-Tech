@@ -8,7 +8,8 @@ export const gangInformationSlice = createSlice({
         creatorId: "",
         members: [],
         isEditing: false,
-        usernameSearchResults: []
+        usernameSearchResults: [],
+        invitations: ["one"],
     },
 
     reducers: {
@@ -153,7 +154,6 @@ export const searchUsernames = createAsyncThunk(
 
 export const inviteUser = createAsyncThunk(
     "gangInformation/inviteUser",
-    // data = recipientId, username, gangId
     async (data) => {
         try {
             const result = await addInvitation(data.recipientId, data.username, data.senderData);
@@ -164,7 +164,5 @@ export const inviteUser = createAsyncThunk(
         }
     }
 )
-
-
 
 export default gangInformationSlice.reducer;
