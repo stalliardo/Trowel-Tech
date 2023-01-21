@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
@@ -32,13 +32,9 @@ const InviteMemberForm = () => {
     }
 
     const onSearch = () => {
-        dispatch(searchUsernames(searchValue)).unwrap().then((result) => {
-            console.log("result = ", result);
-            
+        dispatch(searchUsernames(searchValue)).unwrap().then((result) => {            
             setSearchResult(result);
             if (!result.length) setNoUserFoundText("No member was found with that username!");
-        }).catch((e) => {
-            console.log("an error occured while getting the usernames. Error: ", e);
         })
     }
 
@@ -46,11 +42,7 @@ const InviteMemberForm = () => {
         const confirmation = window.confirm(`Are you sure you want to invite "${searchResult[0].username}" to your gang?`);
 
         if(confirmation) {
-            dispatch(inviteUser({recipientId: searchResult[0].userId, username: searchResult[0].username, senderData: currentUser})).unwrap().then((res) => {
-                console.log("res called + data = ", res);
-            }).catch((e) => {
-                console.log("Error sending invite, Error: ", e);
-            })
+            dispatch(inviteUser({recipientId: searchResult[0].userId, username: searchResult[0].username, senderData: currentUser}));
         }
     }
 

@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logOut } from '../../features/user/userSlice'
+
+import { getInvitations, logOut } from '../../features/user/userSlice';
 
 import { Avatar, Menu, MenuItem, Tooltip, AppBar, Box, Divider, Drawer, IconButton, List, ListItem, ListItemText, ListItemButton, Toolbar, Typography, Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -14,17 +16,25 @@ const settings = ['Profile', 'Settings', 'Sign Out'];
 const Navbar = (props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const userDoc = useSelector((state) => state.user.currentUser);
-
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const userDoc = useSelector((state) => state.user.currentUser);
+  const invitations = useSelector(state => state.user.invitations);
+
+  useEffect(() => {    
+    if(userDoc && !invitations.length) {
+      dispatch(getInvitations(userDoc.id));
+    }
+  }, [userDoc]);
 
   const extractInitials = (name) => {
     const names = name.split(" ");
     const initials = names.shift().charAt(0) + names.pop().charAt(0);
 
     return initials;
-  }
+  };
 
   const handleCloseUserMenu = (link) => {
     if (link === "Settings" || "Profile" || "Sign Out") {
@@ -60,7 +70,7 @@ const Navbar = (props) => {
     } else {
       navigate(link);
     }
-  }
+  };
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ pt: "20px", background: "linear-gradient(131deg, rgba(1,179,217,1) 0%, rgba(3,2,74,1) 100%)", height: "100vh" }}>

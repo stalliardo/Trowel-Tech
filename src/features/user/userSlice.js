@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { signUpUserWithEmailAndPassword, getUserDoc, logUserOut, signInUserWithEmailAndPassword } from '../../services/database/auth';
+import { checkInvitations } from '../../services/database/user';
 
 export const userSlice = createSlice({
     name: 'user',
@@ -7,6 +8,7 @@ export const userSlice = createSlice({
         currentUser: null,
         isLoading: false,
         isLoadingUserData: true,
+        invitations: [],
     },
     reducers: {
         setUser: (state, action) => {
@@ -113,5 +115,18 @@ export const logOut = createAsyncThunk(
         }
     }
 )
+
+export const getInvitations = createAsyncThunk(
+    "user/getInvitations",
+    async (id) => {
+        try {
+            const result = await checkInvitations(id);
+            return result;
+        } catch (error) {
+            throw error;
+        }
+    }
+)
+
 
 export default userSlice.reducer

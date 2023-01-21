@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { createGangDoc, updateGangDoc, getGangData, deleteUser, editMemberDoc, search, addInvitation } from "../../services/database/gangInformation";
+import { createGangDoc, updateGangDoc, getGangData, deleteUser, editMemberDoc, search, addInvitation, checkInvitations } from "../../services/database/gangInformation";
 
 export const gangInformationSlice = createSlice({
     name: "gangInformation",
@@ -8,12 +8,17 @@ export const gangInformationSlice = createSlice({
         creatorId: "",
         members: [],
         isEditing: false,
-        usernameSearchResults: []
+        usernameSearchResults: [],
+        invitations: [],
     },
 
     reducers: {
         setIsLoading(state, action) {
             state.isLoading = action.payload;
+        },
+
+        filterInvitations(state, action) {
+            state.invitations = state.invitations.filter(invitation => invitation.id !== action.payload);
         }
     },
 
@@ -26,11 +31,10 @@ export const gangInformationSlice = createSlice({
                 dayRate: action.payload.dayRate,
                 skill: action.payload.skill,
                 id: action.payload.userId
-            })
-            state.id = action.payload.gangId
+            });
+            state.id = action.payload.gangId;
         },
             builder.addCase(getData.fulfilled, (state, action) => {
-                console.log("getData called");
                 state.members = action.payload || [];
                 state.isLoading = false;
                 state.creatorId = action.payload.creatorId;
@@ -68,15 +72,18 @@ export const gangInformationSlice = createSlice({
                 state.isEditing = false;
             }),
 
-            // TODO - is this needed?
             builder.addCase(inviteUser.fulfilled, (state, action) => {
-                console.log("fulfilled called. Action.payload = ", action.payload);
+                state.invitations.push(action.payload);
+            }),
+
+            builder.addCase(getInvitations.fulfilled, (state, action) => {
+                state.invitations = action.payload;
             })
         )
     }
 })
 
-export const { setIsLoading } = gangInformationSlice.actions;
+export const { setIsLoading, filterInvitations } = gangInformationSlice.actions;
 
 export const createGangInformationDocument = createAsyncThunk(
     "gangInformation/createGangInformationDocument",
@@ -153,18 +160,25 @@ export const searchUsernames = createAsyncThunk(
 
 export const inviteUser = createAsyncThunk(
     "gangInformation/inviteUser",
-    // data = recipientId, username, gangId
     async (data) => {
         try {
             const result = await addInvitation(data.recipientId, data.username, data.senderData);
             return result;
         } catch (error) {
-            console.log("error called. Error = ", error);
             throw error;
         }
     }
 )
 
-
-
+export const getInvitations = createAsyncThunk(
+    "gangInformation/getInvitations",
+    async (gangId) => {
+        try {
+            const result = await checkInvitations(gangId);
+            return result;
+        } catch (error) {
+            throw error;
+        }
+    }
+)
 export default gangInformationSlice.reducer;
