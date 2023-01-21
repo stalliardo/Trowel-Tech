@@ -57,6 +57,10 @@ export const userSlice = createSlice({
         builder.addCase(logOut.fulfilled, (state) => {
             state.currentUser = null;
         });
+
+        builder.addCase(getInvitations.fulfilled, (state, action) => {
+            state.invitations = action.payload;
+        })
     }
 })
 

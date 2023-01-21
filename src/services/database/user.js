@@ -8,6 +8,7 @@ export const checkInvitations = async (recipientId) => {
 
     if(!querySnapshot.empty) {
         querySnapshot.forEach((doc) => {
+            console.log("data = ", doc.data());
             data.push({...doc.data(), id: doc.id});
         })
     }
