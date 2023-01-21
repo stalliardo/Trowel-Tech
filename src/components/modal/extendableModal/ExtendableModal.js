@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import CircularIndicator from '../../loadingIndicator/CircularIndicator';
 
 const ExtendableModal = (props) => {
-
     const [open, setOpen] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -16,7 +15,6 @@ const ExtendableModal = (props) => {
         props.modalClosed()
     }
 
-   
     return (
         <div>
             <Modal
@@ -34,7 +32,7 @@ const ExtendableModal = (props) => {
                     borderRadius: "10px",
                     boxShadow: 24,
                     p: 4,
-                    minHeight: "400px"
+                    minHeight: props.minHeight || "400px"
                 }}>
                     <Typography variant="h4" align="center" mb="20px">{props.title}</Typography>
 

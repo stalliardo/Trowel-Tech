@@ -9,6 +9,8 @@ import { Avatar, Menu, MenuItem, Tooltip, AppBar, Box, Divider, Drawer, IconButt
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Badge from '@mui/material/Badge';
+import ExtendableModal from '../modal/extendableModal/ExtendableModal';
+import InvitationModal from '../modal/InvitationModal';
 
 const drawerWidth = 280;
 const navItemsMobile = ['Home', 'Members', 'Plot Data', 'About', 'Contact', 'Profile', 'Settings', 'Sign Out'];
@@ -19,6 +21,8 @@ const Navbar = (props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [anchorElNotiification, setAnchorElNotification] = useState(null);
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [selectedInvitation, setSelectedInvitation] = useState({});
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -52,16 +56,22 @@ const Navbar = (props) => {
     setAnchorElUser(null);
   };
 
-  const handleCloseNotificationMenu = () => {
-    setAnchorElNotification(null);
-  }
-
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
 
   const handleOpenNotifications = (event) => {
     setAnchorElNotification(event.currentTarget);
+  }
+
+  const handleCloseNotificationMenu = () => {
+    setAnchorElNotification(null);
+  }
+
+  const handleNotificationItemClicked = (item) => {
+    setSelectedInvitation(item);
+    handleCloseNotificationMenu();
+    setShowInviteModal(true);
   }
 
   const handleDrawerToggle = () => {
@@ -82,6 +92,10 @@ const Navbar = (props) => {
       navigate(link);
     }
   };
+
+  const handleModalClosed = () => {
+    setShowInviteModal(false);
+  }
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ pt: "20px", background: "linear-gradient(131deg, rgba(1,179,217,1) 0%, rgba(3,2,74,1) 100%)", height: "100vh" }}>
@@ -110,6 +124,13 @@ const Navbar = (props) => {
 
   return (
     <Box sx={{ display: 'flex' }}>
+      {
+        showInviteModal ?
+          <ExtendableModal title="Invitation from Darren" modalClosed={handleModalClosed} minHeight="200px">
+            <InvitationModal invite={selectedInvitation}/>
+          </ExtendableModal>
+          : null
+      }
       <AppBar component="nav" position='static'>
         <Toolbar>
           {userDoc ? <IconButton
@@ -195,11 +216,10 @@ const Navbar = (props) => {
               onClose={handleCloseNotificationMenu}
             >
               {invitations.map((invite, index) => (
-                <MenuItem key={index} divider={true} onClick={() => handleCloseUserMenu(invite)}>
-                  <Typography textAlign="center">{`${invite.sendersName} wants you to join their gang`}</Typography>
+                <MenuItem key={index} divider={true} onClick={() => handleNotificationItemClicked(invite)}>
+                  <Typography textAlign="center">You have a new invitation</Typography>
                 </MenuItem>
               ))}
-
             </Menu>
           </Box>
         </Toolbar>
