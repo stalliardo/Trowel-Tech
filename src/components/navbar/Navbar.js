@@ -8,6 +8,7 @@ import { getInvitations, logOut } from '../../features/user/userSlice';
 import { Avatar, Menu, MenuItem, Tooltip, AppBar, Box, Divider, Drawer, IconButton, List, ListItem, ListItemText, ListItemButton, Toolbar, Typography, Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import Badge from '@mui/material/Badge';
 
 const drawerWidth = 280;
 const navItemsMobile = ['Home', 'Members', 'Plot Data', 'About', 'Contact', 'Profile', 'Settings', 'Sign Out'];
@@ -141,7 +142,11 @@ const Navbar = (props) => {
           <Box sx={{ display: { xs: 'none', md: "block" }, flexGrow: 0 }}>
             <Tooltip title="Notifications">
               <IconButton onClick={handleOpenNotifications} sx={{ p: 0 }}>
-                {userDoc ? <NotificationsIcon sx={{color: "white"}}/> : null}
+                {userDoc ?
+                  <Badge badgeContent={invitations.length} color="error">
+                    <NotificationsIcon sx={{ color: "white" }} />
+                  </Badge>
+                  : null}
               </IconButton>
             </Tooltip>
             <Tooltip title="Open settings">
