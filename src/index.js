@@ -22,6 +22,8 @@ import Breakdown from './components/plotData/Breakdown';
 import Deductions from './components/plotData/Deductions';
 import Financials from './components/plotData/Financials';
 import Toast from './components/notifications/Toast';
+import NotFound from './routes/NotFound';
+import UnderConstruction from './routes/UnderConstruction';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -33,6 +35,7 @@ root.render(
         <Navbar />
         <Routes>
           <Route path="/" element={<App />}>
+            <Route path="*" element={<NotFound />}/>
             <Route index element={<Home />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/members" element={<GangInformation />} />
@@ -53,6 +56,10 @@ root.render(
                 </Route>
               </Route>
             </Route>
+            <Route path="/about" element={<UnderConstruction />}/>
+            <Route path="/contact" element={<UnderConstruction />}/>
+            <Route path="/settings" element={<UnderConstruction />}/>
+            <Route path="/profile" element={<UnderConstruction />}/>
           </Route>
         </Routes>
       </BrowserRouter>
