@@ -24,8 +24,8 @@ const GangInformation = () => {
   return (
     <Box>
         <MembersContainer />
-        <InviteMemberForm />
-        <PendingInvitations invitations={invitations}/>
+        {currentUser.gangId && <InviteMemberForm />}
+        {invitations.length > 0 && <PendingInvitations invitations={invitations}/>}
     </Box>
   )
 }

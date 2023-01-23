@@ -32,7 +32,6 @@ const Navbar = (props) => {
 
   useEffect(() => {
     if (userDoc && !invitations.length) {
-      console.log("userdoc.id = ", userDoc.id);
       dispatch(getInvitations(userDoc.id));
     }
   }, [userDoc]);
@@ -72,6 +71,14 @@ const Navbar = (props) => {
     setSelectedInvitation(item);
     handleCloseNotificationMenu();
     setShowInviteModal(true);
+  }
+
+  const inviteAccepted = () => {
+    // close the modal
+    handleModalClosed();
+    console.log("invite accepted called");
+    // dispatch(filter)
+    
   }
 
   const handleDrawerToggle = () => {
@@ -126,8 +133,8 @@ const Navbar = (props) => {
     <Box sx={{ display: 'flex' }}>
       {
         showInviteModal ?
-          <ExtendableModal title="Invitation from Darren" modalClosed={handleModalClosed} minHeight="200px">
-            <InvitationModal invite={selectedInvitation}/>
+          <ExtendableModal title="Invitation from Darren" modalClosed={handleModalClosed} minHeight="180px">
+            <InvitationModal invite={selectedInvitation} userDoc={userDoc} handleAccept={inviteAccepted}/>
           </ExtendableModal>
           : null
       }
