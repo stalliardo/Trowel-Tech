@@ -24,7 +24,7 @@ export const userSlice = createSlice({
         },
 
         filterInvitations: (state, action) => {
-            
+            state.invitations = state.invitations.filter(invite => invite.id !== action.payload);
         }
     },
     extraReducers: (builder) => {
@@ -67,15 +67,12 @@ export const userSlice = createSlice({
         });
 
         builder.addCase(acceptInvitation.fulfilled, (state, action) => {
-            // or
-
-            console.log("accept called. paload = ", action.payload);
             state.invitations = state.invitations.filter(invite => invite.id !== action.payload);
-        })
+        });
     }
 })
 
-export const { setUser, noUserFound, setGangId } = userSlice.actions;
+export const { setUser, noUserFound, setGangId, filterInvitations } = userSlice.actions;
 
 export const signUpUser = createAsyncThunk(
     "user/signUpUser",

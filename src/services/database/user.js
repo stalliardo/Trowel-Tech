@@ -1,5 +1,5 @@
 import { db } from '../../firebase';
-import { getDocs, collection, query, where, updateDoc, doc } from 'firebase/firestore';
+import { getDocs, collection, query, where, updateDoc, doc, deleteDoc } from 'firebase/firestore';
 
 export const checkInvitations = async (recipientId) => {
     const q = query(collection(db, "invitations"), where("recipientId", "==", recipientId));
@@ -9,20 +9,14 @@ export const checkInvitations = async (recipientId) => {
     if(!querySnapshot.empty) {
         querySnapshot.forEach((doc) => {
             
-           if(doc.data().status !== "Accepted") data.push({...doc.data(), id: doc.id});
+           if(doc.data().status === "Pending") data.push({...doc.data(), id: doc.id});
         })
     }
-
-    // only return the none accepted ones. They will be deleted via the admin / gang member
-
     return data;
 }
 
 export const acceptInvite = async (data) => {
     const inviteRef = doc(db, "invitations", data.inviteId);
-
-    // will alos need to update their doc to inclue the gangId
-
     const promises = [];
 
     const acceptInvitePromise = await updateDoc(inviteRef, {
@@ -30,10 +24,18 @@ export const acceptInvite = async (data) => {
     });
 
     const userRef = doc(db, "users", data.userId);
-
+    
     const addGangIdToDocPromise = await updateDoc(userRef, {
         gangId: data.gangId
     });
 
     return Promise.all(promises);
-}   
+}
+
+export const declineInvite = async (inviteId) => {
+    const inviteRef = doc(db, "invitations", inviteId);
+
+    return await updateDoc(inviteRef, {
+        status: "Declined"
+    });   
+}

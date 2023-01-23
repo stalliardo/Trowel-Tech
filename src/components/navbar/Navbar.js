@@ -74,11 +74,11 @@ const Navbar = (props) => {
   }
 
   const inviteAccepted = () => {
-    // close the modal
     handleModalClosed();
-    console.log("invite accepted called");
-    // dispatch(filter)
-    
+  }
+
+  const inviteDeclined = () => {
+    handleModalClosed();
   }
 
   const handleDrawerToggle = () => {
@@ -134,7 +134,7 @@ const Navbar = (props) => {
       {
         showInviteModal ?
           <ExtendableModal title="Invitation from Darren" modalClosed={handleModalClosed} minHeight="180px">
-            <InvitationModal invite={selectedInvitation} userDoc={userDoc} handleAccept={inviteAccepted}/>
+            <InvitationModal invite={selectedInvitation} userDoc={userDoc} handleAccept={inviteAccepted} handleDecline={inviteDeclined}/>
           </ExtendableModal>
           : null
       }

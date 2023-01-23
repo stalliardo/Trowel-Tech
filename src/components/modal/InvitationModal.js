@@ -5,11 +5,12 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import { Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { acceptInvitation, setGangId } from '../../features/user/userSlice';
+import { acceptInvitation, filterInvitations, setGangId } from '../../features/user/userSlice';
 import { showToast } from '../../features/notifications/notificationSlice';
 import { useNavigate } from 'react-router-dom';
+import { declineInvite } from '../../services/database/user';
 
-const InvitationModal = ({invite, userDoc, handleAccept}) => {
+const InvitationModal = ({invite, userDoc, handleAccept, handleDecline}) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const dispatch = useDispatch();
@@ -29,7 +30,10 @@ const InvitationModal = ({invite, userDoc, handleAccept}) => {
     };
 
     const handleDeclineClicked = () => {
-        console.log("invite declined!");
+        declineInvite(invite.id).then(() => {
+            handleDecline();
+            dispatch(filterInvitations(invite.id));
+        })
     };
 
     return (
@@ -49,5 +53,3 @@ const InvitationModal = ({invite, userDoc, handleAccept}) => {
 };
 
 export default InvitationModal;
-
-// TODO -> cancel, accept and decline logic
