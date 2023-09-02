@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import SelectMenu from '../selectMenu/SelectMenu';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { createGangInformationDocument, updateGangInformationDocument } from '../../features/gangInfo/gangInformationSlice';
 import { setGangId } from '../../features/user/userSlice';
@@ -20,24 +20,29 @@ const AddMemberModal = (props) => {
     const initialFormData = { firstName: "", lastName: "", memberType: "", dayRate: "0", skill: "" };
     const [formData, setFormData] = useState(initialFormData);
     const [isLoading, setIsLoading] = useState(false);
+
+    const userData = useSelector((state) => state.user.currentUser);
     
     const dispatch = useDispatch();
 
     const handleSubmit = (e) => {
+        console.log("sbmit called + user = ", (props.userDoc.id || userData.uid));
         e.preventDefault();
     
         if (props.userDoc.gangId) {
             dispatch(updateGangInformationDocument({ formData, gangId: props.userDoc.gangId })).unwrap().then((response) => {
                 props.modalClosed();
             }).catch((e) => {
+                console.log("Error = ", e);
                 dispatch(showToast({ message: `An error occured. Please try again later.`, duration: 3000, alertType: "error" }));
 
             })
         } else {
-            dispatch(createGangInformationDocument({ ...formData, creatorId: props.userDoc.id })).unwrap().then((response) => {
+            dispatch(createGangInformationDocument({ ...formData, creatorId: (props.userDoc.id || userData.uid)  })).unwrap().then((response) => {
                 dispatch(setGangId(response.gangId));
                 props.modalClosed();
             }).catch((e) => {
+                console.log("Error = ", e);
                 dispatch(showToast({ message: `An error occured. Please try again later.`, duration: 3000, alertType: "error" }));
             })
         }

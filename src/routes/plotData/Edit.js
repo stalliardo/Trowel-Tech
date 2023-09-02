@@ -51,7 +51,7 @@ const Edit = () => {
   
   return (
       isLoading ? <CircularIndicator style={{mt: "100px"}} /> :
-    <Container maxWidth="xl" sx={{ backgroundColor: "backDrop.dark", height: "fit-content", pt: "20px", pb: "20px", mt: "20px", }}>
+    <Container maxWidth="lg" sx={{ backgroundColor: "backDrop.dark", height: "fit-content", pt: "20px", pb: "20px", mt: "20px", }}>
       <Box component="div" sx={{ display: "flex" }}>
         <Button variant='contained' onClick={handleBackClicked}>Back</Button>
       </Box>

@@ -17,7 +17,7 @@ const gridItemStyle = {
 }
 
 const GridLabel = ({ text }) => {
-  return <Typography component="label" sx={{ fontSize: "18px" }}>{text}</Typography>
+  return <Typography component="label" sx={{ fontSize: "16px" }}>{text}</Typography>
 }
 
 const Information = () => {

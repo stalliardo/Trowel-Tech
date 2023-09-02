@@ -18,7 +18,7 @@ const FinancialOverview = ({overviewText, totalDeductions, currentFinancials, li
 
     return (
         <Box sx={{ padding: "1px 0px 30px" }}>
-            <Typography textAlign="left" variant='h5' mb="15px">{overviewText}</Typography>
+            <Typography textAlign="left" variant='h5' mb="15px" fontSize='18px'>{overviewText}</Typography>
             <Grid container justifyContent="space-between" px="30px" sx={{ flexDirection: { xs: "column", md: "row" }, }}>
                 <OverViewItem header="Lift Total" value={liftTotal}/>
                 <OverViewItem header="Total Deductions" value={totalDeductions}/>

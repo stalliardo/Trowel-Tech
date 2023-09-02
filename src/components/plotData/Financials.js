@@ -120,7 +120,7 @@ const Financials = () => {
     if (!deductionData.length){
         return (
             <Box mt="30px">
-                <Typography variant="h4" textAlign="center" sx={{fontSize: {xs: "20px", md: "30px"}}}>Financial information cannot be displayed until deduction data has been entered!</Typography>
+                <Typography variant="h4" textAlign="center" sx={{fontSize: {xs: "16px", md: "20px"}}}>Financial information cannot be displayed until deduction data has been entered!</Typography>
             </Box>
         )
     }

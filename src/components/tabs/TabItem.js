@@ -26,7 +26,7 @@ const TabItem = ({ to, text, requiresQueryParam = true }) => {
                 return {
                     textDecoration: "none",
                     color: isActive ? "black" : "#bdbdbd",
-                    fontSize: matches ? "18px" : "10px"
+                    fontSize: matches ? "16px" : "10px"
                 }
             }}>
                 {text}
