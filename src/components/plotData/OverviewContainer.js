@@ -17,7 +17,7 @@ const OverviewContainer = () => {
     return (
         <Paper elevation={2} sx={{ backgroundColor:"white", mt: "20px", padding: "20px 20px 30px" }}>
             <Typography textAlign="left" variant='h5' mb="15px">Overview</Typography>
-            <Grid container justifyContent="space-between" px="30px" sx={{ flexDirection: { xs: "column", md: "row" }, }}>
+            <Grid container justifyContent="space-between" px="30px" sx={{ flexDirection: { xs: "column", sm: "row" }, }}>
                 <OverViewItem header="Total Price" value={data ? `${data.totalPrice}` : "N/A"}/>
                 <OverViewItem header="Current Financials" value="TODO"/>
                 <OverViewItem header="Status" value={data ? `${data.currentStatus}` : "N/A"} showPoundSymbol={false}/>

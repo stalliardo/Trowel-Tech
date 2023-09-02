@@ -44,10 +44,7 @@ const EditMemberModal = (props) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const filteredMemebers = props.gangData.members.filter(member => member.id !== props.rowData.id);
-        filteredMemebers.push(formData);
-
-        const data = { membersArray: filteredMemebers, gangId: props.gangData.id };
+        const data = {...formData, gangId: props.userDoc.gangId};
 
         dispatch(editMember(data)).unwrap().then(() => {
             setOpen(false);
@@ -84,10 +81,10 @@ const EditMemberModal = (props) => {
                         <form onSubmit={handleSubmit} style={{ width: "100%" }}>
                             <Grid container spacing={2} mt="10px">
                                 <Grid item xs={12} sm={6}>
-                                    <TextField name="firstName" label="First Name" defaultValue={formData.firstName} onChange={handleChange} autoFocus fullWidth />
+                                    <TextField name="firstName" label="First Name" defaultValue={formData.firstName} required onChange={handleChange} autoFocus fullWidth />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <TextField name="lastName" label="Last Name" defaultValue={formData.lastName} onChange={handleChange} fullWidth />
+                                    <TextField name="lastName" label="Last Name" defaultValue={formData.lastName} required onChange={handleChange} fullWidth />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <SelectMenu
@@ -96,10 +93,11 @@ const EditMemberModal = (props) => {
                                         name="memberType"
                                         menuItems={memberTypeOptions}
                                         handleChange={handleChange}
+                                        required={true}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <TextField name="dayRate" label="Day Rate" defaultValue={formData.dayRate} onChange={handleChange} fullWidth />
+                                    <TextField name="dayRate" label="Day Rate" defaultValue={formData.dayRate} required onChange={handleChange} fullWidth />
                                 </Grid>
 
                                 <Grid item xs={12}>
@@ -109,6 +107,7 @@ const EditMemberModal = (props) => {
                                         name="skill"
                                         menuItems={skillMenuItems}
                                         handleChange={handleChange}
+                                        required={true}
                                     />
                                 </Grid>
                             </Grid>

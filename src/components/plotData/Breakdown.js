@@ -119,7 +119,7 @@ const Breakdown = () => {
     } else {
       setInputsDisabled(false);
     }
-  }, [formData])
+  }, [formData.breakdownMethod])
 
   useEffect(() => {
     buttonDisabledHandler();
